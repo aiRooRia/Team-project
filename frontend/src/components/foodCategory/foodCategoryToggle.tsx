@@ -1,39 +1,37 @@
 import * as React from "react";
+import { useState } from "react";
 
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Box from "@mui/material/Box";
-
+import { Button, Box } from "@mui/material";
+const [selected, setSelected] = useState("");
 export const FoodCategoryToggle = (): JSX.Element => {
-  const [alignment, setAlignment] = React.useState<string | null>("left");
-
-  const handleAlignment = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null
-  ) => {
-    setAlignment(newAlignment);
+  const buttonStyle = {
+    width: "280.5px",
+    border: "1px solid",
+    borderRadius: 1,
+    px: 1,
+    py: 2,
+    borderColor: "#D6D8DB",
+    color: "#000000",
   };
   return (
-    <Box>
-      <ToggleButtonGroup
-        value={alignment}
-        exclusive
-        onChange={handleAlignment}
-        aria-label="text alignment"
-      >
-        <ToggleButton sx={{}} value="left" aria-label="left aligned">
+    <Box
+      sx={{
+        justifyContent: "center",
+        display: "flex",
+        alignContent: "center",
+        px: "32px",
+        py: "120px",
+        gap: 2,
+      }}
+    >
+      <Box sx={{ width: "1200px", display: "flex", gap: "26px" }}>
+        <Button onClick={() => setSelected("Breakfast")} sx={buttonStyle}>
           Breakfast
-        </ToggleButton>
-        <ToggleButton sx={{}} value="center" aria-label="centered">
-          Soup
-        </ToggleButton>
-        <ToggleButton sx={{}} value="right" aria-label="right aligned">
-          Main Course
-        </ToggleButton>
-        <ToggleButton sx={{}} value="justify" aria-label="justified">
-          Desert
-        </ToggleButton>
-      </ToggleButtonGroup>
+        </Button>
+        <Button sx={buttonStyle}>Soup</Button>
+        <Button sx={buttonStyle}>Main Course</Button>
+        <Button sx={buttonStyle}>Dessert</Button>
+      </Box>
     </Box>
   );
 };
