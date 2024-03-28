@@ -80,6 +80,7 @@ export const Header = () => {
             }}
             sx={{
               borderColor: "#000000",
+              width: "260px",
               py: 1,
               px: 2,
               gap: 1,
