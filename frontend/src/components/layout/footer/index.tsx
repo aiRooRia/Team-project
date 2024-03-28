@@ -3,7 +3,6 @@ import { Typography, Box, Divider, Button, Link } from "@mui/material";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
-
 import Logos from "./Logo";
 
 interface LinkItemProps {
@@ -28,15 +27,15 @@ const LinkItem: React.FC<LinkItemProps> = ({ text, href }) => {
 };
 
 const linkItems = [
-     { text: "Нүүр", href: "@/components/pages/layout/index" },
-     { text: "Холбоо барих", href: "@/components/pages/layout/contact" },
-     { text: "Хоолны цэс", href: "@/components/pages/layout/menu" },
-     { text: "Үйлчилгээний нөхцөл", href: "@/components/pages/layout/terms" },
+     { text: "Нүүр", href: "/layout/menu" },
+     { text: "Холбоо барих", href: "/layout/contact" },
+     { text: "Хоолны цэс", href: "/layout/menu" },
+     { text: "Үйлчилгээний нөхцөл", href: "/layout/terms" },
      {
           text: "Хүргэлтийн бүс",
-          href: "@/components/pages/layout/delivery-zone",
+          href: "/layout/delivery-zone",
      },
-     { text: "Нууцлалын бодлого", href: "@/components/pages/layout/privacy" },
+     { text: "Нууцлалын бодлого", href: "/layout/privacy" },
 ];
 
 const Footer: React.FC = () => {
