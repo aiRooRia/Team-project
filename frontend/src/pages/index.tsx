@@ -1,9 +1,11 @@
-import Footer from "@/components/layout/footer";
-export default function Home() {
 
-     return (
-          <>
-               <Footer />
-          </>
-     );
-}
+import { Header } from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+
+export default function Home() {
+  return (
+    <>
+      <Header></Header>
+       <Footer />
+    </>
+  );
