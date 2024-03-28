@@ -12,7 +12,7 @@ export const FoodCategoryToggle = (): JSX.Element => {
     py: 2,
     borderColor: "#D6D8DB",
     color: "#000000",
-    transition: "background-color 0.3s, color 0.3s", 
+    transition: "background-color 0.3s, color 0.3s",
   };
 
   return (
@@ -34,8 +34,8 @@ export const FoodCategoryToggle = (): JSX.Element => {
             bgcolor: selected === "Breakfast" ? "#18ba51" : "#ffffff",
             color: selected === "Breakfast" ? "#FFFFFF" : "#000000",
             "&:hover": {
-              bgcolor: selected === "Breakfast" ? "#18ba51" : "#f0f0f0", // Change background color on hover
-              color: selected === "Breakfast" ? "#FFFFFF" : "#000000", // Change text color on hover
+              bgcolor: selected === "Breakfast" ? "#18ba51" : "#f0f0f0",
+              color: selected === "Breakfast" ? "#FFFFFF" : "#000000",
             },
           }}
         >
