@@ -7,7 +7,6 @@ import { PersonOutline, ShoppingBasket } from "@mui/icons-material";
 import userButtonGreen from "./haederAsset/icon (1).svg";
 
 export const Header = () => {
-
   const router = useRouter();
   const linkStyles = {
     py: 1,
@@ -40,7 +39,6 @@ export const Header = () => {
       <Box
         sx={{
           width: "1258px",
-
           justifyContent: "space-between",
           py: 1,
           px: 3,
@@ -73,30 +71,48 @@ export const Header = () => {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ gap: 1, display: "flex" }}>
-          <TextField
-            placeholder="Search"
-            InputProps={{
-              startAdornment: <SearchIcon sx={{ color: "#000000", mr: 1 }} />,
-            }}
+        <Box
+          sx={{
+            justifyContent: "center",
+            display: "flex",
+            alignItems: "center",
+            bgcolor: "#ffffff",
+          }}
+        >
+          <Box
             sx={{
-              borderColor: "#000000",
-              width: "260px",
-              py: 1,
-              px: 2,
               gap: 1,
-              borderRadius: 1,
+              height: "40px",
+              display: "flex",
+
+              alignItems: "center",
             }}
-          />
-          <Box sx={{ display: "flex" }}>
-            <Button sx={{ gap: 1, py: 1, px: 2, ...headerTExtStyle }}>
-              <ShoppingBasket sx={{ width: 24, height: 24 }} />
-              Сагс
-            </Button>
-            <Button sx={{ gap: 1, py: 1, px: 2, ...headerTExtStyle }}>
-              Нэвтрэх
-              <PersonOutline sx={{ width: 24, height: 24 }} />
-            </Button>
+          >
+            <TextField
+              placeholder="Хайх"
+              InputProps={{
+                startAdornment: <SearchIcon sx={{ color: "#000000", mr: 1 }} />,
+              }}
+              inputProps={{
+                style: { padding: "8.5px" },
+              }}
+              sx={{
+                borderColor: "#000000",
+                width: "260px",
+                height: "40px",
+                borderRadius: 1,
+              }}
+            />
+            <Box sx={{ display: "flex" }}>
+              <Button sx={{ gap: 1, py: 1, px: 2, ...headerTExtStyle }}>
+                <ShoppingBasket sx={{ width: 24, height: 24 }} />
+                Сагс
+              </Button>
+              <Button sx={{ gap: 1, py: 1, px: 2, ...headerTExtStyle }}>
+                <PersonOutline sx={{ width: 24, height: 24 }} />
+                Нэвтрэх
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Box>
