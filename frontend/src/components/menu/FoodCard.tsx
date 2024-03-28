@@ -1,7 +1,29 @@
-import React from "react";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import React, { useState } from "react";
+import {
+     Card,
+     CardContent,
+     CardMedia,
+     Typography,
+     Button,
+} from "@mui/material";
+import { Box } from "@mui/system";
 
 function FoodCard() {
+     const [isHovered, setIsHovered] = useState(false);
+     const [isVisible, setIsVisible] = useState(false);
+
+     const handleMouseEnter = () => {
+          setIsHovered(true);
+          setTimeout(() => {
+               setIsVisible(true);
+          }, 2);
+     };
+
+     const handleMouseLeave = () => {
+          setIsHovered(false);
+          setIsVisible(false);
+     };
+
      return (
           <Card
                sx={{
@@ -10,17 +32,53 @@ function FoodCard() {
                     width: "282px",
                }}
           >
-               <CardMedia
-                    component="img"
-                    alt="Өглөөний хоол"
-                    src="https://s3-alpha-sig.figma.com/img/669a/97ce/f4ad7e823b2a1cb020f7b7e74bce1ed7?Expires=1712534400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=n0jNBYyczhGluK3Prb23MnjPmNH6wFkuP4sirYt7MqMa2IyCpzAUr7c5UrTKXXMyYu6rGrdKA3EaKq~KFak7AKT8kZwziYFilLfO05D8Ykh0hrG0Qn6c9W5h1od3y2cnrY1C49JZ1cOhGgyr8wGoExKjemN0gw6AEPKM1R-92spdUjQ6guO--D8j6ZoG5b3Erm5vTQG6DmIyEMP4MVQfnsg-2CQlLlXRuNtowTlFt6HuXxvKCCw8tMDicDlSCm-W7SwjIhsCys7qOCR3VZomatwh5NEe~Ypm6VhDh~3TJC8mHgLxFPNxVdMgvGzABI4NJy1Ew-PNwT2ey0shyaU~og__"
-                    loading="lazy"
+               <Box
                     sx={{
-                         width: "282px",
-                         height: "186px",
+                         position: "relative",
+                         backgroundColor: "black",
                          borderRadius: "10px",
                     }}
-               />
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+               >
+                    <CardMedia
+                         component="img"
+                         alt="Өглөөний хоол"
+                         src="https://i.ibb.co/M5kGkcy/unsplash-fdl-ZBWIP0a-M.png"
+                         loading="lazy"
+                         sx={{
+                              width: "282px",
+                              height: "186px",
+                              borderRadius: "10px",
+                              backgroundColor: isHovered
+                                   ? "black"
+                                   : "transparent",
+                              opacity: isHovered ? 0.3 : 1,
+                              transition: "background-color 0.3s, opacity 0.3s",
+                         }}
+                    />
+                    {isVisible && (
+                         <Button
+                              sx={{
+                                   position: "absolute",
+                                   top: "50%",
+                                   left: "50%",
+                                   transform: "translate(-50%, -50%)",
+                                   width: "166px",
+                                   borderRadius: "20px",
+                                   transition:
+                                        "background-color 0.5s, opacity 0.3s",
+
+                                   opacity: "80%",
+                                   border: "none",
+                                   cursor: "pointer",
+                                   zIndex: 1,
+                              }}
+                         >
+                              Edit
+                         </Button>
+                    )}
+               </Box>
                <CardContent
                     sx={{
                          display: "flex",
