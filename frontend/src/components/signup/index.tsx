@@ -1,137 +1,121 @@
-import { Box, Typography, Button } from "@mui/material";
-import Textfield from "@mui/material/TextField";
-import Checkbox from "@mui/joy/Checkbox";
+import {
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  FormControl,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import * as React from "react";
 
-export default function SignUpSection() {
+export const Signup = () => {
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "800px",
-        backgroundColor: "white",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
+    <>
+      <Stack
+        direction={"column"}
+        justifyContent={"flex-start"}
+        spacing={5}
+        width={"385px"}
+        sx={{ padding: "32px" }}
       >
         <Typography
-          sx={{
-            color: "#000000",
-            width: "400px",
-            display: "flex",
-            justifyContent: "center",
-            fontSize: "28px",
-          }}
+          sx={{ fontWeight: "700px", fontSize: "28px", textAlign: "center" }}
         >
           Бүртгүүлэх
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-          }}
+        <Stack
+          width={"100%"}
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
         >
-          <Box>
-            <Typography sx={{ color: "#000000" }}>Нэр</Typography>
-            <Textfield
-              type="text"
-              placeholder="Нэрээ оруулна уу"
-              sx={{
-                backgroundColor: "#F7F7F8",
-                borderWidth: "1px",
-                borderColor: "#ECEDF0",
-                width: "400px",
-                borderRadius: "4px",
-              }}
-            ></Textfield>
-          </Box>
-          <Box>
-            <Typography sx={{ color: "#000000" }}>И-мэйл</Typography>
-            <Textfield
-              type="text"
-              placeholder="И-мэйл хаягаа оруулна уу"
-              sx={{
-                backgroundColor: "#F7F7F8",
-                borderWidth: "1px",
-                borderColor: "#ECEDF0",
-                width: "400px",
-                borderRadius: "4px",
-              }}
-            ></Textfield>
-          </Box>
-          <Box>
-            <Typography sx={{ color: "#000000" }}>Хаяг</Typography>
-            <Textfield
-              type="text"
-              placeholder="Та хаягаа оруулна уу"
-              sx={{
-                backgroundColor: "#F7F7F8",
-                borderWidth: "1px",
-                borderColor: "#ECEDF0",
-                width: "400px",
-                borderRadius: "4px",
-              }}
-            ></Textfield>
-          </Box>
-          <Box>
-            <Typography sx={{ color: "#000000" }}>Нууц үг</Typography>
-            <Textfield
-              type="password"
-              placeholder="Нууц үгээ оруулна уу"
-              sx={{
-                backgroundColor: "#F7F7F8",
-                borderWidth: "1px",
-                borderColor: "#ECEDF0",
-                width: "400px",
-                borderRadius: "4px",
-              }}
-            ></Textfield>
-          </Box>
-          <Box>
-            <Typography sx={{ color: "#000000" }}>Нууц үг давтах</Typography>
-            <Textfield
-              type="password"
-              placeholder="Нууц үгээ оруулна уу"
-              sx={{
-                backgroundColor: "#F7F7F8",
-                borderWidth: "1px",
-                borderColor: "#ECEDF0",
-                width: "400px",
-                borderRadius: "4px",
-              }}
-            ></Textfield>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "40px",
-          }}
-        >
-          <Box sx={{ display: "flex", gap: "10px" }}>
-            <Checkbox label="Үйлчилгээний нөхцөл зөвшөөрөх" sx={{}} />
-          </Box>
-          <Button
-            sx={{
-              width: "400px",
-              backgroundColor: "#18BA51",
-              height: "48px",
-              color: "#FFFFFF",
-            }}
+          <Stack width={"100%"} spacing={"4px"}>
+            <Typography>Нэр</Typography>
+            <TextField placeholder="Нэрээ оруулна уу" />
+          </Stack>
+          <Stack width={"100%"} spacing={"4px"}>
+            <Typography>Имэйл</Typography>
+            <TextField placeholder="Имэйл хаягаа оруулна уу" />
+          </Stack>
+          <Stack width={"100%"} spacing={"4px"}>
+            <Typography>Хаяг</Typography>
+            <TextField placeholder="Та хаягаа оруулна уу" />
+          </Stack>
+          <FormControl
+            sx={{ m: 1, width: "100%", display: "flex", gap: "4px" }}
           >
-            Бүртгүүлэх
-          </Button>
-        </Box>
-      </Box>
-    </Box>
+            <Typography>Нууц үг</Typography>
+            <OutlinedInput
+              placeholder="Нууц үгээ оруулна уу"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              // label="Password"
+            />
+          </FormControl>
+          <FormControl
+            sx={{ m: 1, width: "100%", display: "flex", gap: "4px" }}
+          >
+            <Typography>Нууц үг давтах</Typography>
+            <OutlinedInput
+              placeholder="Нууц үгээ оруулна уу"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              // label="Password"
+            />
+          </FormControl>
+        </Stack>
+        <Stack direction={"row"} spacing={"8px"}>
+          <CheckBoxIcon></CheckBoxIcon>
+          <Typography>Үйлчилгээний нөхцөл зөвшөөрөх</Typography>
+        </Stack>
+        <Button
+          variant="text"
+          sx={{
+            width: "100%",
+            height: 48,
+            background: "#EEEFF2",
+            color: "rgba(28, 32, 36, 0.24)",
+          }}
+        >
+          Бүртгүүлэх
+        </Button>
+      </Stack>
+    </>
   );
-}
+};
