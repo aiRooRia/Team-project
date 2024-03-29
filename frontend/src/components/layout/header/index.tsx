@@ -8,6 +8,10 @@ import userButtonGreen from "./haederAsset/icon (1).svg";
 
 export const Header = () => {
   const router = useRouter();
+  const handlePush = (route: string) => {
+    router.push(route);
+  };
+
   const linkStyles = {
     py: 1,
     px: 2,
@@ -21,10 +25,6 @@ export const Header = () => {
     fontWeight: "700",
     lineHeight: "20px",
     color: "#000000",
-  };
-
-  const handlePush = (route: string) => {
-    router.push(route);
   };
 
   return (
