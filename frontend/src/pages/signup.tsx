@@ -1,10 +1,10 @@
-import SignUpSection from "@/components/signup"
-import Footer from "@/components/layout/footer"
-export default function SignUp(){
-    return(
-        <>
-        <SignUpSection/>
-        <Footer/>
-        </>
-    )
+import Footer from "@/components/layout/footer";
+import { Signup } from "@/components/signup/index";
+export default function SignUp() {
+  return (
+    <>
+      <Signup />
+      <Footer />
+    </>
+  );
 }
