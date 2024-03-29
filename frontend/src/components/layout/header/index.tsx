@@ -34,6 +34,7 @@ export const Header = () => {
         display: "flex",
         alignItems: "center",
         bgcolor: "#ffffff",
+        height: "6vh"
       }}
     >
       <Box
