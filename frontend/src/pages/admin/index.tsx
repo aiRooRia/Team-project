@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <Stack
       width="100%"
-      height="100vh"
+      height="94vh"
       sx={{ flexDirection: "row", position: "relative" }}
     >
       <Stack
@@ -58,7 +58,7 @@ export default function Home() {
 
       <Stack
         width="100%"
-        height="100vh"
+        // height="100vh"
         direction="row"
         justifyContent="center"
         alignItems="center"
@@ -70,7 +70,7 @@ export default function Home() {
       >
         <Stack
           maxWidth="lg"
-          height="100vh"
+          // height="100vh"
           direction="row"
           sx={{ width: "1200px" }}
         >
@@ -78,7 +78,7 @@ export default function Home() {
             direction="column"
             spacing={2}
             width="30%"
-            height="100vh"
+            // height="100vh"
             sx={{ overflow: "auto", backgroundColor: "white", pr: 2 }}
           >
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
