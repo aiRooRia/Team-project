@@ -28,7 +28,19 @@ export const Header = () => {
   };
 
   return (
+
     <>
+
+    <Box
+      sx={{
+        justifyContent: "center",
+        display: "flex",
+        alignItems: "center",
+        bgcolor: "#ffffff",
+        height: "6vh"
+      }}
+    >
+
       <Box
         sx={{
           justifyContent: "center",

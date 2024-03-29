@@ -1,4 +1,3 @@
-
 import Login from "@/components/login/index";
 const Home = () => {
   return (
