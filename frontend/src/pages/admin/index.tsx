@@ -10,7 +10,7 @@ import { MenuItem as BaseMenuItem, menuItemClasses } from "@mui/base/MenuItem";
 import { styled } from "@mui/system";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import CreateFood from "@/components/admin/CreateFood";
+// import CreateFood from "@/components/admin/CreateFood";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -197,7 +197,6 @@ export default function Home() {
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 Breakfast
               </Typography>
-              <CreateFood></CreateFood>
             </Stack>
             <Stack></Stack>
           </Stack>
