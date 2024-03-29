@@ -1,4 +1,13 @@
-import { Box, Stack, Typography, Button, TextField } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Typography,
+  Button,
+  TextField,
+  Select,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
 // import * as React from "react";
@@ -20,6 +29,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Switch from "@mui/material/Switch";
 import { Scale } from "@mui/icons-material";
 // import Typography from '@mui/material/Typography';
 
@@ -37,6 +47,8 @@ export default function Home() {
   const [bgColor, setBgColor] = useState("white");
   const [isCreateFood, setIsCreateFood] = useState(false);
   const [open, setOpen] = React.useState(false);
+
+  const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -105,10 +117,18 @@ export default function Home() {
             direction="column"
             spacing={2}
             width="30%"
-            height="94vh"
-            sx={{ overflow: "auto", backgroundColor: "white", pr: 2 }}
+            height="95vh"
+            sx={{
+              overflow: "auto",
+              backgroundColor: "white",
+              pr: 2,
+              paddingTop: "10px",
+            }}
           >
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "bold", marginTop: "10px" }}
+            >
               Food menu
             </Typography>
             <Stack direction="column" spacing={2}>
@@ -245,6 +265,7 @@ export default function Home() {
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
                 open={open}
+                sx={{ borderRadius: "50px" }}
               >
                 <DialogTitle
                   sx={{
@@ -270,36 +291,103 @@ export default function Home() {
                 >
                   <CloseIcon />
                 </IconButton>
-                <DialogContent dividers sx={{ width: "500px" }}>
+                <DialogContent dividers sx={{ width: "450px" }}>
                   <Stack width={"100%"} spacing={"4px"}>
                     <Typography>Хоолны нэр</Typography>
-                    <TextField placeholder="Имэйл хаягаа оруулна уу" />
+                    <TextField placeholder="Food name" />
                   </Stack>
                   <Stack width={"100%"} spacing={"4px"}>
                     <Typography>Хоолны ангилал</Typography>
-                    <TextField placeholder="Имэйл хаягаа оруулна уу" />
+                    {/* <TextField placeholder="Food category" /> */}
+                    <FormControl fullWidth>
+                      {/* <InputLabel style={{ color: "#B0B8C4" }}>
+                        Category
+                      </InputLabel> */}
+                      {/* <Typography>Category</Typography> */}
+                      <Select
+                        // labelId="demo-simple-select-label"
+                        // id="demo-simple-select"
+                        // value={age}
+                        // label="Category"
+                        // onChange={handleChange}
+                        defaultValue="Category1"
+                       
+                      >
+                        <Menu slots={{ listbox: ListboxCategory }}>
+                          <MenuItem
+                            sx={{ fontFamily: "Roboto" }}
+                            value="Category1"
+                            selected
+                          >
+                            Category1
+                          </MenuItem>
+                          <MenuItem value={20}>Category2</MenuItem>
+                        </Menu>
+                      </Select>
+                    </FormControl>
                   </Stack>
                   <Stack width={"100%"} spacing={"4px"}>
                     <Typography>Хоолны орц</Typography>
-                    <TextField placeholder="Имэйл хаягаа оруулна уу" />
+                    <TextField placeholder="Food ingredients" />
                   </Stack>
                   <Stack width={"100%"} spacing={"4px"}>
                     <Typography>Хоолны үнэ</Typography>
-                    <TextField placeholder="Имэйл хаягаа оруулна уу" />
+                    <TextField placeholder="Food price" />
                   </Stack>
                   <Stack width={"100%"} spacing={"4px"}>
-                    <Typography>Хямдралтай эсэх</Typography>
-                    <TextField placeholder="Имэйл хаягаа оруулна уу" />
+                    <Stack direction="row" alignItems="center">
+                      <Switch {...label} />
+                      <Typography>Хямдралтай эсэх</Typography>
+                    </Stack>
+
+                    <TextField placeholder="Sale" />
                   </Stack>
                   <Stack width={"100%"} spacing={"4px"}>
                     <Typography>Хоолны зураг</Typography>
-                    <TextField placeholder="Имэйл хаягаа оруулна уу" />
+                    <TextField placeholder="Food image" />
                   </Stack>
                 </DialogContent>
                 <DialogActions>
-                  <Button autoFocus onClick={handleClose}>
-                    Save changes
-                  </Button>
+                  <Stack
+                    autoFocus
+                    onClick={handleClose}
+                    alignItems="center"
+                    sx={{
+                      ":hover": {
+                        cursor: "pointer",
+                      },
+                      ":active": {
+                        transform: "scale(0.97)",
+                      },
+                      borderRadius: 2,
+                      paddingX: 1.5,
+                      paddingY: 0.5,
+                      backgroundColor: "white",
+                      color: "#393939",
+                    }}
+                  >
+                    <Typography variant="subtitle1">Clear</Typography>
+                  </Stack>
+                  <Stack
+                    autoFocus
+                    onClick={handleClose}
+                    alignItems="center"
+                    sx={{
+                      ":hover": {
+                        cursor: "pointer",
+                      },
+                      ":active": {
+                        transform: "scale(0.97)",
+                      },
+                      borderRadius: 2,
+                      paddingX: 1.5,
+                      paddingY: 0.5,
+                      backgroundColor: "#393939",
+                      color: "white",
+                    }}
+                  >
+                    <Typography variant="subtitle1">Continue</Typography>
+                  </Stack>
                 </DialogActions>
               </BootstrapDialog>
             </Stack>
@@ -340,6 +428,25 @@ const Listbox = styled("ul")(
   box-shadow: 0px 4px 6px ${
     theme.palette.mode === "dark" ? "rgba(0,0,0, 0.50)" : "rgba(0,0,0, 0.05)"
   };
+  z-index: 1;
+  `
+);
+const ListboxCategory = styled("ul")(
+  ({ theme }) => `
+
+
+  padding: 6px;
+  min-width: 200px;
+  font-family: "Roboto"
+  overflow: auto;
+  outline: 0px;
+  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
+
+  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
+  typography: {
+    fontFamily: 'Roboto',
+ },
+
   z-index: 1;
   `
 );
