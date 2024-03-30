@@ -11,14 +11,11 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import * as React from "react";
-import { useRouter } from "next/router";
 import { FormikProvider, useFormik } from "formik";
-import { loginSchema } from "./validationSchema";
+import { loginSchema, FromValues } from "./validationSchema";
 import { useState, useEffect } from "react";
 
 const Login = () => {
-  const { push } = useRouter();
-  const [warningMessage, setWarningMessage] = useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -27,8 +24,7 @@ const Login = () => {
     event.preventDefault();
   };
 
-  // Define formikLogin outside the return statement
-  const formikLogin = useFormik({
+  const formikLogin = useFormik<FromValues>({
     initialValues: {
       email: "",
       password: "",
@@ -36,33 +32,9 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       console.log(values);
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ENDPOINT}/users/login`,
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json, text/plain, */*",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values),
-          }
-        );
-        const response = await res.json();
-        if (response.success) {
-          localStorage.setItem("id", response.user.id);
-          push("/dashboard");
-        } else if (response.message === "failed") {
-          setWarningMessage("Password does not match.");
-        } else if (response.message === "nodata") {
-          setWarningMessage("Unregistered email.");
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      console.log(values);
     },
   });
-  useEffect(() => {}, [warningMessage]);
 
   return (
     <>
@@ -94,6 +66,11 @@ const Login = () => {
                   value={formikLogin.values.email}
                   name="email"
                 />
+                {formikLogin.errors.email && formikLogin.touched.email ? (
+                  <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+                    {formikLogin.errors.email}
+                  </Typography>
+                ) : null}
               </Stack>
               <Stack
                 width={"100%"}
@@ -124,6 +101,12 @@ const Login = () => {
                     }
                     name="password"
                   />
+                  {formikLogin.errors.password &&
+                  formikLogin.touched.password ? (
+                    <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+                      {formikLogin.errors.password}
+                    </Typography>
+                  ) : null}
                 </FormControl>
                 <Button sx={{ color: "black" }} size="small">
                   Нууц үг сэргээх
@@ -138,18 +121,13 @@ const Login = () => {
                 <Button
                   type="submit"
                   disabled={
-                    formikLogin.values.email === "" ||
-                    formikLogin.values.password === ""
+                    !formikLogin.values.email || !formikLogin.values.password
                   }
                   variant="text"
                   sx={{
                     width: "100%",
                     height: 48,
-                    background:
-                      formikLogin.values.email === "" ||
-                      formikLogin.values.password === ""
-                        ? "#EEEFF2"
-                        : "#18BA51",
+                    background: "#18BA51",
                     color: "#EEEFF2",
                   }}
                 >

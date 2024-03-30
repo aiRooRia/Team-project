@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-interface FromValues {
+export interface FromValues {
   email: string | null;
   password: string | null;
 }
@@ -8,29 +8,10 @@ interface FromValues {
 export const loginSchema = Yup.object().shape({
   email: Yup.string()
     .nullable()
-    .email("Invalid email")
-    .required("Email is required *"),
-  password: Yup.string().nullable().required("Password is required *"),
-});
-
-export const signUpSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required *"),
-  email: Yup.string()
-    .nullable()
-    .email("Invalid email")
-    .required("Email is required *"),
+    .email("И-мэйл хаяг бичнэ уу")
+    .required("И-мэйл хаягаа оруулна уу *"),
   password: Yup.string()
     .nullable()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required *"),
-  rePassword: Yup.string()
-    .nullable()
-    .oneOf([Yup.ref("password"), null], "Passwords must match"),
-});
-
-export const amountSchema = Yup.object().shape({
-  amount: Yup.number()
-    .nullable()
-    .typeError("Amount must be a number")
-    .required("Amount is required *"),
+    .min(8, "Нууц үг заавал 8 оронтой байх ёстой")
+    .required("Нууц үгээ оруулна уу *"),
 });

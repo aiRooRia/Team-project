@@ -40,13 +40,42 @@ export const Header = () => {
       >
         <Box
           sx={{
-            justifyContent: "center",
+            width: "1258px",
+            justifyContent: "space-between",
+            py: 1,
+            px: 3,
             display: "flex",
             alignItems: "center",
             bgcolor: "#ffffff",
             height: "6vh",
           }}
         >
+          <Box sx={{ gap: 1, display: "flex", alignItems: "center" }}>
+            <Image alt="Header logo" src={HeaderLogo} width={41} height={41} />
+            <Box sx={{ gap: 1, display: "flex" }}>
+              <Box sx={{ py: 1, px: 2 }}>
+                <Button onClick={() => handlePush("/")} sx={linkStyles}>
+                  НҮҮР
+                </Button>
+              </Box>
+              <Box sx={{ py: 1, px: 2 }}>
+                <Button
+                  onClick={() => handlePush("/layout/menu")}
+                  sx={linkStyles}
+                >
+                  ХООЛНЫ ЦЭС
+                </Button>
+              </Box>
+              <Box sx={{ py: 1, px: 2 }}>
+                <Button
+                  onClick={() => handlePush("/layout/delivery-zone")}
+                  sx={linkStyles}
+                >
+                  ХҮРГЭЛТИЙН БҮС
+                </Button>
+              </Box>
+            </Box>
+          </Box>
           <Box
             sx={{
               width: "1258px",
