@@ -27,6 +27,7 @@ export const Signup = () => {
       name: "",
       password: "",
       email: "",
+      location: "",
       rePassword: "",
     },
     validationSchema: signUpSchema,
@@ -100,17 +101,30 @@ export const Signup = () => {
               </Stack>
               <Stack width={"100%"} spacing={"4px"}>
                 <Typography>Имэйл</Typography>
-                <TextField placeholder="Имэйл хаягаа оруулна уу" />
+                <TextField
+                  name="email"
+                  onChange={formikSignUp.handleChange}
+                  value={formikSignUp.values.email}
+                  placeholder="Имэйл хаягаа оруулна уу"
+                />
               </Stack>
               <Stack width={"100%"} spacing={"4px"}>
                 <Typography>Хаяг</Typography>
-                <TextField placeholder="Та хаягаа оруулна уу" />
+                <TextField
+                  name="location"
+                  onChange={formikSignUp.handleChange}
+                  value={formikSignUp.values.location}
+                  placeholder="Та хаягаа оруулна уу"
+                />
               </Stack>
               <FormControl
                 sx={{ m: 1, width: "100%", display: "flex", gap: "4px" }}
               >
                 <Typography>Нууц үг</Typography>
                 <OutlinedInput
+                  name="password"
+                  onChange={formikSignUp.handleChange}
+                  value={formikSignUp.values.password}
                   placeholder="Нууц үгээ оруулна уу"
                   type={showPassword ? "text" : "password"}
                   endAdornment={
@@ -133,6 +147,9 @@ export const Signup = () => {
               >
                 <Typography>Нууц үг давтах</Typography>
                 <OutlinedInput
+                  name="rePassword"
+                  onChange={formikSignUp.handleChange}
+                  value={formikSignUp.values.rePassword}
                   placeholder="Нууц үгээ оруулна уу"
                   type={showPassword ? "text" : "password"}
                   endAdornment={
@@ -158,12 +175,24 @@ export const Signup = () => {
           <Typography>Үйлчилгээний нөхцөл зөвшөөрөх</Typography>
         </Stack>
         <Button
+          disabled={
+            formikSignUp.values.email === "" ||
+            !formikSignUp.values.location || // Assuming location is also required
+            formikSignUp.values.password === "" ||
+            formikSignUp.values.rePassword === "" // Assuming rePassword is also required
+          }
           variant="text"
           sx={{
             width: "100%",
             height: 48,
-            background: "#EEEFF2",
-            color: "rgba(28, 32, 36, 0.24)",
+            background:
+              formikSignUp.values.email === "" ||
+              !formikSignUp.values.location ||
+              formikSignUp.values.password === "" ||
+              formikSignUp.values.rePassword === ""
+                ? "#EEEFF2"
+                : "#18BA51",
+            color: "black",
           }}
         >
           Бүртгүүлэх
