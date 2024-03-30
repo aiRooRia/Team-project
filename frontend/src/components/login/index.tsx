@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 import { FormikProvider, useFormik } from "formik";
 import { loginSchema } from "./validationSchema";
 import { useState, useEffect } from "react";
-import { string } from "yup";
 
 const Login = () => {
   const { push } = useRouter();

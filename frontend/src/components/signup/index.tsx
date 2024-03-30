@@ -15,7 +15,7 @@ import { FormikProvider, useFormik } from "formik";
 import { signUpSchema } from "@/components/signup/validationSchema";
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../utils/context";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import * as React from "react";
 
 export const Signup = () => {
@@ -32,33 +32,7 @@ export const Signup = () => {
     },
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
-      // console.log(values);
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/users`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        });
-        const response = await res.json();
-
-        if (response.message) {
-          setWarningMessage(response.message);
-        } else if (response.success) {
-          setSignUpUserInfo({
-            ...signUpUserInfo,
-            name: values.name,
-            email: values.email,
-            password: values.password,
-          });
-          // console.log(signUpUserInfo);
-          push("/loading");
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      console.log(values);
     },
   });
   useEffect(() => {}, [warningMessage]);
@@ -103,6 +77,7 @@ export const Signup = () => {
                 <Typography>Имэйл</Typography>
                 <TextField
                   name="email"
+                  type="email"
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.email}
                   placeholder="Имэйл хаягаа оруулна уу"
@@ -112,6 +87,7 @@ export const Signup = () => {
                 <Typography>Хаяг</Typography>
                 <TextField
                   name="location"
+                  type="location"
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.location}
                   placeholder="Та хаягаа оруулна уу"
@@ -123,6 +99,7 @@ export const Signup = () => {
                 <Typography>Нууц үг</Typography>
                 <OutlinedInput
                   name="password"
+                  typeof="location"
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.password}
                   placeholder="Нууц үгээ оруулна уу"
@@ -139,7 +116,6 @@ export const Signup = () => {
                       </IconButton>
                     </InputAdornment>
                   }
-                  // label="Password"
                 />
               </FormControl>
               <FormControl
@@ -148,6 +124,7 @@ export const Signup = () => {
                 <Typography>Нууц үг давтах</Typography>
                 <OutlinedInput
                   name="rePassword"
+                  typeof="location"
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.rePassword}
                   placeholder="Нууц үгээ оруулна уу"
@@ -177,9 +154,9 @@ export const Signup = () => {
         <Button
           disabled={
             formikSignUp.values.email === "" ||
-            !formikSignUp.values.location || // Assuming location is also required
+            !formikSignUp.values.location ||
             formikSignUp.values.password === "" ||
-            formikSignUp.values.rePassword === "" // Assuming rePassword is also required
+            formikSignUp.values.rePassword === ""
           }
           variant="text"
           sx={{
