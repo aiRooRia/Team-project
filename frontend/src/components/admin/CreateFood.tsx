@@ -1,28 +1,15 @@
 import {
-  Box,
   Stack,
   Typography,
-  Button,
   TextField,
   Select,
   FormControl,
-  InputLabel,
-  MenuList,
+
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import AddIcon from "@mui/icons-material/Add";
-// import * as React from "react";
-import { useState } from "react";
-import { Dropdown } from "@mui/base/Dropdown";
+
 import { Menu } from "@mui/base/Menu";
-import { MenuButton as BaseMenuButton } from "@mui/base/MenuButton";
 import { MenuItem as BaseMenuItem, menuItemClasses } from "@mui/base/MenuItem";
-// import { styled } from "@mui/system";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-// import CreateFood from "@/components/admin/CreateFood";
 import * as React from "react";
-// import Button from '@mui/material/Button';
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -31,8 +18,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Switch from "@mui/material/Switch";
-import { Scale } from "@mui/icons-material";
-import FoodCard from "@/components/menu/FoodCard";
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -88,7 +74,7 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
             sx={{
               "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                 {
-                  borderColor: "green", // Change border color to red when focused
+                  borderColor: "green",
                 },
             }}
             placeholder="Food name"
@@ -97,10 +83,8 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
         <Stack
           width={"100%"}
           spacing={"4px"}
-          // onClick={() => console.log("hellooo")}
         >
           <Typography>Хоолны ангилал</Typography>
-          {/* <TextField placeholder="Food category" /> */}
           <FormControl fullWidth>
             <Select
               defaultValue="Category1"
@@ -112,12 +96,7 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
               }}
             >
               <Menu slots={{ listbox: ListboxCategory }}>
-                {/* <MenuList sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "green", // Change border color to red when focused
-                },
-            }} > */}
+                {/* <MenuList> */}
                 <MenuItem value="Category1" selected>
                   <Typography variant="body1">Category1</Typography>
                 </MenuItem>

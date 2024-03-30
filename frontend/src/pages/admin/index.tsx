@@ -275,7 +275,7 @@ export default function Home() {
             <Stack
               direction="row"
               alignItems="start"
-              sx={{ ml: 3, mt: 4, height: "80vh", overflow: "" }}
+              sx={{ pl: 3, pt: 4, height: "80vh", overflow: "auto" }}
             >
               <Grid
                 container
@@ -292,10 +292,16 @@ export default function Home() {
                 <FoodCard></FoodCard>
                 <FoodCard></FoodCard>
                 <FoodCard></FoodCard>
-
-                {/* <FoodCard></FoodCard>
                 <FoodCard></FoodCard>
-                <FoodCard></FoodCard> */}
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
               </Grid>
             </Stack>
           </Stack>
