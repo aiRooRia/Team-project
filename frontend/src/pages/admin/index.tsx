@@ -31,6 +31,11 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Switch from "@mui/material/Switch";
 import { Scale } from "@mui/icons-material";
+import { CreateFood } from "@/components/admin/CreateFood";
+import FoodCard from "@/components/menu/FoodCard";
+import Grid from "@mui/material/Grid";
+import { CreateCategory } from "@/components/admin/CreateNewCategory";
+import { AdminContext } from "@/components/utils/adminContext";
 // import Typography from '@mui/material/Typography';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -46,15 +51,21 @@ export default function Home() {
   const [showEditDeleteBox, setShowEditDeleteBox] = useState(false);
   const [bgColor, setBgColor] = useState("white");
   const [isCreateFood, setIsCreateFood] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [openCreateFood, setOpenCreateFood] = React.useState(false);
+  const [openCreateCategory, setOpenCreateCategory] = React.useState(false);
+  
 
-  const label = { inputProps: { "aria-label": "Switch demo" } };
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpenCreateFood = () => {
+    setOpenCreateFood(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseCreateFood: () => void = () => {
+    setOpenCreateFood(false);
+  };
+  const handleClickOpenCreateCategory = () => {
+    setOpenCreateCategory(true);
+  };
+  const handleCloseCreateCategory: () => void = () => {
+    setOpenCreateCategory(false);
   };
 
   const showDropdown = (category: string) => {
@@ -201,6 +212,7 @@ export default function Home() {
                 </Dropdown>
               </Stack>
               <Stack
+               onClick={handleClickOpenCreateCategory}
                 direction="row"
                 alignItems="center"
                 spacing={1}
@@ -226,6 +238,7 @@ export default function Home() {
                   Create new category
                 </Typography>
               </Stack>
+              <CreateCategory handleClose={handleCloseCreateCategory} open={openCreateCategory}></CreateCategory>
             </Stack>
           </Stack>
           <Stack width="70%">
@@ -233,13 +246,13 @@ export default function Home() {
               direction="row"
               justifyContent="space-between"
               alignItems="center"
-              sx={{ ml: 3, mt: 4 }}
+              sx={{ ml: 3, mt: 4, height: "6vh" }}
             >
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 Breakfast
               </Typography>
               <Stack
-                onClick={handleClickOpen}
+                onClick={handleClickOpenCreateFood}
                 alignItems="center"
                 sx={{
                   cursor: "default",
@@ -261,137 +274,30 @@ export default function Home() {
               >
                 <Typography variant="subtitle1">Add new food</Typography>
               </Stack>
-              <BootstrapDialog
-                onClose={handleClose}
-                aria-labelledby="customized-dialog-title"
-                open={open}
-                sx={{ borderRadius: "50px" }}
-              >
-                <DialogTitle
-                  sx={{
-                    m: 0,
-                    p: 2,
-                    width: "95%",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                  id="customized-dialog-title"
-                >
-                  Create food
-                </DialogTitle>
-                <IconButton
-                  aria-label="close"
-                  onClick={handleClose}
-                  sx={{
-                    position: "absolute",
-                    left: 0,
-                    top: 8,
-                    color: (theme) => theme.palette.grey[500],
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <DialogContent dividers sx={{ width: "450px" }}>
-                  <Stack width={"100%"} spacing={"4px"}>
-                    <Typography>Хоолны нэр</Typography>
-                    <TextField placeholder="Food name" />
-                  </Stack>
-                  <Stack width={"100%"} spacing={"4px"}>
-                    <Typography>Хоолны ангилал</Typography>
-                    {/* <TextField placeholder="Food category" /> */}
-                    <FormControl fullWidth>
-                      {/* <InputLabel style={{ color: "#B0B8C4" }}>
-                        Category
-                      </InputLabel> */}
-                      {/* <Typography>Category</Typography> */}
-                      <Select
-                        // labelId="demo-simple-select-label"
-                        // id="demo-simple-select"
-                        // value={age}
-                        // label="Category"
-                        // onChange={handleChange}
-                        defaultValue="Category1"
-                       
-                      >
-                        <Menu slots={{ listbox: ListboxCategory }}>
-                          <MenuItem
-                            sx={{ fontFamily: "Roboto" }}
-                            value="Category1"
-                            selected
-                          >
-                            Category1
-                          </MenuItem>
-                          <MenuItem value={20}>Category2</MenuItem>
-                        </Menu>
-                      </Select>
-                    </FormControl>
-                  </Stack>
-                  <Stack width={"100%"} spacing={"4px"}>
-                    <Typography>Хоолны орц</Typography>
-                    <TextField placeholder="Food ingredients" />
-                  </Stack>
-                  <Stack width={"100%"} spacing={"4px"}>
-                    <Typography>Хоолны үнэ</Typography>
-                    <TextField placeholder="Food price" />
-                  </Stack>
-                  <Stack width={"100%"} spacing={"4px"}>
-                    <Stack direction="row" alignItems="center">
-                      <Switch {...label} />
-                      <Typography>Хямдралтай эсэх</Typography>
-                    </Stack>
-
-                    <TextField placeholder="Sale" />
-                  </Stack>
-                  <Stack width={"100%"} spacing={"4px"}>
-                    <Typography>Хоолны зураг</Typography>
-                    <TextField placeholder="Food image" />
-                  </Stack>
-                </DialogContent>
-                <DialogActions>
-                  <Stack
-                    autoFocus
-                    onClick={handleClose}
-                    alignItems="center"
-                    sx={{
-                      ":hover": {
-                        cursor: "pointer",
-                      },
-                      ":active": {
-                        transform: "scale(0.97)",
-                      },
-                      borderRadius: 2,
-                      paddingX: 1.5,
-                      paddingY: 0.5,
-                      backgroundColor: "white",
-                      color: "#393939",
-                    }}
-                  >
-                    <Typography variant="subtitle1">Clear</Typography>
-                  </Stack>
-                  <Stack
-                    autoFocus
-                    onClick={handleClose}
-                    alignItems="center"
-                    sx={{
-                      ":hover": {
-                        cursor: "pointer",
-                      },
-                      ":active": {
-                        transform: "scale(0.97)",
-                      },
-                      borderRadius: 2,
-                      paddingX: 1.5,
-                      paddingY: 0.5,
-                      backgroundColor: "#393939",
-                      color: "white",
-                    }}
-                  >
-                    <Typography variant="subtitle1">Continue</Typography>
-                  </Stack>
-                </DialogActions>
-              </BootstrapDialog>
+              <CreateFood handleClose={handleCloseCreateFood} open={openCreateFood}></CreateFood>
             </Stack>
-            <Stack></Stack>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ ml: 3, mt: 4, height: "80vh", overflow: "" }}
+            >
+              <Grid
+                justifyContent="space-between"
+                alignItems="flex-start"
+                container
+                rowSpacing={1}
+                columnSpacing={1}
+                height="80vh"
+                overflow="auto"
+              >
+                <FoodCard></FoodCard>
+
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+                <FoodCard></FoodCard>
+              </Grid>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
@@ -428,25 +334,6 @@ const Listbox = styled("ul")(
   box-shadow: 0px 4px 6px ${
     theme.palette.mode === "dark" ? "rgba(0,0,0, 0.50)" : "rgba(0,0,0, 0.05)"
   };
-  z-index: 1;
-  `
-);
-const ListboxCategory = styled("ul")(
-  ({ theme }) => `
-
-
-  padding: 6px;
-  min-width: 200px;
-  font-family: "Roboto"
-  overflow: auto;
-  outline: 0px;
-  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-
-  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-  typography: {
-    fontFamily: 'Roboto',
- },
-
   z-index: 1;
   `
 );
