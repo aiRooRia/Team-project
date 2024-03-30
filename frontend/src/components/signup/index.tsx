@@ -12,10 +12,8 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { FormikProvider, useFormik } from "formik";
-import { signUpSchema } from "@/components/signup/validationSchema";
-import { useState, useContext, useEffect } from "react";
-import { UserContext } from "../utils/context";
-import { useRouter } from "next/router";
+import { signUpSchema, FromValues } from "@/components/signup/validationSchema";
+import { useEffect } from "react";
 import * as React from "react";
 
 export const Signup: React.FC = () => {
@@ -36,7 +34,6 @@ export const Signup: React.FC = () => {
     },
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
-      console.log(values);
       console.log(values);
     },
   });
@@ -93,7 +90,6 @@ export const Signup: React.FC = () => {
                 <TextField
                   name="email"
                   type="text"
-                  type="email"
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.email}
                   placeholder="Имэйл хаягаа оруулна уу"
@@ -109,7 +105,6 @@ export const Signup: React.FC = () => {
                 <TextField
                   name="location"
                   type="text"
-                  type="location"
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.location}
                   placeholder="Та хаягаа оруулна уу"
@@ -128,7 +123,6 @@ export const Signup: React.FC = () => {
                 <OutlinedInput
                   name="password"
                   type="password"
-                  typeof="location"
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.password}
                   placeholder="Нууц үгээ оруулна уу"
@@ -151,7 +145,6 @@ export const Signup: React.FC = () => {
                     {formikSignUp.errors.password}
                   </Typography>
                 ) : null}
-                />
               </FormControl>
               <FormControl
                 sx={{ m: 1, width: "100%", display: "flex", gap: "4px" }}
@@ -159,7 +152,7 @@ export const Signup: React.FC = () => {
                 <Typography>Нууц үг давтах</Typography>
                 <OutlinedInput
                   name="rePassword"
-                  typeof="location"
+                  type="password"
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.rePassword}
                   placeholder="Нууц үгээ оруулна уу"
@@ -184,35 +177,36 @@ export const Signup: React.FC = () => {
                 ) : null}
               </FormControl>
             </Stack>
+            <Stack direction={"row"} alignItems={"center"} spacing={"8px"}>
+              <Checkbox
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+                {...label}
+              />
+              <Typography>Үйлчилгээний нөхцөл зөвшөөрөх</Typography>
+            </Stack>
+            <Button
+              type="submit"
+              variant="text"
+              disabled={
+                !formikSignUp.values.name ||
+                !formikSignUp.values.email ||
+                !formikSignUp.values.location ||
+                !formikSignUp.values.password ||
+                !formikSignUp.values.rePassword ||
+                !isChecked
+              }
+              sx={{
+                width: "100%",
+                height: 48,
+                background: "#18BA51",
+                color: "black",
+              }}
+            >
+              Бүртгүүлэх
+            </Button>
           </form>
         </FormikProvider>
-        <Stack direction={"row"} spacing={"8px"}>
-          <CheckBoxIcon></CheckBoxIcon>
-          <Typography>Үйлчилгээний нөхцөл зөвшөөрөх</Typography>
-        </Stack>
-        <Button
-          disabled={
-            formikSignUp.values.email === "" ||
-            !formikSignUp.values.location ||
-            formikSignUp.values.password === "" ||
-            formikSignUp.values.rePassword === ""
-          }
-          variant="text"
-          sx={{
-            width: "100%",
-            height: 48,
-            background:
-              formikSignUp.values.email === "" ||
-              !formikSignUp.values.location ||
-              formikSignUp.values.password === "" ||
-              formikSignUp.values.rePassword === ""
-                ? "#EEEFF2"
-                : "#18BA51",
-            color: "black",
-          }}
-        >
-          Бүртгүүлэх
-        </Button>
       </Stack>
     </>
   );
