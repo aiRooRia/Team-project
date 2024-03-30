@@ -1,4 +1,4 @@
-import { Stack, Typography, TextField } from "@mui/material";
+import { Stack, Typography, TextField, Button } from "@mui/material";
 import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
@@ -30,6 +30,7 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
     React.useContext(AdminContext);
   const [isClearCategoryName, setIsClearCategoryName] =
     useState<boolean>(false);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(isClearCategoryName);
 
@@ -39,8 +40,8 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
     setNewCategoryInfo({ name: event.target.value });
   };
   const handleClear = () => {
-     setNewCategoryInfo({ name: "" }); // Clear the input field by setting the name to an empty string
-     setIsClearCategoryName(true);
+    setNewCategoryInfo({ name: "" }); // Clear the input field by setting the name to an empty string
+    setIsClearCategoryName(true);
   };
   const label = { inputProps: { "aria-label": "Switch demo" } };
   console.log(newCategoryInfo);
@@ -69,7 +70,7 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
         onClick={handleClose}
         sx={{
           position: "absolute",
-          left: 0,
+          left: 8,
           top: 8,
           color: (theme) => theme.palette.grey[500],
         }}
@@ -107,10 +108,9 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
         >
           <Typography variant="subtitle1">Clear</Typography>
         </Stack>
-        <Stack
-          autoFocus
+        <Button
           onClick={handleClose}
-          alignItems="center"
+          disabled={newCategoryInfo.name === ""}
           sx={{
             ":hover": {
               cursor: "pointer",
@@ -125,8 +125,10 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
             color: "white",
           }}
         >
-          <Typography variant="subtitle1">Continue</Typography>
-        </Stack>
+          <Typography variant="body1" sx={{ textTransform: "capitalize" }}>
+            continue
+          </Typography>
+        </Button>
       </DialogActions>
     </BootstrapDialog>
   );

@@ -30,7 +30,9 @@ function FoodCard() {
         display: "flex",
         flexDirection: "column",
         width: "250px",
-        backgroundColor: null,
+        backgroundColor: "transparent",
+        height: "270px",
+        boxShadow: 0,
       }}
     >
       <Box
@@ -49,21 +51,23 @@ function FoodCard() {
           loading="lazy"
           sx={{
             width: "250px",
-            height: "150px",
+            height: "170px",
             borderRadius: "10px",
             backgroundColor: isHovered ? "black" : "transparent",
-            opacity: isHovered ? 0.3 : 1,
+            opacity: isHovered ? 0.5 : 1,
             transition: "background-color 0.3s, opacity 0.3s",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
           }}
         />
         {isVisible && (
-          <Button
+          <Box
             sx={{
               position: "absolute",
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: "166px",
+              width: "50%",
+              height: "30px",
               borderRadius: "20px",
               transition: "background-color 0.5s, opacity 0.3s",
 
@@ -71,10 +75,29 @@ function FoodCard() {
               border: "none",
               cursor: "pointer",
               zIndex: 1,
+              color: "black",
+              backgroundColor: "white",
+              ":hover": {
+                cursor: "pointer",
+              },
+              ":active": {
+                cursor: "grabbing",
+                scale: ".99",
+              },
             }}
           >
-            Edit
-          </Button>
+            <Typography
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              Edit
+            </Typography>
+          </Box>
         )}
       </Box>
       <CardContent

@@ -7,6 +7,7 @@ import {
   Select,
   FormControl,
   InputLabel,
+  MenuList,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
@@ -47,7 +48,7 @@ interface CreateFoodProps {
   open: boolean;
 }
 
-export const CreateFood = ({ handleClose, open }:CreateFoodProps) => {
+export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
   const label = { inputProps: { "aria-label": "Switch demo" } };
   return (
     <BootstrapDialog
@@ -83,40 +84,70 @@ export const CreateFood = ({ handleClose, open }:CreateFoodProps) => {
       <DialogContent dividers sx={{ width: "450px" }}>
         <Stack width={"100%"} spacing={"4px"}>
           <Typography>Хоолны нэр</Typography>
-          <TextField placeholder="Food name" />
+          <TextField
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "green", // Change border color to red when focused
+                },
+            }}
+            placeholder="Food name"
+          />
         </Stack>
-        <Stack width={"100%"} spacing={"4px"}>
+        <Stack
+          width={"100%"}
+          spacing={"4px"}
+          // onClick={() => console.log("hellooo")}
+        >
           <Typography>Хоолны ангилал</Typography>
           {/* <TextField placeholder="Food category" /> */}
           <FormControl fullWidth>
-            {/* <InputLabel style={{ color: "#B0B8C4" }}>
-                        Category
-                      </InputLabel> */}
-            {/* <Typography>Category</Typography> */}
             <Select
-              // labelId="demo-simple-select-label"
-              // id="demo-simple-select"
-              // value={age}
-              // label="Category"
-              // onChange={handleChange}
               defaultValue="Category1"
+              sx={{
+                "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    borderColor: "green", // Change border color to red when focused
+                  },
+              }}
             >
               <Menu slots={{ listbox: ListboxCategory }}>
-                <MenuItem
-                  sx={{ fontFamily: "Roboto" }}
-                  value="Category1"
-                  selected
-                >
-                  Category1
+                {/* <MenuList sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "green", // Change border color to red when focused
+                },
+            }} > */}
+                <MenuItem value="Category1" selected>
+                  <Typography variant="body1">Category1</Typography>
                 </MenuItem>
-                <MenuItem value={20}>Category2</MenuItem>
+                <MenuItem value="Category2    ">
+                  <Typography variant="body1">Category1</Typography>{" "}
+                </MenuItem>
+                {/* </MenuList> */}
               </Menu>
             </Select>
           </FormControl>
         </Stack>
         <Stack width={"100%"} spacing={"4px"}>
           <Typography>Хоолны орц</Typography>
-          <TextField placeholder="Food ingredients" />
+          <TextField
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "green", // Change border color to red when focused
+                },
+              // '& .MuiOutlinedInput-root': {
+              //   '& fieldset': {
+              //     borderColor: 'red', // Ensure border color is red when focused
+              //   },
+              //   '&:hover fieldset': {
+              //     borderColor: 'red', // Change border color to red on hover
+              //   },
+              // },
+            }}
+            placeholder="Food ingredients"
+          />
         </Stack>
         <Stack width={"100%"} spacing={"4px"}>
           <Typography>Хоолны үнэ</Typography>
