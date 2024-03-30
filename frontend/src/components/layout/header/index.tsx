@@ -28,22 +28,14 @@ export const Header = () => {
   };
 
   return (
-    <Box
-      sx={{
-        justifyContent: "center",
-        display: "flex",
-        alignItems: "center",
-        bgcolor: "#ffffff",
-        height: "6vh"
-      }}
-    >
+    <>
       <Box
         sx={{
-          width: "1258px",
-          justifyContent: "space-between",
-          py: 1,
-          px: 3,
+          justifyContent: "center",
           display: "flex",
+          alignItems: "center",
+          bgcolor: "#ffffff",
+          height: "6vh",
         }}
       >
         <Box
@@ -144,6 +136,6 @@ export const Header = () => {
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
