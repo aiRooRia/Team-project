@@ -10,8 +10,7 @@ interface SignUpUserInfo {
   name: string;
   email: string;
   password: string;
-  currencyType: string;
-  amount: number;
+  location: string;
 }
 interface ContextProps {
   isLoading: boolean;
@@ -24,8 +23,7 @@ const initialUserInfo: SignUpUserInfo = {
   name: "",
   email: "",
   password: "",
-  currencyType: "MNT",
-  amount: 0,
+  location: "",
 };
 
 const initialContextState: ContextProps = {
