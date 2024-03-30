@@ -31,6 +31,7 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       console.log(values);
+      console.log(values);
     },
   });
 
