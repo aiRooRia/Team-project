@@ -122,11 +122,11 @@ export const Header = () => {
                   }}
                 />
                 <Box sx={{ display: "flex" }}>
-                  <Button sx={{ gap: 1, py: 1, px: 2, ...headerTExtStyle }}>
+                  <Button sx={{ gap: 1, py: 1, px: 2, ...headerTextStyle }}>
                     <ShoppingBasket sx={{ width: 24, height: 24 }} />
                     Сагс
                   </Button>
-                  <Button sx={{ gap: 1, py: 1, px: 2, ...headerTExtStyle }}>
+                  <Button sx={{ gap: 1, py: 1, px: 2, ...headerTextStyle }}>
                     <PersonOutline sx={{ width: 24, height: 24 }} />
                     Нэвтрэх
                   </Button>
