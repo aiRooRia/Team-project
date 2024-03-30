@@ -11,14 +11,10 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import * as React from "react";
-import { useRouter } from "next/router";
 import { FormikProvider, useFormik } from "formik";
-import { loginSchema } from "./validationSchema";
-import { useState, useEffect } from "react";
+import { loginSchema, FromValues } from "./validationSchema";
 
 const Login = () => {
-  const { push } = useRouter();
-  const [warningMessage, setWarningMessage] = useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -26,21 +22,17 @@ const Login = () => {
   ) => {
     event.preventDefault();
   };
-  interface test {
-    email: string;
-    password: string;
-  }
-  const formikLogin = useFormik<test>({
+
+  const formikLogin = useFormik<FromValues>({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
     },
   });
-  useEffect(() => {}, [warningMessage]);
 
   return (
     <>
@@ -71,8 +63,12 @@ const Login = () => {
                   onChange={formikLogin.handleChange}
                   value={formikLogin.values.email}
                   name="email"
-                  type="email"
                 />
+                {formikLogin.errors.email && formikLogin.touched.email ? (
+                  <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+                    {formikLogin.errors.email}
+                  </Typography>
+                ) : null}
               </Stack>
               <Stack
                 width={"100%"}
@@ -102,10 +98,15 @@ const Login = () => {
                       </InputAdornment>
                     }
                     name="password"
-                    typeof="password"
                   />
+                  {formikLogin.errors.password &&
+                  formikLogin.touched.password ? (
+                    <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+                      {formikLogin.errors.password}
+                    </Typography>
+                  ) : null}
                 </FormControl>
-                <Button type="button" sx={{ color: "black" }} size="small">
+                <Button sx={{ color: "black" }} size="small">
                   Нууц үг сэргээх
                 </Button>
               </Stack>
@@ -118,18 +119,13 @@ const Login = () => {
                 <Button
                   type="submit"
                   disabled={
-                    formikLogin.values.email === "" ||
-                    formikLogin.values.password === ""
+                    !formikLogin.values.email || !formikLogin.values.password
                   }
                   variant="text"
                   sx={{
                     width: "100%",
                     height: 48,
-                    background:
-                      formikLogin.values.email === "" ||
-                      formikLogin.values.password === ""
-                        ? "#EEEFF2"
-                        : "#18BA51",
+                    background: "#18BA51",
                     color: "#EEEFF2",
                   }}
                 >
