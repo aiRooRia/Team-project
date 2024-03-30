@@ -12,7 +12,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import * as React from "react";
 import { FormikProvider, useFormik } from "formik";
-import { loginSchema } from "./validationSchema";
+import { loginSchema, FromValues } from "./validationSchema";
 import { useState, useEffect } from "react";
 
 const Login = () => {
