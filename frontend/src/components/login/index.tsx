@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { FormikProvider, useFormik } from "formik";
 import { loginSchema } from "./validationSchema";
 import { useState, useEffect } from "react";
+import { string } from "yup";
 
 const Login = () => {
   const { push } = useRouter();
@@ -26,40 +27,18 @@ const Login = () => {
   ) => {
     event.preventDefault();
   };
-
-  // Define formikLogin outside the return statement
-  const formikLogin = useFormik({
+  interface test {
+    email: string;
+    password: string;
+  }
+  const formikLogin = useFormik<test>({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       console.log(values);
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ENDPOINT}/users/login`,
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json, text/plain, */*",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values),
-          }
-        );
-        const response = await res.json();
-        if (response.success) {
-          localStorage.setItem("id", response.user.id);
-          push("/dashboard");
-        } else if (response.message === "failed") {
-          setWarningMessage("Password does not match.");
-        } else if (response.message === "nodata") {
-          setWarningMessage("Unregistered email.");
-        }
-      } catch (error) {
-        console.log(error);
-      }
     },
   });
   useEffect(() => {}, [warningMessage]);
@@ -93,6 +72,7 @@ const Login = () => {
                   onChange={formikLogin.handleChange}
                   value={formikLogin.values.email}
                   name="email"
+                  type="email"
                 />
               </Stack>
               <Stack
@@ -123,9 +103,10 @@ const Login = () => {
                       </InputAdornment>
                     }
                     name="password"
+                    typeof="password"
                   />
                 </FormControl>
-                <Button sx={{ color: "black" }} size="small">
+                <Button type="button" sx={{ color: "black" }} size="small">
                   Нууц үг сэргээх
                 </Button>
               </Stack>
