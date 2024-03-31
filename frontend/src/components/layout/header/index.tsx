@@ -46,7 +46,7 @@ export const Header = () => {
             alignItems: "center",
             bgcolor: "#ffffff",
             height: "6vh",
-            maxWidth: "1200px",
+            minWidth: "1200px",
           }}
         >
           <Box
@@ -128,7 +128,7 @@ export const Header = () => {
                     <ShoppingBasket sx={{ width: 24, height: 24 }} />
                     Сагс
                   </Button>
-                  <Button sx={{ gap: 1, py: 1, px: 2, ...headerTextStyle }}>
+                  <Button sx={{ gap: 1, paddingRight: 0, ...headerTextStyle }}>
                     <PersonOutline sx={{ width: 24, height: 24 }} />
                     Нэвтрэх
                   </Button>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Typography, Box, Divider, Button, Link } from "@mui/material";
+import { Typography, Box, Divider, Button, Link, Stack } from "@mui/material";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -18,6 +18,7 @@ const LinkItem: React.FC<LinkItemProps> = ({ text, href }) => {
         textDecoration: "underline",
         textDecorationColor: "#FFFFF",
         color: "#FFF",
+        textTransform: "capitalize",
       }}
       onClick={() => (window.location.href = href)}
     >
@@ -40,43 +41,51 @@ const linkItems = [
 
 const Footer: React.FC = () => {
   return (
-    <Box sx={{ display: "flex", width: "100vw" }}>
+    <Stack
+      alignItems="center"
+      justifyContent="center"
+      sx={{
+        width: "100%",
+        backgroundColor: "#18BA51",
+        backgroundImage: `url(https://i.ibb.co/HVcsPm2/background.png)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        height: "35vh",
+      }}
+    >
       <Box
         component="footer"
         sx={{
           display: "flex",
-          width: "100vw",
-          height: "35vh",
+          minWidth: "1200px",
+          height: "70%",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          background: "#18BA51",
-          backgroundImage: `url(https://i.ibb.co/HVcsPm2/background.png)`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          gap: "10px",
+          justifyContent: "space-between",
         }}
       >
         <Box
           sx={{
             display: "flex",
             gap: 2,
-            mt: 2,
             alignItems: "center",
+            marginRight: 5,
           }}
         >
           <Logos />
-          <Typography variant="h6" sx={{ color: "#FFF" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ color: "#FFF", fontWeight: "bold" }}
+          >
             Food Delivery
           </Typography>
         </Box>
         <Box
           component="nav"
           sx={{
+            width: "100%",
             display: "flex",
-            gap: 4,
-            justifyContent: "center",
-            mt: 2,
+            justifyContent: "space-between",
             flexWrap: "wrap",
           }}
         >
@@ -90,7 +99,6 @@ const Footer: React.FC = () => {
             justifyContent: "center",
             gap: "25px",
             alignContent: "center",
-            pt: "20px",
           }}
         >
           <Link href="https://www.facebook.com/" target="_blank">
@@ -98,7 +106,7 @@ const Footer: React.FC = () => {
               sx={{
                 color: "white",
                 cursor: "pointer",
-                fontSize: "41px",
+                fontSize: "30px",
               }}
             />
           </Link>
@@ -107,7 +115,7 @@ const Footer: React.FC = () => {
               sx={{
                 color: "white",
                 cursor: "pointer",
-                fontSize: "41px",
+                fontSize: "30px",
               }}
             />
           </Link>
@@ -116,32 +124,20 @@ const Footer: React.FC = () => {
               sx={{
                 color: "white",
                 cursor: "pointer",
-                fontSize: "41px",
+                fontSize: "30px",
               }}
             />
           </Link>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 5,
-            justifyContent: "center",
-            py: 1.5,
-            pr: 1.5,
-            mt: 2,
-          }}
-        ></Box>
-        <Divider sx={{ my: 2, width: "80%", bgcolor: "#FFF" }} />
-
-        <Typography variant="body2" sx={{ mt: 2, color: "#FFF" }}>
+        <Divider sx={{ my: 2, width: "100%", bgcolor: "#FFF" }} />
+        <Typography variant="caption" sx={{ color: "#FFF" }}>
           © 2024 Pinecone Foods LLC
         </Typography>
-        <Typography variant="body2" sx={{ mt: 2, mb: 2, color: "#FFF" }}>
+        <Typography variant="caption" sx={{ color: "#FFF" }}>
           Зохиогчийн эрх хуулиар хамгаалагдсан.
         </Typography>
       </Box>
-      <Box sx={{}}></Box>
-    </Box>
+    </Stack>
   );
 };
 

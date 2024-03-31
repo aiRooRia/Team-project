@@ -14,6 +14,7 @@ import * as React from "react";
 import { FormikProvider, useFormik } from "formik";
 import { loginSchema, FromValues } from "./validationSchema";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -23,7 +24,10 @@ const Login = () => {
   ) => {
     event.preventDefault();
   };
-
+  const router = useRouter();
+  const handlePush = (route: string) => {
+    router.push(route);
+  };
   const formikLogin = useFormik<FromValues>({
     initialValues: {
       email: "",
@@ -33,6 +37,7 @@ const Login = () => {
     onSubmit: async (values) => {
       console.log(values);
       console.log(values);
+      handlePush("/");
     },
   });
 
@@ -43,8 +48,9 @@ const Login = () => {
         justifyContent={"center"}
         alignItems={"center"}
         spacing={"32px"}
-        width={"385px"}
-        sx={{ padding: "32px" }}
+        width={"30%"}
+        height={"90%"}
+        sx={{ padding: "32px", scale: "80%" }}
       >
         <Typography sx={{ fontWeight: "700px", fontSize: "28px" }}>
           Нэвтрэх
@@ -108,8 +114,13 @@ const Login = () => {
                     </Typography>
                   ) : null}
                 </FormControl>
-                <Button sx={{ color: "black" }} size="small">
-                  Нууц үг сэргээх
+                <Button
+                  onClick={() => {
+                    handlePush("/user/reset-password");
+                  }}
+                  sx={{ color: "black", textTransform: "capitalize" }}
+                >
+                  <Typography variant="body2"> Нууц үг сэргээх</Typography>
                 </Button>
               </Stack>
               <Stack
@@ -127,7 +138,10 @@ const Login = () => {
                   sx={{
                     width: "100%",
                     height: 48,
-                    background: "#18BA51",
+                    background:
+                      formikLogin.values.email && formikLogin.values.password
+                        ? "#18BA51"
+                        : "#EEEFF2",
                     color: "#EEEFF2",
                   }}
                 >
@@ -137,6 +151,7 @@ const Login = () => {
                 <Button
                   type="button"
                   variant="text"
+                  onClick={() => handlePush("/signup")}
                   sx={{
                     width: "100%",
                     height: 48,

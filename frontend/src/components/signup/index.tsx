@@ -15,6 +15,7 @@ import { FormikProvider, useFormik } from "formik";
 import { signUpSchema, FromValues } from "@/components/signup/validationSchema";
 import { useEffect } from "react";
 import * as React from "react";
+import { useRouter } from "next/router";
 
 export const Signup: React.FC = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -23,6 +24,10 @@ export const Signup: React.FC = () => {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
+  };
+  const router = useRouter();
+  const handlePush = (route: string) => {
+    router.push(route);
   };
   const formikSignUp = useFormik<FromValues>({
     initialValues: {
@@ -35,6 +40,7 @@ export const Signup: React.FC = () => {
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
       console.log(values);
+handlePush("/user/login")
     },
   });
 
@@ -50,13 +56,13 @@ export const Signup: React.FC = () => {
   return (
     <>
       <Stack
-        direction={"column"}
-        justifyContent={"flex-start"}
-        spacing={5}
-        width={"385px"}
-        sx={{ padding: "32px" }}
+        justifyContent={"center"}
+        width={"40%"}
+        maxHeight={"98%"}
+        sx={{ scale: "65%" }}
       >
         <Typography
+          variant="h1"
           sx={{ fontWeight: "700", fontSize: "28px", textAlign: "center" }}
         >
           Бүртгүүлэх
@@ -122,7 +128,7 @@ export const Signup: React.FC = () => {
                 <Typography>Нууц үг</Typography>
                 <OutlinedInput
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   onChange={formikSignUp.handleChange}
                   value={formikSignUp.values.password}
                   placeholder="Нууц үгээ оруулна уу"
@@ -177,7 +183,12 @@ export const Signup: React.FC = () => {
                 ) : null}
               </FormControl>
             </Stack>
-            <Stack direction={"row"} alignItems={"center"} spacing={"8px"}>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              spacing={"5px"}
+              sx={{ marginY: "5px" }}
+            >
               <Checkbox
                 checked={isChecked}
                 onChange={handleCheckboxChange}
@@ -199,7 +210,15 @@ export const Signup: React.FC = () => {
               sx={{
                 width: "100%",
                 height: 48,
-                background: "#18BA51",
+                background:
+                  !formikSignUp.values.name ||
+                  !formikSignUp.values.email ||
+                  !formikSignUp.values.location ||
+                  !formikSignUp.values.password ||
+                  !formikSignUp.values.rePassword ||
+                  !isChecked
+                    ? " #EEEFF2"
+                    : "#18BA51",
                 color: "black",
               }}
             >

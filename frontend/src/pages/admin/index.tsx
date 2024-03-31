@@ -15,7 +15,7 @@ import { CreateFood } from "@/components/admin/CreateFood";
 import { AdminFoodCard } from "@/components/menu/FoodCard";
 import Grid from "@mui/material/Grid";
 import { CreateCategory } from "@/components/admin/CreateNewCategory";
-import { AdminContext } from "@/components/utils/adminContext";
+import { AdminContext } from "@/components/utils/context/adminContext";
 import { EditCategoryName } from "@/components/admin/EditCategoryName";
 import { EmptyMenu } from "@/components/admin/MenuIsEmpty";
 
