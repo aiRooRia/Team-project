@@ -11,6 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { AdminContext } from "../utils/adminContext";
 import { useState } from "react";
 
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -25,7 +26,7 @@ interface CreateFoodProps {
   open: boolean;
 }
 
-export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
+export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
   const { newCategoryInfo, setNewCategoryInfo } =
     React.useContext(AdminContext);
   const [isClearCategoryName, setIsClearCategoryName] =
@@ -63,7 +64,7 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
         }}
         id="customized-dialog-title-category"
       >
-        Create new category
+        Edit category name
       </DialogTitle>
       <IconButton
         aria-label="close"

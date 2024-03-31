@@ -44,7 +44,8 @@ export const UserContext = createContext<ContextProps>(initialContextState);
 
 export const useCustomContext = () => useContext(UserContext);
 
-export const ContextProvider: React.FC<{ children: ReactNode }> = ({
+
+export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [signUpUserInfo, setSignUpUserInfo] =

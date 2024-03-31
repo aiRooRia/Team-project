@@ -1,37 +1,56 @@
-import { Box, Stack, Typography, Button } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
-import * as React from "react";
 import { useState } from "react";
 import { Dropdown } from "@mui/base/Dropdown";
 import { Menu } from "@mui/base/Menu";
 import { MenuButton as BaseMenuButton } from "@mui/base/MenuButton";
-import { MenuItem as BaseMenuItem, menuItemClasses } from "@mui/base/MenuItem";
-import { styled } from "@mui/system";
+import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-// import CreateFood from "@/components/admin/CreateFood";
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import { CreateFood } from "@/components/admin/CreateFood";
+import { AdminFoodCard } from "@/components/menu/FoodCard";
+import Grid from "@mui/material/Grid";
+import { CreateCategory } from "@/components/admin/CreateNewCategory";
+import { AdminContext } from "@/components/utils/adminContext";
+import { EditCategoryName } from "@/components/admin/EditCategoryName";
+import { EmptyMenu } from "@/components/admin/MenuIsEmpty";
 
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [showEditDeleteBox, setShowEditDeleteBox] = useState(false);
   const [bgColor, setBgColor] = useState("white");
-  const [isCreateFood, setIsCreateFood] = useState(false);
+  const [openCreateFood, setOpenCreateFood] = React.useState(false);
+  const [openCreateCategory, setOpenCreateCategory] = React.useState(false);
+  const [openEditCategoryName, setOpenEditCategoryName] = React.useState(false);
 
-  const showDropdown = (category: string) => {
-    if (selectedCategory === category) {
-      setShowEditDeleteBox(true);
-    }
+  const handleClickOpenCreateFood: () => void = () => {
+    setOpenCreateFood(true);
   };
-  const changeBgColor = (categoryName: string) => {
-    selectedCategory === categoryName
-      ? setBgColor("white")
-      : setBgColor("#18BA51");
+  const handleCloseCreateFood: () => void = () => {
+    setOpenCreateFood(false);
   };
-  const handleSelectCategory = (categoryName: string) => {
-    setSelectedCategory(categoryName);
-    changeBgColor(categoryName);
-    console.log(selectedCategory);
+  const handleClickOpenCreateCategory: () => void = () => {
+    setOpenCreateCategory(true);
+  };
+  const handleCloseCreateCategory: () => void = () => {
+    setOpenCreateCategory(false);
+  };
+  const handleCloseEditCategoryName: () => void = () => {
+    setOpenEditCategoryName(false);
+  };
+  const handleClickOpenEditCategoryName: () => void = () => {
+    setOpenEditCategoryName(true);
   };
   const createHandleMenuClick = (menuItem: string) => {
     return () => {
@@ -42,7 +61,7 @@ export default function Home() {
   return (
     <Stack
       width="100%"
-      height="100vh"
+      height="94vh"
       sx={{ flexDirection: "row", position: "relative" }}
     >
       <Stack
@@ -58,7 +77,7 @@ export default function Home() {
 
       <Stack
         width="100%"
-        height="100vh"
+        height="94vh"
         direction="row"
         justifyContent="center"
         alignItems="center"
@@ -70,18 +89,26 @@ export default function Home() {
       >
         <Stack
           maxWidth="lg"
-          height="100vh"
+          height="94vh"
           direction="row"
           sx={{ width: "1200px" }}
         >
           <Stack
             direction="column"
             spacing={2}
-            width="30%"
-            height="100vh"
-            sx={{ overflow: "auto", backgroundColor: "white", pr: 2 }}
+            width="28%"
+            height="95vh"
+            sx={{
+              overflow: "auto",
+              backgroundColor: "white",
+              pr: 2,
+              paddingTop: "10px",
+            }}
           >
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "bold", marginTop: "10px" }}
+            >
               Food menu
             </Typography>
             <Stack direction="column" spacing={2}>
@@ -96,13 +123,13 @@ export default function Home() {
                     cursor: "pointer",
                   },
                   ":active": {
-                    cursor: "grabbing",
-                    transform: "scale(0.97)",
+                    transform: "scale(.99)",
                   },
                   border: 1,
                   borderColor: "lightgray",
                   borderRadius: 2,
-                  padding: 1,
+                  paddingX: 1,
+                  paddingY: 0.75,
                   backgroundColor:
                     selectedCategory === "Desserts" ? "#18BA51" : "white",
                   color: selectedCategory === "Desserts" ? "white" : "black",
@@ -112,22 +139,15 @@ export default function Home() {
                 <Dropdown>
                   <MenuButton
                     sx={{
+                      display: "flex",
+                      alignItems: "center",
                       backgroundColor:
                         selectedCategory === "Desserts" ? "#18BA51" : "white",
                       borderColor:
                         selectedCategory === "Desserts" ? "#18BA51" : "white",
-                      boxShadow: "none",
-                      ":hover": {
-                        backgroundColor:
-                          selectedCategory === "Desserts" ? "#18BA51" : "white",
-                        borderColor:
-                          selectedCategory === "Desserts" ? "#18BA51" : "white",
-                      },
+                      height: "22px",
                       ":active": {
-                        backgroundColor:
-                          selectedCategory === "Desserts" ? "#18BA51" : "white",
-                        borderColor:
-                          selectedCategory === "Desserts" ? "#18BA51" : "white",
+                        cursor: "grabbing",
                       },
                     }}
                   >
@@ -141,11 +161,15 @@ export default function Home() {
                   <Menu slots={{ listbox: Listbox }}>
                     <MenuItem
                       sx={{ display: "flex", gap: 1 }}
-                      onClick={createHandleMenuClick("edit")}
+                      onClick={handleClickOpenEditCategoryName}
                     >
                       <EditIcon></EditIcon>
                       <Typography variant="body1">Edit name</Typography>
                     </MenuItem>
+                    <EditCategoryName
+                      handleClose={handleCloseEditCategoryName}
+                      open={openEditCategoryName}
+                    ></EditCategoryName>
                     <MenuItem
                       sx={{ display: "flex", gap: 1 }}
                       onClick={createHandleMenuClick("delete")}
@@ -161,9 +185,51 @@ export default function Home() {
                 </Dropdown>
               </Stack>
               <Stack
+                onClick={handleClickOpenCreateCategory}
                 direction="row"
                 alignItems="center"
                 spacing={1}
+                sx={{
+                  height: "40px",
+                  cursor: "default",
+                  ":hover": {
+                    cursor: "pointer",
+                  },
+                  ":active": {
+                    cursor: "grabbing",
+                    transform: "scale(0.97)",
+                  },
+                  border: 1,
+                  borderColor: "lightgray",
+                  borderRadius: 2,
+                  paddingX: 1,
+                }}
+              >
+                {" "}
+                <AddIcon style={{ color: "gray" }}></AddIcon>
+                <Typography variant="subtitle1" style={{ color: "gray" }}>
+                  Create new category
+                </Typography>
+              </Stack>
+              <CreateCategory
+                handleClose={handleCloseCreateCategory}
+                open={openCreateCategory}
+              ></CreateCategory>
+            </Stack>
+          </Stack>
+          <Stack width="72%">
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ ml: 3, mt: 3, mb: "4px", height: "6vh" }}
+            >
+              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                Desserts
+              </Typography>
+              <Stack
+                onClick={handleClickOpenCreateFood}
+                alignItems="center"
                 sx={{
                   cursor: "default",
                   ":hover": {
@@ -176,48 +242,53 @@ export default function Home() {
                   border: 1,
                   borderColor: "lightgray",
                   borderRadius: 2,
-                  padding: 1,
+                  paddingX: 1,
+                  paddingY: 0.75,
+                  backgroundColor: "#18BA51",
+                  color: "white",
                 }}
               >
-                {" "}
-                <AddIcon style={{ color: "gray" }}></AddIcon>
-                <Typography variant="subtitle1" style={{ color: "gray" }}>
-                  Create new category
-                </Typography>
+                <Typography variant="subtitle1">Add new food</Typography>
               </Stack>
+              <CreateFood
+                handleClose={handleCloseCreateFood}
+                open={openCreateFood}
+              ></CreateFood>
             </Stack>
-          </Stack>
-          <Stack width="70%">
+            {/* <EmptyMenu></EmptyMenu> */}
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ ml: 3, mt: 4 }}
+              alignItems="start"
+              sx={{ pl: 3, pt: 4, height: "80vh", overflow: "auto" }}
             >
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                Breakfast
-              </Typography>
+              <Grid
+                container
+                rowSpacing={1}
+                columnSpacing={1}
+                overflow="auto"
+                gridColumn={3}
+                columnGap="35.5px"
+                rowGap="20px"
+              >
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+              </Grid>
             </Stack>
-            <Stack></Stack>
           </Stack>
         </Stack>
       </Stack>
     </Stack>
   );
 }
-
-const blue = {
-  50: "#F0F7FF",
-  100: "#C2E0FF",
-  200: "#99CCF3",
-  300: "#66B2FF",
-  400: "#3399FF",
-  500: "#007FFF",
-  600: "#0072E6",
-  700: "#0059B3",
-  800: "#004C99",
-  900: "#003A75",
-};
 
 const grey = {
   50: "#F3F6F9",
@@ -234,8 +305,7 @@ const grey = {
 
 const Listbox = styled("ul")(
   ({ theme }) => `
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 0.875rem;
+
   box-sizing: border-box;
   padding: 6px;
   margin: 12px 0;
@@ -258,55 +328,32 @@ const MenuItem = styled(BaseMenuItem)(
   list-style: none;
   padding: 8px;
   border-radius: 8px;
-  cursor: default;
   user-select: none;
-
   &:last-of-type {
     border-bottom: none;
   }
-
   &:focus {
-    outline: 3px solid ${theme.palette.mode === "dark" ? blue[600] : blue[200]};
     background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
     color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   }
-
-  &.${menuItemClasses.disabled} {
-    color: ${theme.palette.mode === "dark" ? grey[700] : grey[400]};
+  &:active {
+    cursor: "grabbing",
+    transform: "scale(.80)",
   }
   `
 );
 
 const MenuButton = styled(BaseMenuButton)(
   ({ theme }) => `
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 600;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  padding: 8px 16px;
   border-radius: 8px;
   color: white;
-  transition: all 150ms ease;
   cursor: pointer;
-  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-  border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-  color: ${theme.palette.mode === "dark" ? grey[200] : grey[900]};
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-
-  &:hover {
-    background: ${theme.palette.mode === "dark" ? grey[800] : grey[50]};
-    border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
-  }
-
+  border: 1px solid;
   &:active {
-    background: ${theme.palette.mode === "dark" ? grey[700] : grey[100]};
+    cursor: "grabbing",
+    transform: "scale(.80)",
   }
-
-  &:focus-visible {
-    box-shadow: 0 0 0 4px ${
-      theme.palette.mode === "dark" ? blue[300] : blue[200]
-    };
-    outline: none;
-  }
-  `
+  &:hover {
+    background-color: "red"
+  }  `
 );
