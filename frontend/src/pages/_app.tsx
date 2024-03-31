@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <AdminContextProvider>
     <UserContextProvider>
       <Header></Header>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </UserContextProvider>
     </AdminContextProvider>
   );

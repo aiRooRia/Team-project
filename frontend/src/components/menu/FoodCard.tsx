@@ -7,10 +7,12 @@ import {
   Button,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { EditFood } from "../admin/EditFood";
 
-function FoodCard() {
+export const AdminFoodCard = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [openEditFood, setOpenEditFood] = React.useState(false);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -23,15 +25,20 @@ function FoodCard() {
     setIsHovered(false);
     setIsVisible(false);
   };
-
+  const handleCloseEditFood: () => void = () => {
+     setOpenEditFood(false);
+   };
+   const handleClickOpenEditFood = () => {
+     setOpenEditFood(true);
+   };
   return (
     <Card
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "250px",
+        width: "255px",
         backgroundColor: "transparent",
-        height: "270px",
+        height: "230px",
         boxShadow: 0,
       }}
     >
@@ -51,7 +58,7 @@ function FoodCard() {
           loading="lazy"
           sx={{
             width: "250px",
-            height: "170px",
+            height: "150px",
             borderRadius: "10px",
             backgroundColor: isHovered ? "black" : "transparent",
             opacity: isHovered ? 0.5 : 1,
@@ -60,7 +67,9 @@ function FoodCard() {
           }}
         />
         {isVisible && (
+          <>
           <Box
+          onClick={handleClickOpenEditFood}
             sx={{
               position: "absolute",
               top: "50%",
@@ -98,6 +107,8 @@ function FoodCard() {
               Edit
             </Typography>
           </Box>
+          <EditFood handleClose={handleCloseEditFood} open={openEditFood}></EditFood>
+          </>
         )}
       </Box>
       <CardContent
@@ -114,4 +125,4 @@ function FoodCard() {
   );
 }
 
-export default FoodCard;
+

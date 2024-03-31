@@ -36,6 +36,7 @@ export const Header = () => {
           alignItems: "center",
           bgcolor: "#ffffff",
           height: "6vh",
+          overflow: "hidden",
         }}
       >
         <Box

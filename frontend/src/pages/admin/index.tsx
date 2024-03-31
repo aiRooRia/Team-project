@@ -1,33 +1,23 @@
-import { Box, Stack, Typography, Button, TextField } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
-// import * as React from "react";
 import { useState } from "react";
 import { Dropdown } from "@mui/base/Dropdown";
 import { Menu } from "@mui/base/Menu";
 import { MenuButton as BaseMenuButton } from "@mui/base/MenuButton";
-import { MenuItem as BaseMenuItem, menuItemClasses } from "@mui/base/MenuItem";
-// import { styled } from "@mui/system";
+import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-// import CreateFood from "@/components/admin/CreateFood";
 import * as React from "react";
-// import Button from '@mui/material/Button';
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Switch from "@mui/material/Switch";
-import { Scale } from "@mui/icons-material";
 import { CreateFood } from "@/components/admin/CreateFood";
-import FoodCard from "@/components/menu/FoodCard";
+import { AdminFoodCard } from "@/components/menu/FoodCard";
 import Grid from "@mui/material/Grid";
 import { CreateCategory } from "@/components/admin/CreateNewCategory";
 import { AdminContext } from "@/components/utils/adminContext";
-// import Typography from '@mui/material/Typography';
+import { EditCategoryName } from "@/components/admin/EditCategoryName";
+import { EmptyMenu } from "@/components/admin/MenuIsEmpty";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -39,39 +29,28 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [showEditDeleteBox, setShowEditDeleteBox] = useState(false);
   const [bgColor, setBgColor] = useState("white");
-  const [isCreateFood, setIsCreateFood] = useState(false);
   const [openCreateFood, setOpenCreateFood] = React.useState(false);
   const [openCreateCategory, setOpenCreateCategory] = React.useState(false);
+  const [openEditCategoryName, setOpenEditCategoryName] = React.useState(false);
 
-  const handleClickOpenCreateFood = () => {
+  const handleClickOpenCreateFood: () => void = () => {
     setOpenCreateFood(true);
   };
   const handleCloseCreateFood: () => void = () => {
     setOpenCreateFood(false);
   };
-  const handleClickOpenCreateCategory = () => {
+  const handleClickOpenCreateCategory: () => void = () => {
     setOpenCreateCategory(true);
   };
   const handleCloseCreateCategory: () => void = () => {
     setOpenCreateCategory(false);
   };
-
-  const showDropdown = (category: string) => {
-    if (selectedCategory === category) {
-      setShowEditDeleteBox(true);
-    }
+  const handleCloseEditCategoryName: () => void = () => {
+    setOpenEditCategoryName(false);
   };
-  const changeBgColor = (categoryName: string) => {
-    selectedCategory === categoryName
-      ? setBgColor("white")
-      : setBgColor("#18BA51");
-  };
-  const handleSelectCategory = (categoryName: string) => {
-    setSelectedCategory(categoryName);
-    changeBgColor(categoryName);
-    console.log(selectedCategory);
+  const handleClickOpenEditCategoryName: () => void = () => {
+    setOpenEditCategoryName(true);
   };
   const createHandleMenuClick = (menuItem: string) => {
     return () => {
@@ -117,7 +96,7 @@ export default function Home() {
           <Stack
             direction="column"
             spacing={2}
-            width="30%"
+            width="28%"
             height="95vh"
             sx={{
               overflow: "auto",
@@ -182,11 +161,15 @@ export default function Home() {
                   <Menu slots={{ listbox: Listbox }}>
                     <MenuItem
                       sx={{ display: "flex", gap: 1 }}
-                      onClick={createHandleMenuClick("edit")}
+                      onClick={handleClickOpenEditCategoryName}
                     >
                       <EditIcon></EditIcon>
                       <Typography variant="body1">Edit name</Typography>
                     </MenuItem>
+                    <EditCategoryName
+                      handleClose={handleCloseEditCategoryName}
+                      open={openEditCategoryName}
+                    ></EditCategoryName>
                     <MenuItem
                       sx={{ display: "flex", gap: 1 }}
                       onClick={createHandleMenuClick("delete")}
@@ -234,15 +217,15 @@ export default function Home() {
               ></CreateCategory>
             </Stack>
           </Stack>
-          <Stack width="70%">
+          <Stack width="72%">
             <Stack
               direction="row"
               justifyContent="space-between"
               alignItems="center"
-              sx={{ ml: 3, mt: 4, height: "6vh" }}
+              sx={{ ml: 3, mt: 3, mb: "4px", height: "6vh" }}
             >
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                Breakfast
+                Desserts
               </Typography>
               <Stack
                 onClick={handleClickOpenCreateFood}
@@ -272,6 +255,7 @@ export default function Home() {
                 open={openCreateFood}
               ></CreateFood>
             </Stack>
+            {/* <EmptyMenu></EmptyMenu> */}
             <Stack
               direction="row"
               alignItems="start"
@@ -283,25 +267,20 @@ export default function Home() {
                 columnSpacing={1}
                 overflow="auto"
                 gridColumn={3}
-                columnGap="30px"
+                columnGap="35.5px"
                 rowGap="20px"
               >
-                <FoodCard></FoodCard>
-
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
-                <FoodCard></FoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
+                <AdminFoodCard></AdminFoodCard>
               </Grid>
             </Stack>
           </Stack>
@@ -350,13 +329,10 @@ const MenuItem = styled(BaseMenuItem)(
   padding: 8px;
   border-radius: 8px;
   user-select: none;
-
   &:last-of-type {
     border-bottom: none;
   }
-
   &:focus {
-
     background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
     color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   }
@@ -364,29 +340,20 @@ const MenuItem = styled(BaseMenuItem)(
     cursor: "grabbing",
     transform: "scale(.80)",
   }
-
   `
 );
 
 const MenuButton = styled(BaseMenuButton)(
   ({ theme }) => `
-
-
   border-radius: 8px;
   color: white;
   cursor: pointer;
   border: 1px solid;
-
   &:active {
     cursor: "grabbing",
     transform: "scale(.80)",
   }
   &:hover {
     background-color: "red"
-  }
-
-
-
-
-  `
+  }  `
 );
