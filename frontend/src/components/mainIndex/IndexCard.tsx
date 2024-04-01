@@ -3,12 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, Box } from "@mui/material";
-import {
-  Icon1,
-  Icon2,
-  Icon3,
-  Icon4,
-} from "@/components/utils/mainIndex/IndexIcons";
+import { Icon1, Icon2, Icon3, Icon4 } from "@/components/mainIndex/IndexIcons";
 import { ReactNode } from "react";
 interface IndexCardProps {
   id: number; // Use ReactNode type for icon prop

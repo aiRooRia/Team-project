@@ -1,6 +1,7 @@
 import { Stack, Grid } from "@mui/material";
 import { FoodCategoryToggle } from "./foodCategoryToggle";
 import { DiscountFoodCard, MainFoodCard } from "./FoodCard";
+import { Discount } from "@mui/icons-material";
 export const FoodMenu = () => {
   return (
     <Stack height={"100%"} justifyContent={"start"}>
@@ -13,8 +14,8 @@ export const FoodMenu = () => {
       >
         <Grid container overflow="auto" gridColumn={4} columnGap={"54px"}>
           <MainFoodCard></MainFoodCard>
-          <DiscountFoodCard></DiscountFoodCard>
           <MainFoodCard></MainFoodCard>
+          {/* <DiscountFoodCard></DiscountFoodCard> */}
           <DiscountFoodCard></DiscountFoodCard>
         </Grid>
       </Stack>

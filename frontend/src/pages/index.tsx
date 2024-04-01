@@ -6,15 +6,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import {
-  Icon1,
-  Icon2,
-  Icon3,
-  Icon4,
-} from "@/components/utils/mainIndex/IndexIcons";
-import { IndexCard } from "@/components/utils/mainIndex/IndexCard";
-import { Image1, Image2 } from "@/components/utils/mainIndex/Images";
-import { IndexAllMenu } from "@/components/utils/mainIndex/IndexAllMenu";
+import { Icon1, Icon2, Icon3, Icon4 } from "@/components/mainIndex/IndexIcons";
+import { IndexCard } from "@/components/mainIndex/IndexCard";
+import { Image1, Image2 } from "@/components/mainIndex/Images";
+import { IndexAllMenu } from "@/components/mainIndex/IndexAllMenu";
 
 export default function Home() {
   const cardInfo = [
@@ -82,7 +77,12 @@ export default function Home() {
                   transform: "translate(0%, -50%)",
                 }}
               >
-                <Image1 />
+                {/* <Image1 /> */}
+                <img
+                  style={{ width: "550px", height: "550px" }}
+                  src="/tomports.png"
+                  alt=""
+                />
               </Stack>
               <Stack
                 sx={{
@@ -92,7 +92,12 @@ export default function Home() {
                   transform: "translate(0%, -50%)",
                 }}
               >
-                <Image2 />
+                {/* <Image2 /> */}
+                <img
+                  style={{ width: "250px", height: "250px" }}
+                  src="/goyhool.png"
+                  alt=""
+                />
               </Stack>
             </Stack>
           </Stack>
