@@ -9,23 +9,22 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { EditFood } from "../admin/EditFood";
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { styled } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
+  "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
-  '& .MuiDialogActions-root': {
+  "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
 }));
-
 
 export const AdminFoodCard = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -147,6 +146,7 @@ export const AdminFoodCard = () => {
 };
 export const MainFoodCard = () => {
   const [open, setOpen] = React.useState(false);
+  const [quantity, setQuantity] = useState(0);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -156,72 +156,78 @@ export const MainFoodCard = () => {
   };
 
   const foodInfo = [
-    
-  ]
+    {
+      imgUrl:
+        "https://s3-alpha-sig.figma.com/img/27cb/2c3b/60df84dc4dd7d808ba224aff01eeb6d8?Expires=1713139200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=f87uEFXfE8E3RtXjlMsxOJoXkiBCyZQQTsBU9sP8SI6F-IPn97T8kmSpbQ5KF9HwpEGRklY8drlNBB2inBJ-HtADnsk17DG7yHlCCGgQr~JWz25IJCUDWalZsP9dAMoFrifB~z6jdLai1jNgkmmKDTcmTgl~OCoUY9ZyIl5DzzCA3-hSMzeCSc6gJz~A~OtD1JG3jgboHm4fHkVlKrYzV1fi0GMiFHlgT7ji2VO4OKDhjaJQGVDZ6gSe7KG4ow4TjmahHNgbCpY9yB6xFgOZF2Yb00IR5GEZRLPyrh3eInoXxZXuijEOoEHmvr~ysBkcrw5oFxPD~xx~fMIssdB-Pw__",
+      foodName: "Өглөөний хоол",
+      foodPrice: "4,800",
+      foodIngredients: "Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр ",
+      quantity: "",
+    },
+  ];
   return (
     <>
-    <Card
-    onClick={handleClickOpen}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "255px",
-        backgroundColor: "transparent",
-        height: "230px",
-        boxShadow: 0,
-        ":hover": {
-          cursor: "pointer",
-          scale: "101%",
-        },
-        ":active": {
-          scale: "99%",
-        },
-      }}
-    >
-      <Box
-        sx={{
-          position: "relative",
-          backgroundColor: "black",
-          borderRadius: "10px",
-        }}
-      >
-        <CardMedia
-          component="img"
-          alt="Өглөөний хоол"
-          src="https://s3-alpha-sig.figma.com/img/27cb/2c3b/60df84dc4dd7d808ba224aff01eeb6d8?Expires=1713139200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=f87uEFXfE8E3RtXjlMsxOJoXkiBCyZQQTsBU9sP8SI6F-IPn97T8kmSpbQ5KF9HwpEGRklY8drlNBB2inBJ-HtADnsk17DG7yHlCCGgQr~JWz25IJCUDWalZsP9dAMoFrifB~z6jdLai1jNgkmmKDTcmTgl~OCoUY9ZyIl5DzzCA3-hSMzeCSc6gJz~A~OtD1JG3jgboHm4fHkVlKrYzV1fi0GMiFHlgT7ji2VO4OKDhjaJQGVDZ6gSe7KG4ow4TjmahHNgbCpY9yB6xFgOZF2Yb00IR5GEZRLPyrh3eInoXxZXuijEOoEHmvr~ysBkcrw5oFxPD~xx~fMIssdB-Pw__"
-          loading="lazy"
-          sx={{
-            width: "100%",
-            height: "150px",
-            borderRadius: "10px",
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
-          }}
-        />
-      </Box>
-      <CardContent
+      <Card
+        onClick={handleClickOpen}
         sx={{
           display: "flex",
           flexDirection: "column",
-          backgroundColor: null,
+          width: "255px",
+          backgroundColor: "transparent",
+          height: "230px",
+          boxShadow: 0,
+          ":hover": {
+            cursor: "pointer",
+            scale: "101%",
+          },
+          ":active": {
+            scale: "99%",
+          },
         }}
       >
-        <Typography variant="h6">Өглөөний хоол</Typography>
-        <Typography sx={{ color: "#18BA51" }}>4,800₮</Typography>
-      </CardContent>
-    </Card>
-    <BootstrapDialog
+        <Box
+          sx={{
+            position: "relative",
+            backgroundColor: "black",
+            borderRadius: "10px",
+          }}
+        >
+          <CardMedia
+            component="img"
+            alt="Өглөөний хоол"
+            src={foodInfo[0].imgUrl}
+            loading="lazy"
+            sx={{
+              width: "100%",
+              height: "150px",
+              borderRadius: "10px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
+            }}
+          />
+        </Box>
+        <CardContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            backgroundColor: null,
+          }}
+        >
+          <Typography variant="h6">{foodInfo[0].foodName}</Typography>
+          <Typography sx={{ color: "#18BA51" }}>
+            {foodInfo[0].foodPrice}₮
+          </Typography>
+        </CardContent>
+      </Card>
+      <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Modal title
-        </DialogTitle>
         <IconButton
           aria-label="close"
           onClick={handleClose}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500],
@@ -229,27 +235,112 @@ export const MainFoodCard = () => {
         >
           <CloseIcon />
         </IconButton>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-            magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-            ullamcorper nulla non metus auctor fringilla.
-          </Typography>
+        <DialogContent
+          dividers
+          sx={{
+            display: "flex",
+            direction: "row",
+            height: "100%",
+            alignItems: "center",
+          }}
+        >
+          <Stack
+            justifyContent={"center"}
+            alignItems={"center"}
+            width="70%"
+            height="100%"
+          >
+            <Box
+              component={"img"}
+              sx={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "10px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
+              }}
+              src={foodInfo[0].imgUrl}
+              alt=""
+            ></Box>
+          </Stack>
+
+          <Stack sx={{ m: 0, p: 2 }} spacing={2}>
+            <Stack>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "bold" }}
+                id="customized-dialog-title"
+              >
+                {foodInfo[0].foodName}
+              </Typography>
+              <Typography color={"#18BA51"} gutterBottom>
+                {foodInfo[0].foodPrice}₮
+              </Typography>
+            </Stack>
+
+            <Stack>
+              <Typography sx={{ fontWeight: "bold" }} variant="body1">
+                Орц
+              </Typography>
+              <Box
+                sx={{
+                  backgroundColor: "#F6F6F6",
+                  color: "#767676",
+                  padding: 1,
+                  borderRadius: "8px",
+                }}
+              >
+                <Typography variant="body2">
+                  {foodInfo[0].foodIngredients}
+                </Typography>
+              </Box>
+            </Stack>
+            <Stack>
+              <Typography sx={{ fontWeight: "bold" }} variant="body1">
+                Тоо
+              </Typography>
+              <Stack
+                direction={"row"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+              >
+                <Button
+                  onClick={() =>
+                    quantity !== 0 ? setQuantity(quantity - 1) : setQuantity(0)
+                  }
+                  sx={{ backgroundColor: "#18BA51", color: "white" }}
+                >
+                  -
+                </Button>
+                <Typography>{quantity}</Typography>
+                <Button
+                  onClick={() => setQuantity(quantity + 1)}
+                  sx={{
+                    // width: "10px",
+                    backgroundColor: "#18BA51",
+                    color: "white",
+                  }}
+                >
+                  +
+                </Button>
+              </Stack>
+            </Stack>
+            <DialogActions sx={{ margin: 0, padding: 0 }}>
+              <Button
+                sx={{
+                  width: "100%",
+                  backgroundColor: "#18BA51",
+                  color: "white",
+                  textTransform: "capitalize",
+                  // padding: 0,
+                }}
+                autoFocus
+                onClick={handleClose}
+              >
+                Сагслах
+              </Button>
+            </DialogActions>
+          </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
       </BootstrapDialog>
     </>
   );
