@@ -31,7 +31,7 @@ export default function Home() {
               />
             </svg>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              Нууцлалын бодлого
+              Үйлчилгээний нөхцөл
             </Typography>
           </Stack>
           <Box sx={{ textAlign: "justify" }}>

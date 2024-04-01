@@ -128,7 +128,7 @@ export const Header = () => {
                     <ShoppingBasket sx={{ width: 24, height: 24 }} />
                     Сагс
                   </Button>
-                  <Button sx={{ gap: 1, paddingRight: 0, ...headerTextStyle }}>
+                  <Button onClick={()=>{handlePush("/user/login")}} sx={{ gap: 1, paddingRight: 0, ...headerTextStyle }}>
                     <PersonOutline sx={{ width: 24, height: 24 }} />
                     Нэвтрэх
                   </Button>
