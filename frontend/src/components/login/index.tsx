@@ -151,7 +151,7 @@ const Login = () => {
                 <Button
                   type="button"
                   variant="text"
-                  onClick={() => handlePush("/signup")}
+                  onClick={() => handlePush("/user/signup")}
                   sx={{
                     width: "100%",
                     height: 48,

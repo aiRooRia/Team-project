@@ -40,7 +40,7 @@ export const Signup: React.FC = () => {
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
       console.log(values);
-handlePush("/user/login")
+      handlePush("/user/login");
     },
   });
 
