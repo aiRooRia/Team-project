@@ -1,17 +1,12 @@
 import Login from "@/components/login/index";
 import Footer from "@/components/layout/footer";
 import { Stack } from "@mui/material";
-import { FoodMenu } from "@/components/foodMenu";
+import { UserProfile } from "@/components/layout/header/UserProfile";
 
-export default function Menu() {
+export default function Home() {
   return (
     <>
-      <Stack
-        height="59vh"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ overflow: "auto" }}
-      >
+      <Stack height="59vh" alignItems="center" justifyContent="center">
         <Stack
           height="100%"
           alignItems="center"
@@ -19,7 +14,7 @@ export default function Menu() {
           width={"1200px"}
         >
           {" "}
-          <FoodMenu></FoodMenu>
+          <UserProfile></UserProfile>
         </Stack>
       </Stack>
       <Footer />

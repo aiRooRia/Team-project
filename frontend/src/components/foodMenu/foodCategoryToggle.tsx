@@ -18,12 +18,11 @@ export const FoodCategoryToggle = (): JSX.Element => {
   return (
     <Box
       sx={{
-        justifyContent: "center",
+        justifyContent: "start",
         display: "flex",
         alignContent: "center",
-        px: "32px",
-        py: "120px",
         gap: 2,
+        height: "5vh",
       }}
     >
       <Box sx={{ width: "1200px", display: "flex", gap: "26px" }}>
@@ -37,6 +36,8 @@ export const FoodCategoryToggle = (): JSX.Element => {
               bgcolor: selected === "Breakfast" ? "#18ba51" : "#f0f0f0",
               color: selected === "Breakfast" ? "#FFFFFF" : "#000000",
             },
+            textTransform: "capitalize",
+            fontWeight: 500,
           }}
         >
           Breakfast
@@ -52,6 +53,8 @@ export const FoodCategoryToggle = (): JSX.Element => {
               bgcolor: selected === "Soup" ? "#18ba51" : "#f0f0f0",
               color: selected === "Soup" ? "#FFFFFF" : "#000000",
             },
+            textTransform: "capitalize",
+            fontWeight: 500,
           }}
         >
           Soup
@@ -66,6 +69,8 @@ export const FoodCategoryToggle = (): JSX.Element => {
               bgcolor: selected === "MainCourse" ? "#18ba51" : "#f0f0f0",
               color: selected === "MainCourse" ? "#FFFFFF" : "#000000",
             },
+            textTransform: "capitalize",
+            fontWeight: 500,
           }}
         >
           Main Course
@@ -80,6 +85,8 @@ export const FoodCategoryToggle = (): JSX.Element => {
               bgcolor: selected === "Dessert" ? "#18ba51" : "#f0f0f0",
               color: selected === "Dessert" ? "#FFFFFF" : "#000000",
             },
+            textTransform: "capitalize",
+            fontWeight: 500,
           }}
         >
           Dessert

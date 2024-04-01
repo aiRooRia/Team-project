@@ -1,5 +1,5 @@
 import Footer from "@/components/layout/footer";
-import { DiscountFoodCard, MainFoodCard } from "@/components/menu/FoodCard";
+import { DiscountFoodCard, MainFoodCard } from "@/components/foodMenu/FoodCard";
 import { Stack, Box, Divider } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";

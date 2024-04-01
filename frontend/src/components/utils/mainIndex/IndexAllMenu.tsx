@@ -1,7 +1,7 @@
 import { Stack, Typography, Button } from "@mui/material";
 import { StarIcon } from "./Images";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { DiscountFoodCard, MainFoodCard } from "@/components/menu/FoodCard";
+import { DiscountFoodCard, MainFoodCard } from "@/components/foodMenu/FoodCard";
 
 export const IndexAllMenu = () => {
   return (

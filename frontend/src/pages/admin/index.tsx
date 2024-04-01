@@ -12,7 +12,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import { CreateFood } from "@/components/admin/CreateFood";
-import { AdminFoodCard } from "@/components/menu/FoodCard";
+import { AdminFoodCard } from "@/components/foodMenu/FoodCard";
 import Grid from "@mui/material/Grid";
 import { CreateCategory } from "@/components/admin/CreateNewCategory";
 import { AdminContext } from "@/components/utils/context/adminContext";
