@@ -1,10 +1,7 @@
 import { Stack, Typography, TextField, Select, Button } from "@mui/material";
-
 import { Menu } from "@mui/base/Menu";
-import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
@@ -15,20 +12,12 @@ import { FormikProvider, useFormik } from "formik";
 import { FromValues, createFoodSchema } from "./validationSchema";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useEffect } from "react";
+import { BootstrapDialog, MenuItem, focusedInputBorderColor, ListboxCategory } from "../utils/styles";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
 
 interface CreateFoodProps {
   handleClose: () => void;
   open: boolean;
-
 }
 
 export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
@@ -50,7 +39,7 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
         //    values.discountRate === "";
         setFieldValue("discountRate", "");
       }
-      console.log(values.discountRate, "hoo");
+      console.log(values, "hoo values");
     },
   });
   useEffect(() => {}, [formikCreateFood.values.discountRate]);
@@ -94,12 +83,7 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
             <Stack width={"100%"} spacing={"4px"}>
               <Typography>Хоолны нэр</Typography>
               <TextField
-                sx={{
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "green",
-                    },
-                }}
+                sx={focusedInputBorderColor}
                 placeholder="Food name"
                 onChange={formikCreateFood.handleChange}
                 value={formikCreateFood.values.foodName}
@@ -122,15 +106,15 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
                   onChange={formikCreateFood.handleChange}
                   value={formikCreateFood.values.foodCategory}
                   name="foodCategory"
-                  sx={{
-                    borderColor: "orange",
-                    width: "100%",
-                    "& .MuiOutlinedInput-root": {
-                      "&.Mui-focused fieldset": {
-                        borderColor: "green", // Focus border color
-                      },
-                    },
-                  }}
+                  // sx={{
+                  //   borderColor: "orange",
+                  //   width: "100%",
+                  //   "& .MuiOutlinedInput-root": {
+                  //     "&.Mui-focused fieldset": {
+                  //       borderColor: "green",                  // it needs to be fixed
+                  //     },
+                  //   },
+                  // }}
                 >
                   <MenuItem sx={{ width: "100%" }} value="Category1" default>
                     <Typography variant="body1">Category1</Typography>
@@ -150,12 +134,7 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
             <Stack width={"100%"} spacing={"4px"}>
               <Typography>Хоолны орц</Typography>
               <TextField
-                sx={{
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "green", // Change border color to red when focused
-                    },
-                }}
+                sx={focusedInputBorderColor}
                 placeholder="Food ingredients"
                 onChange={formikCreateFood.handleChange}
                 value={formikCreateFood.values.foodIngredients}
@@ -172,14 +151,8 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
               <Typography>Хоолны үнэ</Typography>
               <TextField
                 placeholder="Food price"
-                sx={{
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "green", // Change border color to red when focused
-                    },
-                }}
+                sx={focusedInputBorderColor}
                 onChange={(event) => {
-                  // Parse the input value as a number and update the form's state
                   const value = parseFloat(event.target.value);
                   formikCreateFood.setFieldValue("foodPrice", value);
                 }}
@@ -215,14 +188,8 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
               <TextField
                 disabled={!formikCreateFood.values.isDiscount}
                 placeholder="Discount"
-                sx={{
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "green", // Change border color to red when focused
-                    },
-                }}
+                sx={focusedInputBorderColor}
                 onChange={(event) => {
-                  // Parse the input value as a number and update the form's state
                   const value = parseFloat(event.target.value);
                   formikCreateFood.setFieldValue("discountRate", value);
                 }}
@@ -249,12 +216,7 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
             <Stack width={"100%"} spacing={"4px"}>
               <Typography>Хоолны зураг</Typography>
               <TextField
-                sx={{
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "green", // Change border color to red when focused
-                    },
-                }}
+                sx={focusedInputBorderColor}
                 placeholder="Food image"
                 onChange={formikCreateFood.handleChange}
                 value={formikCreateFood.values.foodImage}
@@ -268,26 +230,26 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
               </Typography>
             ) : null}
           </DialogContent>
-          
+
           <DialogActions>
-          {/* <Button
-            type="button"
-            onClick={formikCreateFood.resetForm}
-            sx={{
-              ":hover": {
+            {/* <Button                     clear button works, but syntax is wrong
+              type="button"
+              onClick={formikCreateFood.resetForm}
+              sx={{
+                ":hover": {
+                  backgroundColor: "white",
+                },
                 backgroundColor: "white",
-              },
-              backgroundColor: "white",
-              color: "#393939",
-            }}
-          >
-            <Typography
-              variant="subtitle1"
-              sx={{ textTransform: "capitalize" }}
+                color: "#393939",
+              }}
             >
-              Clear
-            </Typography>
-          </Button> */}
+              <Typography
+                variant="subtitle1"
+                sx={{ textTransform: "capitalize" }}
+              >
+                Clear
+              </Typography>
+            </Button> */}
             <Button
               type="submit"
               disabled={
@@ -320,58 +282,4 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
   );
 };
 
-const grey = {
-  50: "#F3F6F9",
-  100: "#E5EAF2",
-  200: "#DAE2ED",
-  300: "#C7D0DD",
-  400: "#B0B8C4",
-  500: "#9DA8B7",
-  600: "#6B7A90",
-  700: "#434D5B",
-  800: "#303740",
-  900: "#1C2025",
-};
-const ListboxCategory = styled("ul")(
-  ({ theme }) => `
-     padding: 0;
-     min-width: 200px;   
-     font-family: "Roboto"
-     overflow: auto;
-     outline: 0px;
-     &:focus {
-          border-color: "red";
-        }
-     typography: {
-       fontFamily: 'Roboto',
-    },
-   
-     z-index: 1;
-     
-     `
-);
-const MenuItem = styled(BaseMenuItem)(
-  ({ theme }) => `
-     list-style: none;
-     padding: 8px;
-     border-radius: 8px;
-     user-select: none;
-   
-     &:last-of-type {
-       border-bottom: none;
-     }
-   
-     &:focus {
-   
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[100]
-       };
-       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-     }
-     &:active {
-       cursor: "grabbing",
-       transform: "scale(.80)",
-     }
-   
-     `
-);
+

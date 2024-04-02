@@ -5,34 +5,25 @@ import { useState } from "react";
 import { Dropdown } from "@mui/base/Dropdown";
 import { Menu } from "@mui/base/Menu";
 import { MenuButton as BaseMenuButton } from "@mui/base/MenuButton";
-import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
 import { CreateFood } from "@/components/admin/CreateFood";
-import { AdminFoodCard } from "@/components/foodMenu/FoodCard";
+import { AdminFoodCard } from "@/components/foodMenu/foodCard/AdminFoodCard";
 import Grid from "@mui/material/Grid";
 import { CreateCategory } from "@/components/admin/CreateNewCategory";
 import { AdminContext } from "@/components/utils/context/adminContext";
 import { EditCategoryName } from "@/components/admin/EditCategoryName";
 import { EmptyMenu } from "@/components/admin/MenuIsEmpty";
+import { MenuItem, grey } from "@/components/utils/styles";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
+
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [bgColor, setBgColor] = useState("white");
-  const [openCreateFood, setOpenCreateFood] = React.useState(false);
-  const [openCreateCategory, setOpenCreateCategory] = React.useState(false);
-  const [openEditCategoryName, setOpenEditCategoryName] = React.useState(false);
+  const [openCreateFood, setOpenCreateFood] = useState(false);
+  const [openCreateCategory, setOpenCreateCategory] = useState(false);
+  const [openEditCategoryName, setOpenEditCategoryName] = useState(false);
 
   const handleClickOpenCreateFood: () => void = () => {
     setOpenCreateFood(true);
@@ -172,7 +163,7 @@ export default function Home() {
                     ></EditCategoryName>
                     <MenuItem
                       sx={{ display: "flex", gap: 1 }}
-                      onClick={createHandleMenuClick("delete")}
+                      onClick={()=>createHandleMenuClick("delete")}
                     >
                       <DeleteOutlineIcon
                         style={{ color: "red" }}
@@ -259,7 +250,7 @@ export default function Home() {
             <Stack
               direction="row"
               alignItems="start"
-              sx={{ pl: 3, pt: 4, height: "80vh", overflow: "auto" }}
+              sx={{ pl: 3, pt: 4, minHeight: "80vh" }}
             >
               <Grid
                 container
@@ -290,18 +281,6 @@ export default function Home() {
   );
 }
 
-const grey = {
-  50: "#F3F6F9",
-  100: "#E5EAF2",
-  200: "#DAE2ED",
-  300: "#C7D0DD",
-  400: "#B0B8C4",
-  500: "#9DA8B7",
-  600: "#6B7A90",
-  700: "#434D5B",
-  800: "#303740",
-  900: "#1C2025",
-};
 
 const Listbox = styled("ul")(
   ({ theme }) => `
@@ -323,25 +302,6 @@ const Listbox = styled("ul")(
   `
 );
 
-const MenuItem = styled(BaseMenuItem)(
-  ({ theme }) => `
-  list-style: none;
-  padding: 8px;
-  border-radius: 8px;
-  user-select: none;
-  &:last-of-type {
-    border-bottom: none;
-  }
-  &:focus {
-    background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-  }
-  &:active {
-    cursor: "grabbing",
-    transform: "scale(.80)",
-  }
-  `
-);
 
 const MenuButton = styled(BaseMenuButton)(
   ({ theme }) => `

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Box, Typography } from "@mui/material";
 import BoxImage from "./utilsImages/Screenshot 2024-01-05 at 17.39 1.svg";
 
-export const ConnotFind = () => {
+export const CannotFind = () => {
   return (
     <Box
       sx={{

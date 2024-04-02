@@ -7,7 +7,7 @@ export default function Menu() {
   return (
     <>
       <Stack
-        height="59vh"
+        minHeight="59vh"
         alignItems="center"
         justifyContent="center"
         sx={{ overflow: "auto" }}

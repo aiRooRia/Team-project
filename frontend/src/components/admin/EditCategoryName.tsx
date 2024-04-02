@@ -10,15 +10,8 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { AdminContext } from "../utils/context/adminContext";
 import { useState } from "react";
+import { BootstrapDialog } from "../utils/styles";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
 
 interface CreateFoodProps {
   handleClose: () => void;

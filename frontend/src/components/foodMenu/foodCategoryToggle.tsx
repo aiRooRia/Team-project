@@ -23,6 +23,7 @@ export const FoodCategoryToggle = (): JSX.Element => {
         alignContent: "center",
         gap: 2,
         height: "5vh",
+        mt: 1,
       }}
     >
       <Box sx={{ width: "1200px", display: "flex", gap: "26px" }}>
