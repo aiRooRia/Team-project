@@ -31,21 +31,33 @@ export const PasswordRecovery = () => {
         height={"100%"}
         justifyContent={"center"}
         alignItems={"center"}
-      > <Stack  width={"1200px"}
-      height={"100%"}
-      justifyContent={"center"}
-      alignItems={"center"}>
-{currentStep === 0 && (
-          <StepOne
-            setCurrentStep={setCurrentStep}
-            currentStep={currentStep}
-          ></StepOne>
-        )}
-        {currentStep === 1 && <StepTwo setCurrentStep={setCurrentStep}
-            currentStep={currentStep}></StepTwo>}
-        {currentStep === 2 && <StepThree setCurrentStep={setCurrentStep}
-            currentStep={currentStep}></StepThree>}
-      </Stack>       
+      >
+        {" "}
+        <Stack
+          width={"1200px"}
+          height={"100%"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          {currentStep === 0 && (
+            <StepOne
+              setCurrentStep={setCurrentStep}
+              currentStep={currentStep}
+            ></StepOne>
+          )}
+          {currentStep === 1 && (
+            <StepTwo
+              setCurrentStep={setCurrentStep}
+              currentStep={currentStep}
+            ></StepTwo>
+          )}
+          {currentStep === 2 && (
+            <StepThree
+              setCurrentStep={setCurrentStep}
+              currentStep={currentStep}
+            ></StepThree>
+          )}
+        </Stack>
       </Stack>
     </>
   );

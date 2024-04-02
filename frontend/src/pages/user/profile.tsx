@@ -2,6 +2,7 @@ import Login from "@/components/login/index";
 import Footer from "@/components/layout/footer";
 import { Stack } from "@mui/material";
 import { UserProfile } from "@/components/layout/header/UserProfile";
+import { UserProfileIndex } from "@/components/layout/userProfile.tsx";
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
           width={"1200px"}
         >
           {" "}
-          <UserProfile></UserProfile>
+          <UserProfileIndex></UserProfileIndex>
         </Stack>
       </Stack>
       <Footer />
