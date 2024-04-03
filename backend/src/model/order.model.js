@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { COLLECTIONS } from "../constant";
+import { COLLECTIONS } from "../constant/index.js";
 
 export const OrderSchema = new Schema({
   userId: {
@@ -7,26 +7,46 @@ export const OrderSchema = new Schema({
     required: true,
     ref: COLLECTIONS.USER,
   },
-  orderNumber: Number,
+  orderNumber: {
+    type: Number,
+    required: true,
+  },
   foods: [
     {
-      type: Schema.Types.ObjectId,
-      ref: COLLECTIONS.FOOD
+      type: [Schema.Types.ObjectId],
+      ref: COLLECTIONS.FOOD,
     },
   ],
-  totalPrice: Int8Array,   
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
   process: {
     type: String,
-    enum: ["PENDING", "SUCCESS"],
+    enum: ["Progress", "Delivered", "Waiting", "Active"],
+    default: "WAITING",
   },
   createdDate: {
     type: Date,
     default: Date.now,
   },
-  distring: String,
-  khoroo: String,
-  apartment: String,
+  distring: {
+    type: String,
+    required: true,
+  },
+  khoroo: {
+    type: String,
+    required: true,
+  },
+  apartment: {
+    type: String,
+    required: true,
+  },
+  payment: {
+    type: String,
+    enum: ["Paid", "Not Paid"],
+    default: "Not Paid"
+  },
 });
-
 
 export const OrderModel = model("orders", OrderSchema);

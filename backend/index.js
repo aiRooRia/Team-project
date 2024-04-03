@@ -1,9 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
-import { CategoryModel } from "./src/model/category.model.js";
-import { UserModel } from "./src/model/user.model.js";
 import dotenv from "dotenv";
-import { FoodModel } from "./src/model/food.model.js";
+import { OrderModel } from "./src/model/order.model.js";
+import { order } from "./src/router/orders.js";
+import { user } from "./src/router/users.js";
+import { category } from "./src/router/categories.js";
+import { food } from "./src/router/foods.js";
+
 
 const port = 9000;
 const app = express();
@@ -16,11 +19,19 @@ mongoose
   .then(() => console.log(`database connected successfully`))
   .catch((err) => console.log(err));
 
+
+
+  
 app.put("/user", (req, res) => {
   res.send("successful");
 });
+app.use("/user", user);
+app.use("/category", category);
+app.use("/food", food);
+app.use("/order", order);
 
-app.post("/user", async (req, res) => {
+
+app.post("/order", async (req, res) => {
   // const data = await CategoryModel.create({
   //   name: "test",
   //   something: "helloo",
@@ -33,20 +44,38 @@ app.post("/user", async (req, res) => {
   //   phoneNumber: "2341324132",
   //   role: "hi",
   // });
+  // try {
+  //   const food = await FoodModel.create({
+  //     name: "tsuivan",
+  //     image: "image",
+  //     ingredients: "mah guril",
+  //     price: 10000,
+  //     categoryId: "660cdba387805ebf6fc92fcd",
+  //   });
+  //   console.log(food);
+  // } catch (e) {
+  //   console.error(e);
+  // }
   try {
-    const food = await FoodModel.create({
-      name: "tsuivan",
-      image: "image",
-      ingredients: "mah guril",
-      price: 10000,
-      categoryId: "660cdba387805ebf6fc92fcd",
+    const order = await OrderModel.create({
+      userId: "660cdd6fcacdca233ac8cce7",
+      orderNumber: 1,
+      foods: [
+        "660cdf9aa2b28c343accd112",
+      ],
+      totalPrice: 10000,   
+      process: "PENDING",
+      distring: "Sukhbaatar",
+      khoroo: "1",
+      apartment: "2",
     });
-    console.log(food);
+    console.log(order);
   } catch (e) {
     console.error(e);
   }
   res.send("ajillaaa");
 });
+console.log( Date.now , "date----");
 
 app.listen(port, () => {
   console.log(`Create new port http://localhost:${port}`);
