@@ -1,17 +1,8 @@
-import { Box, Avatar, Typography, Button, Stack } from "@mui/material";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import CallIcon from "@mui/icons-material/Call";
-import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
-import HistoryIcon from "@mui/icons-material/History";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { green } from "@mui/material/colors";
-import EditIcon from "@mui/icons-material/Edit";
+import { Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { UserProfile } from "./userProfile";
 import { UserContext } from "@/components/utils/context/userContext";
-import { EditUserProfile } from "../header/editUserProfile";
-
+import { UserProfile } from "./UserProfile";
 export const UserProfileIndex = () => {
   const [modal, setModal] = useState(false);
   const handleModalToggle = () => {
@@ -82,18 +73,10 @@ export const UserProfileIndex = () => {
   return (
     <>
       <Stack>
-        {currentStep === 0 && (
-          <UserProfile
-            setCurrentStep={setCurrentStep}
-            currentStep={currentStep}
-          ></UserProfile>
-        )}
-        {currentStep === 1 && (
-          <EditUserProfile
-            setCurrentStep={setCurrentStep}
-            currentStep={currentStep}
-          ></EditUserProfile>
-        )}
+        <UserProfile
+          setCurrentStep={setCurrentStep}
+          currentStep={currentStep}
+        ></UserProfile>
       </Stack>
     </>
   );

@@ -1,42 +1,47 @@
-import React, { createContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+  FC,
+} from "react";
 
-interface SignUpUserInfo {
+type TSignUpUserInfo = {
   name: string;
   email: string;
   password: string;
   location: string;
-}
+};
 
-interface TPasswordRecoveryUsers {
+type TPasswordRecoveryUsers = {
   email: string;
   newPassword: string;
   passwordRecoveryCode: string;
-}
+};
 
-interface TUserProfile {
+type TUserProfile = {
   name: string;
   phone: string;
   email: string;
-}
-
-interface ContextProps {
-  signUpUserInfo: SignUpUserInfo;
-  setSignUpUserInfo: React.Dispatch<React.SetStateAction<SignUpUserInfo>>;
-  passwordRecoveryUser: TPasswordRecoveryUsers;
-  setPasswordRecoveryUser: React.Dispatch<
-    React.SetStateAction<TPasswordRecoveryUsers>
-  >;
-  userProfile: TUserProfile;
-  setUserProfile: React.Dispatch<React.SetStateAction<TUserProfile>>;
-}
-
-const initialUserProfile: TUserProfile = {
-  name: "",
-  phone: "",
-  email: "",
 };
 
-const initialUserInfo: SignUpUserInfo = {
+type TContextProps = {
+  signUpUserInfo: TSignUpUserInfo;
+  setSignUpUserInfo: Dispatch<SetStateAction<TSignUpUserInfo>>;
+  passwordRecoveryUser: TPasswordRecoveryUsers;
+  setPasswordRecoveryUser: Dispatch<SetStateAction<TPasswordRecoveryUsers>>;
+  userProfile: TUserProfile;
+  setUserProfile: Dispatch<SetStateAction<TUserProfile>>;
+};
+
+const initialUserProfile: TUserProfile = {
+  name: "Ariguun",
+  phone: "88818657",
+  email: "ariguun10@gmail.com",
+};
+
+const initialUserInfo: TSignUpUserInfo = {
   name: "",
   email: "",
   password: "",
@@ -49,7 +54,7 @@ const initialPasswordRecoveryUser: TPasswordRecoveryUsers = {
   passwordRecoveryCode: "",
 };
 
-const initialContextState: ContextProps = {
+const initialContextState: TContextProps = {
   signUpUserInfo: initialUserInfo,
   setSignUpUserInfo: () => {},
   passwordRecoveryUser: initialPasswordRecoveryUser,
@@ -58,18 +63,18 @@ const initialContextState: ContextProps = {
   setUserProfile: () => {},
 };
 
-export const UserContext = createContext<ContextProps>(initialContextState);
+export const UserContext = createContext<TContextProps>(initialContextState);
 
-export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
+export const UserContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [signUpUserInfo, setSignUpUserInfo] =
-    useState<SignUpUserInfo>(initialUserInfo);
+    useState<TSignUpUserInfo>(initialUserInfo);
   const [passwordRecoveryUser, setPasswordRecoveryUser] =
     useState<TPasswordRecoveryUsers>(initialPasswordRecoveryUser);
   const [userProfile, setUserProfile] =
     useState<TUserProfile>(initialUserProfile);
-  const contextValue: ContextProps = {
+  const contextValue: TContextProps = {
     signUpUserInfo,
     setSignUpUserInfo,
     passwordRecoveryUser,
