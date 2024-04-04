@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import { COLLECTIONS } from "../constant/index.js";
 
 export const FoodSchema = new Schema({
   name: {type: String, required : true},
@@ -8,4 +9,4 @@ export const FoodSchema = new Schema({
   discountRate : {type: Number}
 });
 
-export const FoodModel = model("foods", FoodSchema);
+export const FoodModel = model(COLLECTIONS.FOOD, FoodSchema);

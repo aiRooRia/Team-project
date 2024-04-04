@@ -49,4 +49,4 @@ export const OrderSchema = new Schema({
   },
 });
 
-export const OrderModel = model("orders", OrderSchema);
+export const OrderModel = model(COLLECTIONS.ORDER, OrderSchema);

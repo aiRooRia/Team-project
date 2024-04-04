@@ -6,7 +6,8 @@ export const getFood = async (req, res) => {
       const data = await FoodModel.findById(id);
     console.log(data);
   
-    res.send(data);
+//     res.send(data);
+res.send("food ajillaa")
     } catch (err) {
       console.log(err);
     }
