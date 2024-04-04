@@ -21,13 +21,14 @@ app.get("/", (req, res) => {
   res.send("ajillaa");
 });
 app.get("/test", (req, res) => {
-     res.send("test ajillaa");
-   });
+  res.send("test ajillaa");
+});
 
-app.use("/user", user)
-app.use("/category", category)
-app.use("/food", food)
-app.use("/order", order)
+app.use("/user", user);
+app.use("/category", category);
+app.use("/food", food);
+app.use("/order", order);
+
 
 app.listen(port, () => {
   console.log(`Create new port http://localhost:${port}`);

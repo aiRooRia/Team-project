@@ -13,7 +13,7 @@ export const OrderSchema = new Schema({
   },
   foods: [
     {
-      type: [Schema.Types.ObjectId],
+      type: Schema.Types.ObjectId,
       ref: COLLECTIONS.FOOD,
     },
   ],
@@ -24,7 +24,7 @@ export const OrderSchema = new Schema({
   process: {
     type: String,
     enum: ["Progress", "Delivered", "Waiting", "Active"],
-    default: "WAITING",
+    default: "Waiting",
   },
   createdDate: {
     type: Date,

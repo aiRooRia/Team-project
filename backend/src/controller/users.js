@@ -44,6 +44,16 @@ export const createUser = async (req, res) => {  //signup -d ashiglana
   }
 }
 
+// export const createUser = async (req, res) => {  //signup -d ashiglana
+//   try{
+//     const newUser = await UserModel.create({name: "Bat", email: "bat@gmail.com", password: "12345678", phoneNumber: "00000000"});
+//     res.send(newUser)
+//   }
+//   catch(err){
+//     console.log(err);
+//   }
+// }
+
 export const updateUser = async (req, res) => {   //edit profile-d ashiglana
   const {id, name, email, phoneNumber} = req.body
   try{
