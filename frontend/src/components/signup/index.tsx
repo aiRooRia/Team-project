@@ -39,6 +39,7 @@ export const Signup: FC = () => {
   };
   const { push } = useRouter();
 
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT
   const formikSignUp = useFormik<FromValues>({
     initialValues: {
       name: "",
@@ -52,7 +53,7 @@ export const Signup: FC = () => {
       setWarningMessage("");
 
       try {
-        const data = await fetch(`http://localhost:9000/user`, {
+        const data = await fetch(`${ENDPOINT_URL}/user`, {
           method: "POST",
           headers: {
             Accept: "application/json, text/plain, */*",
