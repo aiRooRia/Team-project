@@ -1,10 +1,11 @@
 import Login from "@/components/login/index";
 import Footer from "@/components/layout/footer";
 import { Stack } from "@mui/material";
-import { UserProfile } from "@/components/layout/header/UserProfile";
+// import { UserProfile } from "@/components/layout/header/UserProfile";
 import { UserProfileIndex } from "@/components/layout/userProfile";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const ProfilePage = () => {
   return (
     <>
       <Stack height="59vh" alignItems="center" justifyContent="center">
@@ -18,7 +19,9 @@ export default function Home() {
           <UserProfileIndex></UserProfileIndex>
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
 }
+ProfilePage.getLayout = getUserLayout;
+
+export default ProfilePage;

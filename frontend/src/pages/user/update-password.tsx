@@ -2,8 +2,9 @@ import Footer from "@/components/layout/footer";
 import { PasswordRecovery } from "@/components/login/passwordRecovery";
 import { Signup } from "@/components/signup";
 import { Stack } from "@mui/material";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const UpdatePasswordPage = () => {
   return (
     <>
       <Stack height="59vh" alignItems="center" justifyContent="center">
@@ -17,7 +18,9 @@ export default function Home() {
           <PasswordRecovery></PasswordRecovery>
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
 }
+UpdatePasswordPage.getLayout = getUserLayout;
+
+export default UpdatePasswordPage;

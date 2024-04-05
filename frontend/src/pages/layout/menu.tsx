@@ -2,8 +2,9 @@ import Login from "@/components/login/index";
 import Footer from "@/components/layout/footer";
 import { Stack } from "@mui/material";
 import { FoodMenu } from "@/components/foodMenu";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Menu() {
+const MenuPage = () => {
   return (
     <>
       <Stack
@@ -22,7 +23,10 @@ export default function Menu() {
           <FoodMenu></FoodMenu>
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
 }
+
+MenuPage.getLayout = getUserLayout;
+
+export default MenuPage;

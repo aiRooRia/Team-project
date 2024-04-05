@@ -11,8 +11,9 @@ import { Icon1, Icon2, Icon3, Icon4 } from "@/components/mainIndex/IndexIcons";
 import { IndexCard } from "@/components/mainIndex/IndexCard";
 import { Image1, Image2 } from "@/components/mainIndex/Images";
 import { IndexAllMenu } from "@/components/mainIndex/IndexAllMenu";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const Home = () => {
   const cardInfo = [
     {
       icon: Icon1,
@@ -142,7 +143,10 @@ export default function Home() {
           <DiscountFoodCard></DiscountFoodCard> */}
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
-}
+};
+
+Home.getLayout = getUserLayout;
+
+export default Home;

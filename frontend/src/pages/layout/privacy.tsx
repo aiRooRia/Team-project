@@ -1,10 +1,11 @@
 import Footer from "@/components/layout/footer";
 import { Stack, Box, Typography } from "@mui/material";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const PrivacyPage = () => {
   return (
     <>
-      <Stack height="59vh" alignItems={"center"} justifyContent={"center"}>
+      <Stack minHeight="59vh" alignItems={"center"} justifyContent={"center"} paddingY={2}>
         <Stack
           width={"1200px"}
           height={"93%"}
@@ -92,7 +93,10 @@ export default function Home() {
           </Box>
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
 }
+
+PrivacyPage.getLayout = getUserLayout;
+
+export default PrivacyPage;
