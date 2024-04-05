@@ -1,10 +1,11 @@
 import Footer from "@/components/layout/footer";
 import { Stack, Box, Typography } from "@mui/material";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const TermsPage = () => {
   return (
     <>
-      <Stack height="59vh" alignItems={"center"} justifyContent={"center"}>
+      <Stack minHeight="59vh" alignItems={"center"} justifyContent={"center"} paddingY={2}>
         <Stack
           width={"1200px"}
           height={"93%"}
@@ -13,7 +14,7 @@ export default function Home() {
           spacing={"10px"}
         >
           <Stack
-            direction={"row"}
+            direction={"row"} 
             alignItems={"center"}
             justifyContent={"center"}
             spacing={1}
@@ -92,7 +93,10 @@ export default function Home() {
           </Box>
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
 }
+
+TermsPage.getLayout = getUserLayout;
+
+export default TermsPage;

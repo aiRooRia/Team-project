@@ -17,9 +17,10 @@ import { AdminContext } from "@/components/utils/context/adminContext";
 import { EditCategoryName } from "@/components/admin/EditCategoryName";
 import { EmptyMenu } from "@/components/admin/MenuIsEmpty";
 import { MenuItem, grey } from "@/components/utils/styles";
+import { getAdminLayout } from "@/components/layout/AdminLayout";
 
 
-export default function Home() {
+const AdminHome = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openCreateFood, setOpenCreateFood] = useState(false);
   const [openCreateCategory, setOpenCreateCategory] = useState(false);
@@ -317,3 +318,7 @@ const MenuButton = styled(BaseMenuButton)(
     background-color: "red"
   }  `
 );
+
+AdminHome.getLayout = getAdminLayout;
+
+export default AdminHome;

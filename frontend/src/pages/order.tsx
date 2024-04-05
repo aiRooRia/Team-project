@@ -1,7 +1,12 @@
 import { Stack } from "@mui/material";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home (){
+const Order = () => {
     return (
         <Stack></Stack>
     )
 }
+
+Order.getLayout = getUserLayout;
+
+export default Order;

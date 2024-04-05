@@ -1,8 +1,9 @@
 import Footer from "@/components/layout/footer";
 import { Signup } from "@/components/signup";
 import { Stack } from "@mui/material";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const SignUpPage = () => {
   return (
     <>
       <Stack height="59vh" alignItems="center" justifyContent="center">
@@ -17,7 +18,10 @@ export default function Home() {
           <Signup></Signup>
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
 }
+
+SignUpPage.getLayout = getUserLayout;
+
+export default SignUpPage;

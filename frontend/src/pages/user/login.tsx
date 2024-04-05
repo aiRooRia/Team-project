@@ -1,8 +1,9 @@
 import Login from "@/components/login/index";
 import Footer from "@/components/layout/footer";
 import { Stack } from "@mui/material";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const LoginPage = () => {
   return (
     <>
       <Stack height="59vh" alignItems="center" justifyContent="center">
@@ -16,7 +17,9 @@ export default function Home() {
           <Login></Login>
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
 }
+LoginPage.getLayout = getUserLayout;
+
+export default LoginPage;

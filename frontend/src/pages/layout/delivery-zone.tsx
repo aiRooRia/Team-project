@@ -5,8 +5,9 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 import { List, ListItem, ListItemText } from "@mui/material";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const DeliveryPage = () => {
   const list = [
     "Нархан хотхон",
     "26-р байр",
@@ -122,7 +123,10 @@ export default function Home() {
           </Stack>
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
 }
+
+DeliveryPage.getLayout = getUserLayout;
+
+export default DeliveryPage;
