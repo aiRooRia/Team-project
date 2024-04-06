@@ -5,9 +5,10 @@ import { user } from "./src/router/users.js";
 import { category } from "./src/router/category.js";
 import { food } from "./src/router/food.js";
 import { order } from "./src/router/order.js";
-
+import cors from "cors";
 const port = 9000;
 const app = express();
+app.use(cors());
 app.use(express.json());
 dotenv.config();
 
