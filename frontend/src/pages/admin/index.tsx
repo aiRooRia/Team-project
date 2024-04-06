@@ -18,13 +18,31 @@ import { EditCategoryName } from "@/components/admin/EditCategoryName";
 import { EmptyMenu } from "@/components/admin/MenuIsEmpty";
 import { MenuItem, grey } from "@/components/utils/styles";
 import { getAdminLayout } from "@/components/layout/AdminLayout";
+import { useContext } from "react";
+import { useEffect } from "react";
+import { AdminDiscountFoodCard } from "@/components/foodMenu/foodCard/AdminDiscountFoodCart";
 
-
+type TCategotyData = {
+  name: string;
+};
+type TFoodItem = {
+  name: string;
+  price: number;
+  image: string;
+  category:string;
+  discountRate: number;
+};
 const AdminHome = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openCreateFood, setOpenCreateFood] = useState(false);
   const [openCreateCategory, setOpenCreateCategory] = useState(false);
   const [openEditCategoryName, setOpenEditCategoryName] = useState(false);
+  const { newCategoryInfo, setNewCategoryInfo } = useContext(AdminContext);
+  const [categoryTitle, setCategoryTitle] = useState("All food");
+  const [allCategory, setAllCategory] = useState<TCategotyData[]>([]);
+  const [allFood, setAllFood] = useState<TFoodItem[]>([]);
+  const [filteredFood, setFilteredFood] = useState<TFoodItem[]>([]);
+  let filterByCategoryFoods =[];
 
   const handleClickOpenCreateFood: () => void = () => {
     setOpenCreateFood(true);
@@ -44,16 +62,102 @@ const AdminHome = () => {
   const handleClickOpenEditCategoryName: () => void = () => {
     setOpenEditCategoryName(true);
   };
-  const createHandleMenuClick = (menuItem: string) => {
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
+  const fetchCategoryData = async () => {
+    try {
+      const data = await fetch(`${ENDPOINT_URL}/category/all-categories`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      }).then((data) => data.json());
+      setAllCategory(data);
+
+      console.log(allCategory, "allcategory deer");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchFoodData = async () => {
+    try {
+      const data = await fetch(`${ENDPOINT_URL}/food/all-foods`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      }).then((data) => data.json());
+
+      console.log(data, "allFooddata ");
+      setAllFood(data);
+      setFilteredFood(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(allCategory, "allcategory door");
+
+  const handleDeleteCategory = async (menuItem: string) => {
+    try {
+      const data = await fetch(`${ENDPOINT_URL}/category`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: menuItem }),
+      }).then((data) => data.json());
+    } catch (err) {
+      console.log(err);
+    }
     return () => {
-      console.log(`Clicked on ${menuItem}`);
+      console.log(`deleted ${menuItem}`);
     };
   };
-  const createFood = () => {};
+  function capitalizeFirstLetter(inputText: string) {
+    if (!inputText || typeof inputText !== "string") {
+      return "";
+    }
+    return inputText.charAt(0).toUpperCase() + inputText.slice(1).toLowerCase();
+  }
+  const pushNewCategoryToAllCategory = (newCategory: string) => {
+    setAllCategory((prevCategories: TCategotyData[]) => [
+      ...prevCategories,
+      { name: capitalizeFirstLetter(newCategory) },
+    ]);
+    setNewCategoryInfo("");
+  };
+  const handleCategory = (categoryName: string) => {
+    setSelectedCategory(categoryName);
+ setCategoryTitle(categoryName);
+ const filteredFoods = allFood.filter((el) => el.category === categoryName);
+ setFilteredFood(filteredFoods);
+  };
+  useEffect(() => {
+    console.log(newCategoryInfo, "useeffect, newcategoryinfo");
+    if (
+      newCategoryInfo !== "" &&
+      !allCategory.some(
+        (category) => category.name === capitalizeFirstLetter(newCategoryInfo)
+      )
+    ) {
+      pushNewCategoryToAllCategory(newCategoryInfo);
+      console.log(allCategory, "useeffect allcategory");
+    }
+
+    console.log("useeffect ajillaa");
+  }, [newCategoryInfo]);
+  useEffect(() => {
+    fetchCategoryData();
+    fetchFoodData();
+  }, []);
+  useEffect(()=>{},[filteredFood])
   return (
     <Stack
       width="100%"
-      height="94vh"
+      minHeight="94vh"
+      // maxHeight={"150vh"}
       sx={{ flexDirection: "row", position: "relative" }}
     >
       <Stack
@@ -69,7 +173,7 @@ const AdminHome = () => {
 
       <Stack
         width="100%"
-        height="94vh"
+        minHeight="94vh"
         direction="row"
         justifyContent="center"
         alignItems="center"
@@ -81,7 +185,7 @@ const AdminHome = () => {
       >
         <Stack
           maxWidth="lg"
-          height="94vh"
+          minHeight="94vh"
           direction="row"
           sx={{ width: "1200px" }}
         >
@@ -89,7 +193,7 @@ const AdminHome = () => {
             direction="column"
             spacing={2}
             width="28%"
-            height="95vh"
+            minHeight="94vh"
             sx={{
               overflow: "auto",
               backgroundColor: "white",
@@ -104,78 +208,82 @@ const AdminHome = () => {
               Food menu
             </Typography>
             <Stack direction="column" spacing={2}>
-              <Stack
-                onClick={() => setSelectedCategory("Desserts")}
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                sx={{
-                  cursor: "default",
-                  ":hover": {
-                    cursor: "pointer",
-                  },
-                  ":active": {
-                    transform: "scale(.99)",
-                  },
-                  border: 1,
-                  borderColor: "lightgray",
-                  borderRadius: 2,
-                  paddingX: 1,
-                  paddingY: 0.75,
-                  backgroundColor:
-                    selectedCategory === "Desserts" ? "#18BA51" : "white",
-                  color: selectedCategory === "Desserts" ? "white" : "black",
-                }}
-              >
-                <Typography variant="subtitle1">Desserts</Typography>
-                <Dropdown>
-                  <MenuButton
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      backgroundColor:
-                        selectedCategory === "Desserts" ? "#18BA51" : "white",
-                      borderColor:
-                        selectedCategory === "Desserts" ? "#18BA51" : "white",
-                      height: "22px",
-                      ":active": {
-                        cursor: "grabbing",
-                      },
-                    }}
-                  >
-                    <MoreVertIcon
+              {allCategory?.map((el, i) => (
+                <Stack
+                  key={i}
+                  onClick={() => handleCategory(el.name)}
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{
+                    cursor: "default",
+                    ":hover": {
+                      cursor: "pointer",
+                    },
+                    ":active": {
+                      transform: "scale(.99)",
+                    },
+                    border: 1,
+                    borderColor: "lightgray",
+                    borderRadius: 2,
+                    paddingX: 1,
+                    paddingY: 0.75,
+                    backgroundColor:
+                      selectedCategory === el.name ? "#18BA51" : "white",
+                    color: selectedCategory === el.name ? "white" : "black",
+                  }}
+                >
+                  <Typography variant="subtitle1">{el.name}</Typography>
+                  <Dropdown>
+                    <MenuButton
                       sx={{
-                        color:
-                          selectedCategory === "Desserts" ? "white" : "black",
+                        display: "flex",
+                        alignItems: "center",
+                        backgroundColor:
+                          selectedCategory === el.name ? "#18BA51" : "white",
+                        borderColor:
+                          selectedCategory === el.name ? "#18BA51" : "white",
+                        height: "22px",
+                        ":active": {
+                          cursor: "grabbing",
+                        },
                       }}
-                    ></MoreVertIcon>
-                  </MenuButton>
-                  <Menu slots={{ listbox: Listbox }}>
-                    <MenuItem
-                      sx={{ display: "flex", gap: 1 }}
-                      onClick={handleClickOpenEditCategoryName}
                     >
-                      <EditIcon></EditIcon>
-                      <Typography variant="body1">Edit name</Typography>
-                    </MenuItem>
-                    <EditCategoryName
-                      handleClose={handleCloseEditCategoryName}
-                      open={openEditCategoryName}
-                    ></EditCategoryName>
-                    <MenuItem
-                      sx={{ display: "flex", gap: 1 }}
-                      onClick={()=>createHandleMenuClick("delete")}
-                    >
-                      <DeleteOutlineIcon
-                        style={{ color: "red" }}
-                      ></DeleteOutlineIcon>
-                      <Typography color="red" variant="body1">
-                        Delete category
-                      </Typography>
-                    </MenuItem>
-                  </Menu>
-                </Dropdown>
-              </Stack>
+                      <MoreVertIcon
+                        sx={{
+                          color:
+                            selectedCategory === el.name ? "white" : "black",
+                        }}
+                      ></MoreVertIcon>
+                    </MenuButton>
+                    <Menu slots={{ listbox: Listbox }}>
+                      <MenuItem
+                        sx={{ display: "flex", gap: 1 }}
+                        onClick={handleClickOpenEditCategoryName}
+                      >
+                        <EditIcon></EditIcon>
+                        <Typography variant="body1">Edit name</Typography>
+                      </MenuItem>
+                      <EditCategoryName
+                        handleClose={handleCloseEditCategoryName}
+                        open={openEditCategoryName}
+                      ></EditCategoryName>
+                      <MenuItem
+                        sx={{ display: "flex", gap: 1 }}
+                        onClick={() => handleDeleteCategory(el.name)}
+                      >
+                        <DeleteOutlineIcon
+                          style={{ color: "red" }}
+                        ></DeleteOutlineIcon>
+                        <Typography color="red" variant="body1">
+                          Delete category
+                        </Typography>
+                      </MenuItem>
+                    </Menu>
+                  </Dropdown>
+                </Stack>
+              ))}
+
               <Stack
                 onClick={handleClickOpenCreateCategory}
                 direction="row"
@@ -206,6 +314,9 @@ const AdminHome = () => {
               <CreateCategory
                 handleClose={handleCloseCreateCategory}
                 open={openCreateCategory}
+                newCategoryInfo={newCategoryInfo}
+                setNewCategoryInfo={setNewCategoryInfo}
+                capitalizeFirstLetter={capitalizeFirstLetter}
               ></CreateCategory>
             </Stack>
           </Stack>
@@ -217,7 +328,7 @@ const AdminHome = () => {
               sx={{ ml: 3, mt: 3, mb: "4px", height: "6vh" }}
             >
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                Desserts
+                {categoryTitle}
               </Typography>
               <Stack
                 onClick={handleClickOpenCreateFood}
@@ -262,17 +373,14 @@ const AdminHome = () => {
                 columnGap="35.5px"
                 rowGap="20px"
               >
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
-                <AdminFoodCard></AdminFoodCard>
+                {filteredFood.length > 0 ? filteredFood.map((el) =>
+                ( 
+                  el.discountRate === 0 || !el.discountRate ? (
+                    <AdminFoodCard foodName={el.name} foodPrice={el.price} foodImage={el.image} />
+                  ) : (
+                    <AdminDiscountFoodCard foodName={el.name} foodPrice={el.price} foodImage={el.image} discountRate={el.discountRate} />
+                  ))
+                ) : <EmptyMenu></EmptyMenu>}
               </Grid>
             </Stack>
           </Stack>
@@ -280,8 +388,7 @@ const AdminHome = () => {
       </Stack>
     </Stack>
   );
-}
-
+};
 
 const Listbox = styled("ul")(
   ({ theme }) => `
@@ -302,7 +409,6 @@ const Listbox = styled("ul")(
   z-index: 1;
   `
 );
-
 
 const MenuButton = styled(BaseMenuButton)(
   ({ theme }) => `

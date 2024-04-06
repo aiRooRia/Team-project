@@ -1,6 +1,8 @@
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
+import { AdminContextProvider } from "@/components/utils/context/adminContext";
+import { UserContextProvider } from "@/components/utils/context/userContext";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -12,5 +14,11 @@ type AppPropsWithLayout = AppProps & {
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(
+    <AdminContextProvider>
+      <UserContextProvider>
+      <Component {...pageProps} />
+      </UserContextProvider>
+    </AdminContextProvider>
+  );
 }
