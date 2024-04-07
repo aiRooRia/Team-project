@@ -28,7 +28,7 @@ export const CreateFood = ({ handleClose, open }: CreateFoodProps) => {
       foodIngredients: "",
       foodPrice: 0,
       isDiscount: false,
-      discountRate: "",
+      discountRate: 0,
       foodImage: "",
     },
     validationSchema: createFoodSchema,

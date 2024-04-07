@@ -1,31 +1,36 @@
 import React, { createContext, useState, ReactNode } from "react";
 
-interface NewCategoryInfo {
- name: string;
-}
+// type TNewCategoryInfo = {
+//   name: string;
+// };
 
-interface ContextProps {
- newCategoryInfo: NewCategoryInfo;
- setNewCategoryInfo: (info: NewCategoryInfo) => void;
-}
-
-// Correct the initial context state to match the ContextProps interface
-const initialContextState: ContextProps = {
- newCategoryInfo: { name: '' }, // Initialize with an empty object matching NewCategoryInfo
- setNewCategoryInfo: () => {},
+type TContextProps = {
+  newCategoryInfo: string;
+  setNewCategoryInfo: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const AdminContext = createContext<ContextProps>(initialContextState);
+const initialContextState: TContextProps = {
+  newCategoryInfo: "",
+  setNewCategoryInfo: () => {},
+};
 
-export const AdminContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
- const [newCategoryInfo, setNewCategoryInfo] = useState<NewCategoryInfo>({ name: '' });
+export const AdminContext = createContext<TContextProps>(initialContextState);
 
- const contextValue: ContextProps = {
+export const AdminContextProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [newCategoryInfo, setNewCategoryInfo] = useState<string>("");
+
+  console.log("this is new", newCategoryInfo);
+
+  const contextValue: TContextProps = {
     newCategoryInfo,
     setNewCategoryInfo,
- };
+  };
 
- return (
-    <AdminContext.Provider value={contextValue}>{children}</AdminContext.Provider>
- );
+  return (
+    <AdminContext.Provider value={contextValue}>
+      {children}
+    </AdminContext.Provider>
+  );
 };

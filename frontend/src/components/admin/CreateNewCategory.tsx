@@ -11,33 +11,79 @@ import CloseIcon from "@mui/icons-material/Close";
 import { AdminContext } from "../utils/context/adminContext";
 import { useState } from "react";
 import { BootstrapDialog } from "../utils/styles";
+import { useContext, ChangeEvent, useEffect } from "react";
 
-
-interface CreateFoodProps {
+type TCreateCategoryProps = {
   handleClose: () => void;
+  capitalizeFirstLetter: Function;
   open: boolean;
-}
+  newCategoryInfo: string;
+  setNewCategoryInfo: React.Dispatch<React.SetStateAction<string>>;
+};
 
-export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
-  const { newCategoryInfo, setNewCategoryInfo } =
-    React.useContext(AdminContext);
+export const CreateCategory = ({
+  handleClose,
+  capitalizeFirstLetter,
+  open,
+  newCategoryInfo,
+  setNewCategoryInfo,
+}: TCreateCategoryProps) => {
+  const [inputValue, setInputValue] = useState<string>("");
+  const [warningMessage, setWarningMessage] = useState<string>("");
   const [isClearCategoryName, setIsClearCategoryName] =
     useState<boolean>(false);
+  console.log(newCategoryInfo);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(isClearCategoryName);
-
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsClearCategoryName(false);
     if (isClearCategoryName) {
-      event.target.value == "";
+      event.target.value = "";
+    } else {
+      console.log(isClearCategoryName);
+      console.log(event.target.value);
+      setInputValue(event.target.value);
+
+      console.log(inputValue);
     }
-    setNewCategoryInfo({ name: event.target.value });
   };
+  console.log(inputValue);
   const handleClear = () => {
-    setNewCategoryInfo({ name: "" }); // Clear the input field by setting the name to an empty string
+    setInputValue("");
+    setWarningMessage("");
     setIsClearCategoryName(true);
   };
-  const label = { inputProps: { "aria-label": "Switch demo" } };
+
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setNewCategoryInfo(inputValue);
+    try {
+      const data = await fetch(`${ENDPOINT_URL}/category`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: capitalizeFirstLetter(inputValue) }),
+      });
+      const response = await data.json();
+      if (response.message) {
+        setWarningMessage(response.message);
+      } else if (response.success) {
+        handleClose();
+        setInputValue("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   console.log(newCategoryInfo);
+  useEffect(() => {
+    console.log(inputValue, "inputValue updated");
+  }, [inputValue]);
 
   return (
     <BootstrapDialog
@@ -76,8 +122,13 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
           <TextField
             onChange={handleInputChange}
             placeholder="Food name"
-            value={newCategoryInfo.name}
+            value={inputValue}
           />
+          {warningMessage && (
+            <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+              {warningMessage}
+            </Typography>
+          )}
         </Stack>
       </DialogContent>
       <DialogActions>
@@ -102,12 +153,14 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
           <Typography variant="subtitle1">Clear</Typography>
         </Stack>
         <Button
-          onClick={handleClose}
-          disabled={newCategoryInfo.name === ""}
+          onClick={handleSubmit}
+          disabled={inputValue.length === 0}
+          href=""
           sx={{
             ":hover": {
               cursor: "pointer",
             },
+            cursor: "pointer",
             ":active": {
               transform: "scale(0.97)",
             },
