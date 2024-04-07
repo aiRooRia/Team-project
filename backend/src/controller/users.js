@@ -114,17 +114,27 @@ function toUpperCaseLetter(inputText) {
 //   }
 // };
 export const updateUser = async (req, res) => {
-  //edit profile-d ashiglana
+  // edit profile-d ashiglana
   const { id, name, email, phoneNumber } = req.body;
+  console.log(req.body);
   try {
-    const updatedUserData = await UserModel.updateOne(
-      { _id: id },
-      { name: name, email: email, phoneNumber: phoneNumber }
-    );
-    res.send(updatedUserData);
-  } catch (err) {
-    console.log(err);
-  }
+    const checkUser = await UserModel.findOne({ email: email });
+    if (checkUser && checkUser._id.toString() !== id) {
+      // If email is found and belongs to a different user
+      return res.send({ message: "Бүртгэлтэй и-мэйл байна" });
+    } else {
+      try {
+        const updatedUserData = await UserModel.updateOne(
+          { _id: id },
+          { name: name, email: email, phoneNumber: phoneNumber }
+        );
+        res.send({ success: true });
+        // res.send(updatedUserData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  } catch (error) {}
 };
 
 export const getUserEmail = async (req, res) => {

@@ -18,6 +18,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import { FormikProvider, useFormik } from "formik";
 import { FromValues, userProfileSchema } from "./validationSchema";
+import CheckIcon from "@mui/icons-material/Check";
 
 interface StepOneProps {
   setCurrentStep: (step: number) => void;
@@ -35,6 +36,8 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
   const { userProfile, setUserProfile } = useContext(UserContext);
   const [disable, setDisable] = useState(true);
   const [saveButton, setSaveButton] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const handleButton = () => {
     setSaveButton(true);
   };
@@ -59,6 +62,25 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
     validationSchema: userProfileSchema,
     onSubmit: async (values) => {
       console.log(values);
+      try {
+        const data = await fetch(`http://localhost:9000/user`, {
+          method: "PUT",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+        const response = await data.json();
+        if (response.message) {
+          setWarningMessage(response.message);
+        } else if (response.success) {
+          console.log(response.success, "amjilltai");
+          setShowConfirmation(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
   const exitButtonStyle = {
@@ -110,6 +132,37 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
 
   return (
     <>
+      {showConfirmation && (
+        <Stack alignItems={"center"} spacing={2} sx={{ mt: "50px" }}>
+          <Box
+            sx={{
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+              borderRadius: "20px",
+              overflow: "hidden",
+              borderColor: "#18BA51",
+              borderStyle: "solid",
+              borderWidth: "1px",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.05)",
+              },
+            }}
+          >
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                px: "24px",
+                py: "10px",
+                borderRadius: "20px",
+              }}
+            >
+              <CheckIcon sx={{ color: "#18BA51" }} />
+              <Typography>Амжилттай хадгалагдлаа.</Typography>
+            </Stack>
+          </Box>{" "}
+        </Stack>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -298,6 +351,11 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
                         {formikUserProfile.errors.email}
                       </Typography>
                     ) : null}
+                    {warningMessage && (
+                      <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+                        {warningMessage}
+                      </Typography>
+                    )}
                   </Box>
                 </Stack>
                 <Button
