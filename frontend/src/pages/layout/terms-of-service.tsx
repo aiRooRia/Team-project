@@ -5,7 +5,7 @@ import { getUserLayout } from "@/components/layout/UserLayout";
 const TermsPage = () => {
   return (
     <>
-      <Stack minHeight="59vh" alignItems={"center"} justifyContent={"center"} paddingY={2}>
+      <Stack minHeight="58vh" alignItems={"center"} justifyContent={"center"} paddingY={2}>
         <Stack
           width={"1200px"}
           height={"93%"}

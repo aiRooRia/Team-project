@@ -1,8 +1,5 @@
 import { Stack, Typography, TextField, Button } from "@mui/material";
-import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
@@ -11,7 +8,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { AdminContext } from "../utils/context/adminContext";
 import { useState } from "react";
 import { BootstrapDialog } from "../utils/styles";
-
 
 interface CreateFoodProps {
   handleClose: () => void;
@@ -25,19 +21,15 @@ export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
     useState<boolean>(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(isClearCategoryName);
-
     if (isClearCategoryName) {
       event.target.value == "";
     }
-    setNewCategoryInfo({ name: event.target.value });
+    setNewCategoryInfo(event.target.value);
   };
   const handleClear = () => {
-    setNewCategoryInfo({ name: "" }); // Clear the input field by setting the name to an empty string
+    setNewCategoryInfo("");
     setIsClearCategoryName(true);
   };
-  const label = { inputProps: { "aria-label": "Switch demo" } };
-  console.log(newCategoryInfo);
 
   return (
     <BootstrapDialog
@@ -76,7 +68,7 @@ export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
           <TextField
             onChange={handleInputChange}
             placeholder="Food name"
-            value={newCategoryInfo.name}
+            value={newCategoryInfo}
           />
         </Stack>
       </DialogContent>
@@ -103,7 +95,7 @@ export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
         </Stack>
         <Button
           onClick={handleClose}
-          disabled={newCategoryInfo.name === ""}
+          disabled={newCategoryInfo === ""}
           sx={{
             ":hover": {
               cursor: "pointer",

@@ -70,7 +70,7 @@ const Home = () => {
                 Horem ipsum dolor sit amet, consectetur adipiscing elit.
               </Typography>
             </Stack>
-            <Stack sx={{ position: "relative", width: "100%", height: "59vh" }}>
+            <Stack sx={{ position: "relative", width: "100%", height: "58vh" }}>
               <Stack
                 sx={{
                   position: "absolute",

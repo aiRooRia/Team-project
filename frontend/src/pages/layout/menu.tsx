@@ -8,7 +8,7 @@ const MenuPage = () => {
   return (
     <>
       <Stack
-        minHeight="59vh"
+        minHeight="58vh"
         alignItems="center"
         justifyContent="center"
         sx={{ overflow: "auto" }}

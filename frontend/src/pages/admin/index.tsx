@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Dropdown } from "@mui/base/Dropdown";
 import { Menu } from "@mui/base/Menu";
 import { MenuButton as BaseMenuButton } from "@mui/base/MenuButton";
@@ -18,8 +18,6 @@ import { EditCategoryName } from "@/components/admin/EditCategoryName";
 import { EmptyMenu } from "@/components/admin/MenuIsEmpty";
 import { MenuItem, grey } from "@/components/utils/styles";
 import { getAdminLayout } from "@/components/layout/AdminLayout";
-import { useContext } from "react";
-import { useEffect } from "react";
 import { AdminDiscountFoodCard } from "@/components/foodMenu/foodCard/AdminDiscountFoodCart";
 
 type TCategotyData = {
@@ -29,20 +27,30 @@ type TFoodItem = {
   name: string;
   price: number;
   image: string;
-  category:string;
+  category: string;
   discountRate: number;
+  _id: string;
+  ingredients: string;
 };
 const AdminHome = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openCreateFood, setOpenCreateFood] = useState(false);
   const [openCreateCategory, setOpenCreateCategory] = useState(false);
   const [openEditCategoryName, setOpenEditCategoryName] = useState(false);
-  const { newCategoryInfo, setNewCategoryInfo } = useContext(AdminContext);
+  const {
+    newCategoryInfo,
+    setNewCategoryInfo,
+    newFoodInfo,
+    setNewFoodInfo,
+    deletedFoodId,
+    setDeletedFoodId,
+    editedFoodInfo,
+    setEditedFoodInfo,
+  } = useContext(AdminContext);
   const [categoryTitle, setCategoryTitle] = useState("All food");
   const [allCategory, setAllCategory] = useState<TCategotyData[]>([]);
   const [allFood, setAllFood] = useState<TFoodItem[]>([]);
   const [filteredFood, setFilteredFood] = useState<TFoodItem[]>([]);
-  let filterByCategoryFoods =[];
 
   const handleClickOpenCreateFood: () => void = () => {
     setOpenCreateFood(true);
@@ -73,8 +81,6 @@ const AdminHome = () => {
         },
       }).then((data) => data.json());
       setAllCategory(data);
-
-      console.log(allCategory, "allcategory deer");
     } catch (error) {
       console.log(error);
     }
@@ -88,15 +94,12 @@ const AdminHome = () => {
           "Content-Type": "application/json",
         },
       }).then((data) => data.json());
-
-      console.log(data, "allFooddata ");
       setAllFood(data);
       setFilteredFood(data);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(allCategory, "allcategory door");
 
   const handleDeleteCategory = async (menuItem: string) => {
     try {
@@ -121,6 +124,7 @@ const AdminHome = () => {
     }
     return inputText.charAt(0).toUpperCase() + inputText.slice(1).toLowerCase();
   }
+
   const pushNewCategoryToAllCategory = (newCategory: string) => {
     setAllCategory((prevCategories: TCategotyData[]) => [
       ...prevCategories,
@@ -128,14 +132,58 @@ const AdminHome = () => {
     ]);
     setNewCategoryInfo("");
   };
+  const pushNewFoodToAllFood = (newFood: TFoodItem) => {
+    setFilteredFood((prev: TFoodItem[]) => [
+      ...prev,
+      {
+        _id: newFood?._id,
+        name: newFood?.name,
+        price: newFood.price,
+        image: newFood.image,
+        category: newFood.category,
+        discountRate: newFood.discountRate,
+        ingredients: newFood.ingredients,
+      },
+    ]);
+  };
+  const dropDeletedFoodFromAllFood = (id: string) => {
+    setFilteredFood(filteredFood.filter((el) => el._id !== id));
+  };
+  const updateFoodFromAllFood = (editedFoodInfo: TFoodItem) => {
+    setFilteredFood(
+      filteredFood.map((el) =>
+        el._id === editedFoodInfo._id ? { ...el, ...editedFoodInfo } : el
+      )
+    );
+    setEditedFoodInfo({
+      _id: "",
+      name: "",
+      image: "",
+      ingredients: "",
+      price: 0,
+      discountRate: 0,
+      category: "",
+    });
+  };
   const handleCategory = (categoryName: string) => {
     setSelectedCategory(categoryName);
- setCategoryTitle(categoryName);
- const filteredFoods = allFood.filter((el) => el.category === categoryName);
- setFilteredFood(filteredFoods);
+    setCategoryTitle(categoryName);
+    const filteredFoods = allFood.filter((el) => el.category === categoryName);
+    setFilteredFood(filteredFoods);
   };
   useEffect(() => {
-    console.log(newCategoryInfo, "useeffect, newcategoryinfo");
+    if (deletedFoodId !== "") {
+      dropDeletedFoodFromAllFood(deletedFoodId);
+      setDeletedFoodId("");
+    }
+  }, [deletedFoodId]);
+
+  useEffect(() => {
+    if (editedFoodInfo._id !== "") {
+      updateFoodFromAllFood(editedFoodInfo);
+    }
+  }, [editedFoodInfo]);
+  useEffect(() => {
     if (
       newCategoryInfo !== "" &&
       !allCategory.some(
@@ -143,21 +191,31 @@ const AdminHome = () => {
       )
     ) {
       pushNewCategoryToAllCategory(newCategoryInfo);
-      console.log(allCategory, "useeffect allcategory");
     }
-
-    console.log("useeffect ajillaa");
   }, [newCategoryInfo]);
+  useEffect(() => {
+    if (newFoodInfo.name !== "") {
+      pushNewFoodToAllFood(newFoodInfo);
+      setNewFoodInfo({
+        _id: "",
+        name: "",
+        image: "",
+        ingredients: "",
+        price: 0,
+        discountRate: 0,
+        category: "",
+      });
+    }
+  }, [newFoodInfo]);
   useEffect(() => {
     fetchCategoryData();
     fetchFoodData();
   }, []);
-  useEffect(()=>{},[filteredFood])
+  useEffect(() => {}, [filteredFood]);
   return (
     <Stack
       width="100%"
       minHeight="94vh"
-      // maxHeight={"150vh"}
       sx={{ flexDirection: "row", position: "relative" }}
     >
       <Stack
@@ -356,9 +414,10 @@ const AdminHome = () => {
               <CreateFood
                 handleClose={handleCloseCreateFood}
                 open={openCreateFood}
+                setNewFoodInfo={setNewFoodInfo}
+                newFoodInfo={newFoodInfo}
               ></CreateFood>
             </Stack>
-            {/* <EmptyMenu></EmptyMenu> */}
             <Stack
               direction="row"
               alignItems="start"
@@ -373,14 +432,33 @@ const AdminHome = () => {
                 columnGap="35.5px"
                 rowGap="20px"
               >
-                {filteredFood.length > 0 ? filteredFood.map((el) =>
-                ( 
-                  el.discountRate === 0 || !el.discountRate ? (
-                    <AdminFoodCard foodName={el.name} foodPrice={el.price} foodImage={el.image} />
-                  ) : (
-                    <AdminDiscountFoodCard foodName={el.name} foodPrice={el.price} foodImage={el.image} discountRate={el.discountRate} />
-                  ))
-                ) : <EmptyMenu></EmptyMenu>}
+                {filteredFood.length > 0 ? (
+                  filteredFood.map((el) =>
+                    el.discountRate === 0 || !el.discountRate ? (
+                      <AdminFoodCard
+                        foodIngredients={el.ingredients}
+                        foodCategory={el.category}
+                        id={el._id}
+                        foodName={el.name}
+                        foodPrice={el.price}
+                        foodImage={el.image}
+                        discountRate={el.discountRate}
+                      />
+                    ) : (
+                      <AdminDiscountFoodCard
+                        foodIngredients={el.ingredients}
+                        foodCategory={el.category}
+                        id={el._id}
+                        foodName={el.name}
+                        foodPrice={el.price}
+                        foodImage={el.image}
+                        discountRate={el.discountRate}
+                      />
+                    )
+                  )
+                ) : (
+                  <EmptyMenu></EmptyMenu>
+                )}
               </Grid>
             </Stack>
           </Stack>

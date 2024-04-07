@@ -1,52 +1,41 @@
 import { Stack, Typography, TextField, Button } from "@mui/material";
-import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { AdminContext } from "../utils/context/adminContext";
 import { useState } from "react";
 import { BootstrapDialog } from "../utils/styles";
-import { useContext, ChangeEvent, useEffect } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 type TCreateCategoryProps = {
   handleClose: () => void;
   capitalizeFirstLetter: Function;
   open: boolean;
   newCategoryInfo: string;
-  setNewCategoryInfo: React.Dispatch<React.SetStateAction<string>>;
+  setNewCategoryInfo: Dispatch<SetStateAction<string>>;
 };
 
 export const CreateCategory = ({
   handleClose,
   capitalizeFirstLetter,
   open,
-  newCategoryInfo,
   setNewCategoryInfo,
 }: TCreateCategoryProps) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [warningMessage, setWarningMessage] = useState<string>("");
   const [isClearCategoryName, setIsClearCategoryName] =
     useState<boolean>(false);
-  console.log(newCategoryInfo);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsClearCategoryName(false);
     if (isClearCategoryName) {
       event.target.value = "";
     } else {
-      console.log(isClearCategoryName);
-      console.log(event.target.value);
       setInputValue(event.target.value);
-
-      console.log(inputValue);
     }
   };
-  console.log(inputValue);
   const handleClear = () => {
     setInputValue("");
     setWarningMessage("");
@@ -79,11 +68,6 @@ export const CreateCategory = ({
       console.log(error);
     }
   };
-
-  console.log(newCategoryInfo);
-  useEffect(() => {
-    console.log(inputValue, "inputValue updated");
-  }, [inputValue]);
 
   return (
     <BootstrapDialog
