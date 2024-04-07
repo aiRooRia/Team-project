@@ -413,6 +413,8 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
           </Box>
           <Button
             onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("role");
               handlePush("/");
               handleModalToggle();
             }}

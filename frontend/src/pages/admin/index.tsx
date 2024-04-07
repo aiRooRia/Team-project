@@ -19,6 +19,7 @@ import { EmptyMenu } from "@/components/admin/MenuIsEmpty";
 import { MenuItem, grey } from "@/components/utils/styles";
 import { getAdminLayout } from "@/components/layout/AdminLayout";
 import { AdminDiscountFoodCard } from "@/components/foodMenu/foodCard/AdminDiscountFoodCart";
+import { useRouter } from "next/router";
 
 type TCategotyData = {
   name: string;
@@ -33,6 +34,14 @@ type TFoodItem = {
   ingredients: string;
 };
 const AdminHome = () => {
+  const router = useRouter();
+  const {push} = router;
+useEffect(() => { 
+  const role = localStorage.getItem('role');
+  if (role !== "admin") {
+    push('/');
+  } 
+}, []);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openCreateFood, setOpenCreateFood] = useState(false);
   const [openCreateCategory, setOpenCreateCategory] = useState(false);

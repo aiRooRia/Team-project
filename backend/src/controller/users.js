@@ -2,22 +2,29 @@ import { UserModel } from "../model/user.model.js";
 import bcryct from "bcrypt";
 
 export const getUserByField = async (req, res) => {
-  //Login-d shiglana
+  //Login-d shiglana 
   const { email, password } = req.body;
   try {
-    const data = await UserModel.find({ email: email, password: password });
-
-    res.send(data);
-    const isValid = await bcryct.compare(password, data[0].password);
-    if (isValid) {
-      res.send({
-        success: true,
-      });
-    } else {
-      res.send({
-        message: "failed",
-      });
+    const data = await UserModel.find({ email: toUpperCaseLetter(email)});
+    if(data.length ==0){
+      res.send({message: "Бүртгэлгүй хэрэглэгч байна"});
+    } else{
+      const isValid = await bcryct.compare(password, data[0].password);
+      if (isValid) {
+        console.log(data, "data");
+        res.send({
+          token: data[0]._id,
+          role: data[0].role,
+          success: true,
+          
+        });
+      } else {
+        res.send({
+          message: "Нууц үг буруу байна",
+        });
+      }
     }
+    
   } catch (err) {
     console.log(err);
   }
@@ -47,14 +54,14 @@ export const createUser = async (req, res) => {
   const salt = bcryct.genSaltSync(1);
   const hashedPassword = await bcryct.hash(password, salt);
   try {
-    const existingUser = await UserModel.findOne({ email: email });
+    const existingUser = await UserModel.findOne({ email: toUpperCaseLetter(email) });
     if (existingUser) {
       return res.send({ message: "И-мэйл бүртгэлтэй байна" });
     } else {
       try {
         const newUser = await UserModel.create({
           name: name,
-          email: email,
+          email: toUpperCaseLetter(email),
           password: hashedPassword,
           phoneNumber: phoneNumber,
           address: address,
@@ -69,7 +76,43 @@ export const createUser = async (req, res) => {
     console.log(err);
   }
 };
-
+function capitalizeFirstLetter(inputText) {
+  if (!inputText || typeof inputText !== "string") {
+    return "";
+  }
+  return inputText.charAt(0).toUpperCase() + inputText.slice(1).toLowerCase();
+}
+function toUpperCaseLetter(inputText) {
+  return inputText.toLowerCase();
+}
+// export const createUser = async (req, res) => {
+//   //signup -d ashiglana
+//   const { name, email, password, phoneNumber, address } = req.body;
+//   const salt = bcryct.genSaltSync(1);
+//   const hashedPassword = await bcryct.hash("11111111", salt);
+//   try {
+//     const existingUser = await UserModel.findOne({ email: email });
+//     if (existingUser) {
+//       return res.send({ message: "И-мэйл бүртгэлтэй байна" });
+//     } else {
+//       try {
+//         const newUser = await UserModel.create({
+//           name: capitalizeFirstLetter("admin"),
+//           email: toUpperCaseLetter("admin@gmail.com"),
+//           password: hashedPassword,
+//           phoneNumber: "99999999",
+//           address: "баянзүрх",
+//         });
+//         // res.send(newUser);
+//         res.send({ success: true });
+//       } catch (err) {
+//         console.log(err);
+//       }
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 export const updateUser = async (req, res) => {
   //edit profile-d ashiglana
   const { id, name, email, phoneNumber } = req.body;

@@ -12,6 +12,5 @@ export const loginSchema = Yup.object().shape({
     .required("И-мэйл хаягаа оруулна уу *"),
   password: Yup.string()
     .nullable()
-    .min(8, "Нууц үг заавал 8 оронтой байх ёстой")
     .required("Нууц үгээ оруулна уу *"),
 });
