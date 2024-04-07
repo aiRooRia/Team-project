@@ -9,23 +9,22 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { EditFood } from "@/components/admin/EditFood";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import { DeleteFood } from "@/components/admin/DeleteFood";
 
 type TAdminFoodCardProps = {
   foodName: string;
   foodPrice: number;
   foodImage : string;
+  id: string;
+  foodCategory: string;
+  foodIngredients: string;
+  discountRate: number;
 }
-export const AdminFoodCard = ({foodName, foodPrice,foodImage } : TAdminFoodCardProps) => {
+export const AdminFoodCard = ({foodName, foodPrice,foodImage, id, foodCategory, foodIngredients,discountRate } : TAdminFoodCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [openEditFood, setOpenEditFood] = React.useState(false);
+  const [openEditFood, setOpenEditFood] = useState(false);
+  const [openDeleteFood, setOpenDeleteFood] = useState(false);
   const foodInfo = [
     {
       imgUrl: "/goyhool2.png",
@@ -53,8 +52,15 @@ export const AdminFoodCard = ({foodName, foodPrice,foodImage } : TAdminFoodCardP
   const handleClickOpenEditFood = () => {
     setOpenEditFood(true);
   };
+  const handleCloseDeleteFood: () => void = () => {
+    setOpenDeleteFood(false);
+  };
+  const handleClickOpenDeleteFood = () => {
+    setOpenDeleteFood(true);
+  };
   return (
     <Card
+    key={id}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -76,6 +82,7 @@ export const AdminFoodCard = ({foodName, foodPrice,foodImage } : TAdminFoodCardP
         <CardMedia
           component="img"
           alt="Өглөөний хоол"
+          // ref=""
           src={foodImage==="image" || !foodImage ? foodInfo[0].imgUrl : foodImage}
           loading="lazy"
           sx={{
@@ -133,11 +140,18 @@ export const AdminFoodCard = ({foodName, foodPrice,foodImage } : TAdminFoodCardP
             <EditFood
               handleClose={handleCloseEditFood}
               open={openEditFood}
+              foodName={foodName}
+              foodCategory={foodCategory}
+              foodPrice={foodPrice}
+              foodImage={foodImage}
+              _id={id}
+              foodIngredients={foodIngredients}
+              discountRate={discountRate}
             ></EditFood>
           </Box>
           <Box>
             <Box
-              onClick={handleClickOpenEditFood}
+              onClick={handleClickOpenDeleteFood}
               sx={{
                 position: "absolute",
                 top: "63%",
@@ -176,10 +190,12 @@ export const AdminFoodCard = ({foodName, foodPrice,foodImage } : TAdminFoodCardP
                 Delete
               </Typography>
             </Box>
-            <EditFood
-              handleClose={handleCloseEditFood}
-              open={openEditFood}
-            ></EditFood>
+            <DeleteFood
+              handleClose={handleCloseDeleteFood}
+              open={openDeleteFood}
+              id={id}
+              foodName={foodName}
+            ></DeleteFood>
           </Box>
         </>
         )}

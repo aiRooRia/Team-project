@@ -9,24 +9,22 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { EditFood } from "@/components/admin/EditFood";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import { DeleteFood } from "@/components/admin/DeleteFood";
 
 type TAdminDiscountFoodCardProps = {
     foodName: string;
     foodPrice: number;
     foodImage : string;
     discountRate: number;
+    id: string;
+    foodCategory: string;
+    foodIngredients: string;
   }
-export const AdminDiscountFoodCard = ({foodName, foodPrice, foodImage, discountRate}:TAdminDiscountFoodCardProps) => {
+export const AdminDiscountFoodCard = ({foodName, foodPrice, foodImage, discountRate, id, foodCategory, foodIngredients}:TAdminDiscountFoodCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [openEditFood, setOpenEditFood] = React.useState(false);
+  const [openEditFood, setOpenEditFood] = useState(false);
+  const [openDeleteFood, setOpenDeleteFood] = useState(false);
   const foodInfo = [
     {
       imgUrl: "/goyhool2.png",
@@ -57,8 +55,15 @@ export const AdminDiscountFoodCard = ({foodName, foodPrice, foodImage, discountR
   const handleClickOpenEditFood = () => {
     setOpenEditFood(true);
   };
+  const handleCloseDeleteFood: () => void = () => {
+    setOpenDeleteFood(false);
+  };
+  const handleClickOpenDeleteFood = () => {
+    setOpenDeleteFood(true);
+  };
   return (
     <Card
+    key={id}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -168,11 +173,18 @@ export const AdminDiscountFoodCard = ({foodName, foodPrice, foodImage, discountR
               <EditFood
                 handleClose={handleCloseEditFood}
                 open={openEditFood}
+                foodName={foodName}
+              foodCategory={foodCategory}
+              foodPrice={foodPrice}
+              foodImage={foodImage}
+              _id={id}
+              foodIngredients={foodIngredients}
+              discountRate={discountRate}
               ></EditFood>
             </Box>
             <Box>
               <Box
-                onClick={handleClickOpenEditFood}
+                onClick={handleClickOpenDeleteFood}
                 sx={{
                   position: "absolute",
                   top: "63%",
@@ -211,10 +223,12 @@ export const AdminDiscountFoodCard = ({foodName, foodPrice, foodImage, discountR
                   Delete
                 </Typography>
               </Box>
-              <EditFood
-                handleClose={handleCloseEditFood}
-                open={openEditFood}
-              ></EditFood>
+              <DeleteFood
+                handleClose={handleCloseDeleteFood}
+                open={openDeleteFood}
+                id={id}
+              foodName={foodName}
+              ></DeleteFood>
             </Box>
           </>
         )}

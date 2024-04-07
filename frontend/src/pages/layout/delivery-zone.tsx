@@ -19,7 +19,7 @@ const DeliveryPage = () => {
   ];
   return (
     <>
-      <Stack height="59vh" alignItems={"center"} justifyContent={"start"}>
+      <Stack height="58vh" alignItems={"center"} justifyContent={"start"}>
         {/* <Box
           sx={{
             width: "1200px",

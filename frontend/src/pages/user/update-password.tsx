@@ -7,7 +7,7 @@ import { getUserLayout } from "@/components/layout/UserLayout";
 const UpdatePasswordPage = () => {
   return (
     <>
-      <Stack height="59vh" alignItems="center" justifyContent="center">
+      <Stack height="58vh" alignItems="center" justifyContent="center">
         <Stack
           height="100%"
           alignItems="center"
