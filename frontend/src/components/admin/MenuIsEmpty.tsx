@@ -34,7 +34,7 @@ export const EmptyMenu = () => {
         </g>
       </svg>
       <Typography variant="body1" sx={{ marginTop: "40px" }} color="gray">
-        Уучлаарай, Таны меню хоосон байна.
+        Уучлаарай, Меню хоосон байна.
       </Typography>
     </Stack>
   );

@@ -139,8 +139,6 @@ const Home = () => {
             </Stack>
           </Stack>
           <IndexAllMenu></IndexAllMenu>
-          {/* <MainFoodCard></MainFoodCard>
-          <DiscountFoodCard></DiscountFoodCard> */}
         </Stack>
       </Stack>
     </>

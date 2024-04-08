@@ -8,9 +8,11 @@ import ShoppingBasketOutlinedIcon from "@mui/icons-material/ShoppingBasketOutlin
 import { useState, useEffect } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { usePathname } from "next/navigation";
 
 export const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [navbarColor, setNavbarColor] = useState("black");
   const [activeRoute, setActiveRoute] = useState<string>("");
   const [loginOrUserOrAdmin, setLoginOrUserOrAdmin] =
@@ -131,7 +133,7 @@ export const Header = () => {
                     onClick={() => handlePush("/")}
                     sx={{
                       ...linkStyles,
-                      color: activeRoute === "/" ? "green" : navbarColor,
+                      color: pathname === "/" ? "green" : navbarColor,
                     }}
                   >
                     НҮҮР
@@ -143,7 +145,7 @@ export const Header = () => {
                     sx={{
                       ...linkStyles,
                       color:
-                        activeRoute === "/layout/menu" ? "green" : navbarColor,
+                      pathname === "/layout/menu" ? "green" : navbarColor,
                     }}
                   >
                     ХООЛНЫ ЦЭС
@@ -155,7 +157,7 @@ export const Header = () => {
                     sx={{
                       ...linkStyles,
                       color:
-                        activeRoute === "/layout/delivery-zone"
+                      pathname === "/layout/delivery-zone"
                           ? "green"
                           : navbarColor,
                     }}
