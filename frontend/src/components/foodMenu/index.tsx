@@ -1,5 +1,5 @@
 import { Stack, Grid } from "@mui/material";
-import { FoodCategoryToggle } from "./foodCategoryToggle";
+import { FoodCategoryToggle } from "./FoodCategoryToggle";
 import { DiscountFoodCard } from "./foodCard/DiscountFoodCard";
 import { MainFoodCard } from "./foodCard/MainFoodCard";
 import { Discount } from "@mui/icons-material";
