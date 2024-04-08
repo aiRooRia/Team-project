@@ -56,7 +56,7 @@ export const createCategory = async (req, res) => {
 export const deleteCategory = async(req,res) => {
   try{
     const data = await CategoryModel.deleteOne({name : req.body.name})
-    res.send(data)
+    res.send({ok: data})
   } catch(err){
     console.log(err);
   }

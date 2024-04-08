@@ -120,6 +120,12 @@ useEffect(() => {
         },
         body: JSON.stringify({ name: menuItem }),
       }).then((data) => data.json());
+      if (data.ok) {
+        // Assuming the deletion was successful, update the state
+        setAllCategory((prevCategories) => prevCategories.filter(category => category.name !== menuItem));
+      } else {
+        console.error("Failed to delete category");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -186,6 +192,12 @@ useEffect(() => {
       setDeletedFoodId("");
     }
   }, [deletedFoodId]);
+  useEffect(() => {
+    if (deletedFoodId !== "") {
+      dropDeletedFoodFromAllFood(deletedFoodId);
+      setDeletedFoodId("");
+    }
+  }, [allCategory]);
 
   useEffect(() => {
     if (editedFoodInfo._id !== "") {
