@@ -1,22 +1,90 @@
+import React, { useState, useEffect } from "react";
 import Footer from "@/components/layout/footer";
-import { Stack, Box, Typography, Divider } from "@mui/material";
+import { Stack, Box, Typography, Divider, Button } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 import { List, ListItem, ListItemText } from "@mui/material";
-import DeliveryMap from "@/components/layout/footer/DeliveryMap";
+
+declare global {
+     interface Window {
+          google: any;
+          initMap?: () => void;
+     }
+}
 
 export default function Home() {
-     const list = [
+     const [googleMap, setGoogleMap] = useState<any>(null);
+     const [pineconeMarker, setPineconeMarker] = useState<any>(null); 
+     const apiKey = "AIzaSyCqaNzlb7sW2j3Bskt5KvxZqlc6boL6m34";
+
+     useEffect(() => {
+          const script = document.createElement("script");
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+          script.async = true;
+          script.defer = true;
+          window.initMap = () => {
+               const map = new window.google.maps.Map(
+                    document.getElementById("google-map-iframe"),
+                    {
+                         center: {
+                              lat: 47.9123970797613,
+                              lng: 106.90358506202938,
+                         },
+                         zoom: 14,
+                    }
+               );
+               setGoogleMap(map);
+          };
+          document.head.appendChild(script);
+
+          return () => {
+               document.head.removeChild(script);
+               window.initMap = undefined;
+          };
+     }, [apiKey]);
+
+     const handleUlaanbaatarClick = () => {
+          if (googleMap) {
+               googleMap.setCenter({ lat: 47.9221, lng: 106.9155 });
+               googleMap.setZoom(13);
+               if (pineconeMarker) {
+                    pineconeMarker.setMap(null);
+                    setPineconeMarker(null);
+               }
+          }
+     };
+
+     const handlePineconeClick = () => {
+          if (googleMap) {
+               const pineconeCoords = {
+                    lat: 47.9143267606655,
+                    lng: 106.91666043786164,
+               };
+               googleMap.setCenter(pineconeCoords);
+               googleMap.setZoom(20);
+               if (pineconeMarker) {
+                    pineconeMarker.setMap(null);
+               }
+               const marker = new window.google.maps.Marker({
+                    position: pineconeCoords,
+                    map: googleMap,
+                    title: "Pinecone",
+               });
+               setPineconeMarker(marker);
+          }
+     };
+
+     const zoneArr: string[] = [
           "Нархан хотхон",
           "26-р байр",
           "26-р байр",
           "45-р байр",
-          "45-р байр",
+          "3-р байр",
           "Хоймор хотхон ",
           "Хоймор хотхон ",
      ];
+
      return (
           <>
                <Box
@@ -26,7 +94,14 @@ export default function Home() {
                          my: "40px",
                     }}
                >
-                    <DeliveryMap />
+                    <div
+                         id="google-map-iframe"
+                         style={{ width: "1200px", height: "616px" }}
+                    ></div>
+                    <Button onClick={handleUlaanbaatarClick}>
+                         Ulaanbaatar
+                    </Button>
+                    <Button onClick={handlePineconeClick}>Pinecone</Button>
                </Box>
                <Box></Box>
                <Stack
@@ -34,14 +109,6 @@ export default function Home() {
                     alignItems={"center"}
                     justifyContent={"start"}
                >
-                    {/* <Box
-          sx={{
-            width: "1200px",
-            height: "100%",
-          }}
-        >
-          <img style={{ width: "100%", height: "55%" }} src="/map.png" alt="" />
-        </Box> */}
                     <Stack
                          width={"1200px"}
                          alignItems={"start"}
@@ -79,12 +146,6 @@ export default function Home() {
                          >
                               <Card sx={{ width: "49%" }}>
                                    <CardActionArea>
-                                        {/* <CardMedia
-          component="img"
-          height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          alt="green iguana"
-        /> */}
                                         <CardContent sx={{ margin: 3 }}>
                                              <Typography
                                                   gutterBottom
@@ -102,58 +163,86 @@ export default function Home() {
                                                        "space-between"
                                                   }
                                              >
-                                                  <List sx={{ width: "45%" }}>
-                                                       {list.map(
-                                                            (el, index) => (
-                                                                 <ListItem
-                                                                      key={
-                                                                           index
-                                                                      }
-                                                                      sx={{
-                                                                           padding: 0,
-                                                                      }}
-                                                                 >
-                                                                      <ListItemText
-                                                                           primary={
-                                                                                el
-                                                                           }
-                                                                      />
-                                                                 </ListItem>
-                                                            )
+                                                  <Box
+                                                       component={"div"}
+                                                       sx={{
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                 "column",
+                                                            width: "45%",
+                                                            padding: "20px",
+                                                            gap: "10px",
+                                                       }}
+                                                  >
+                                                       {" "}
+                                                       {zoneArr.map(
+                                                            (
+                                                                 el
+                                                            ): JSX.Element => {
+                                                                 return (
+                                                                      <Typography
+                                                                           sx={{
+                                                                                cursor: "pointer",
+                                                                                "&:hover":
+                                                                                     {
+                                                                                          backgroundColor:
+                                                                                               "#18BA51",
+                                                                                          borderRadius:
+                                                                                               "5px",
+                                                                                          paddingLeft:
+                                                                                               "10px",
+                                                                                     },
+                                                                           }}
+                                                                      >
+                                                                           {el}
+                                                                      </Typography>
+                                                                 );
+                                                            }
                                                        )}
-                                                  </List>
-                                                  <List sx={{ width: "45%" }}>
-                                                       {list.map(
-                                                            (el, index) => (
-                                                                 <ListItem
-                                                                      key={
-                                                                           index
-                                                                      }
-                                                                      sx={{
-                                                                           padding: 0,
-                                                                      }}
-                                                                 >
-                                                                      <ListItemText
-                                                                           primary={
-                                                                                el
-                                                                           }
-                                                                      />
-                                                                 </ListItem>
-                                                            )
+                                                  </Box>
+                                                  <Box
+                                                       component={"div"}
+                                                       sx={{
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                 "column",
+                                                            width: "45%",
+                                                            padding: "20px",
+                                                            gap: "10px",
+                                                       }}
+                                                  >
+                                                       {" "}
+                                                       {zoneArr.map(
+                                                            (
+                                                                 el
+                                                            ): JSX.Element => {
+                                                                 return (
+                                                                      <Typography
+                                                                           sx={{
+                                                                                cursor: "pointer",
+                                                                                "&:hover":
+                                                                                     {
+                                                                                          backgroundColor:
+                                                                                               "#18BA51",
+                                                                                          borderRadius:
+                                                                                               "5px",
+                                                                                          paddingLeft:
+                                                                                               "10px",
+                                                                                     },
+                                                                           }}
+                                                                      >
+                                                                           {el}
+                                                                      </Typography>
+                                                                 );
+                                                            }
                                                        )}
-                                                  </List>
+                                                  </Box>
                                              </Stack>
                                         </CardContent>
                                    </CardActionArea>
                               </Card>
                               <Card sx={{ width: "49%" }}>
                                    <CardActionArea>
-                                        {/* <CardMedia
-          component="img"
-          height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          alt="green iguana"
-        /> */}
                                         <CardContent sx={{ margin: 3 }}>
                                              <Typography
                                                   gutterBottom
@@ -171,46 +260,80 @@ export default function Home() {
                                                        "space-between"
                                                   }
                                              >
-                                                  <List sx={{ width: "45%" }}>
-                                                       {list.map(
-                                                            (el, index) => (
-                                                                 <ListItem
-                                                                      key={
-                                                                           index
-                                                                      }
-                                                                      sx={{
-                                                                           padding: 0,
-                                                                      }}
-                                                                 >
-                                                                      <ListItemText
-                                                                           primary={
-                                                                                el
-                                                                           }
-                                                                      />
-                                                                 </ListItem>
-                                                            )
+                                                  <Box
+                                                       component={"div"}
+                                                       sx={{
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                 "column",
+                                                            width: "45%",
+                                                            padding: "20px",
+                                                            gap: "10px",
+                                                       }}
+                                                  >
+                                                       {" "}
+                                                       {zoneArr.map(
+                                                            (
+                                                                 el
+                                                            ): JSX.Element => {
+                                                                 return (
+                                                                      <Typography
+                                                                           sx={{
+                                                                                cursor: "pointer",
+                                                                                "&:hover":
+                                                                                     {
+                                                                                          backgroundColor:
+                                                                                               "#18BA51",
+                                                                                          borderRadius:
+                                                                                               "5px",
+                                                                                          paddingLeft:
+                                                                                               "10px",
+                                                                                     },
+                                                                           }}
+                                                                      >
+                                                                           {el}
+                                                                      </Typography>
+                                                                 );
+                                                            }
                                                        )}
-                                                  </List>
-                                                  <List sx={{ width: "45%" }}>
-                                                       {list.map(
-                                                            (el, index) => (
-                                                                 <ListItem
-                                                                      key={
-                                                                           index
-                                                                      }
-                                                                      sx={{
-                                                                           padding: 0,
-                                                                      }}
-                                                                 >
-                                                                      <ListItemText
-                                                                           primary={
-                                                                                el
-                                                                           }
-                                                                      />
-                                                                 </ListItem>
-                                                            )
+                                                  </Box>
+                                                  <Box
+                                                       component={"div"}
+                                                       sx={{
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                 "column",
+                                                            width: "45%",
+                                                            padding: "20px",
+                                                            gap: "10px",
+                                                       }}
+                                                  >
+                                                       {" "}
+                                                       {zoneArr.map(
+                                                            (
+                                                                 el
+                                                            ): JSX.Element => {
+                                                                 return (
+                                                                      <Typography
+                                                                           sx={{
+                                                                                cursor: "pointer",
+                                                                                "&:hover":
+                                                                                     {
+                                                                                          backgroundColor:
+                                                                                               "#18BA51",
+                                                                                          borderRadius:
+                                                                                               "5px",
+                                                                                          paddingLeft:
+                                                                                               "10px",
+                                                                                     },
+                                                                           }}
+                                                                      >
+                                                                           {el}
+                                                                      </Typography>
+                                                                 );
+                                                            }
                                                        )}
-                                                  </List>
+                                                  </Box>
                                              </Stack>
                                         </CardContent>
                                    </CardActionArea>
