@@ -74,8 +74,6 @@ export const UserContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
-  const loggedInUserId =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const [loginOrUserOrAdmin, setLoginOrUserOrAdmin] =
     useState<string>("Нэвтрэх");

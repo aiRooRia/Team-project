@@ -31,10 +31,14 @@ export const getUserById = async (req, res) => {
   const { id } = req.body;
   try {
     const data = await UserModel.findById(id);
-
-    res.send(data);
+    if (!data) {
+      return res.status(404).json({ message: "Хэрэглэгч олдсонгүй" });
+    }
+    console.log(data);
+    res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 export const getAllUsers = async (req, res) => {
@@ -128,7 +132,7 @@ export const updateUser = async (req, res) => {
           { name: name, email: email, phoneNumber: phoneNumber }
         );
         res.send({ success: true });
-        // res.send(updatedUserData);
+        res.send(updatedUserData);
       } catch (err) {
         console.log(err);
       }

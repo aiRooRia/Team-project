@@ -25,7 +25,20 @@ interface StepOneProps {
   currentStep: number;
 }
 export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
+  const exitButtonStyle = {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    position: "absolute",
+    width: "50%",
+    height: "61px",
+    top: "167px",
+    transition: "background-color 0.3s, color 0.3s",
+    borderLeft: 0,
+  };
+
   const [modal, setModal] = useState(false);
+  const [disableModal, setdisableModal] = useState(true);
+
   const handlePush = (route: string) => {
     router.push(route);
   };
@@ -44,6 +57,7 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
   const handleEdit = () => {
     setDisable(false);
     handleButton();
+    setdisableModal(false);
   };
   const textFieldNoBorder = {
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
@@ -57,30 +71,37 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
   const loggedInUserId =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-  const fetchLoggedInUserInfo = async () => {
-    if (loggedInUserId) {
-      try {
-        const data = await fetch(`${ENDPOINT_URL}/user/logged-in-user`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: loggedInUserId }),
-        });
-        const response = await data.json();
-        setUserProfile({
-          name: response.name,
-          phone: response.phoneNumber ? response.phoneNumber : "",
-          email: response.email,
-        });
-      } catch (error) {
-        console.log(error);
+  useEffect(() => {
+    const fetchLoggedInUserInfo = async () => {
+      if (loggedInUserId) {
+        try {
+          const data = await fetch(`${ENDPOINT_URL}/user/logged-in-user`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json, text/plain, */*",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: loggedInUserId }),
+          });
+          if (!data.ok) {
+            throw new Error("Алдаа гарлаа ");
+          }
+          const response = await data.json();
+          setUserProfile({
+            name: response.name,
+            phone: response.phoneNumber ? response.phoneNumber : "",
+            email: response.email,
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        console.log("Алдаа гарлаа");
       }
-    } else {
-      console.log("loggedInUserId bhguiii");
-    }
-  };
+    };
+
+    fetchLoggedInUserInfo();
+  }, []);
 
   console.log(userProfile, "userpro");
 
@@ -92,7 +113,6 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
     },
     validationSchema: userProfileSchema,
     onSubmit: async (values) => {
-      console.log(values);
       try {
         const data = await fetch(`http://localhost:9000/user`, {
           method: "PUT",
@@ -103,80 +123,46 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
           body: JSON.stringify(values),
         });
         const response = await data.json();
-        if (response.message) {
-          setWarningMessage(response.message);
-        } else if (response.success) {
-          console.log(response.success, "amjilltai");
+        if (response.success) {
+          setUserProfile({
+            name: values.name,
+            phone: values.phoneNumber,
+            email: values.email,
+          });
           setShowConfirmation(true);
+        } else if (response.message) {
+          setWarningMessage(response.message);
         }
-        setUserProfile({
-          name: values.name,
-          phone: values.phoneNumber,
-          email: values.email,
-        });
       } catch (error) {
         console.log(error);
       }
     },
   });
+
   console.log(userProfile, "userprofile");
 
-  const exitButtonStyle = {
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    position: "absolute",
-    width: "50%",
-    height: "61px",
-    top: "167px",
-    transition: "background-color 0.3s, color 0.3s",
-    borderLeft: 0,
-  };
-  const nameContainerStyle = {
-    display: "flex",
-    gap: "4px",
-    flexDirection: "column",
-    width: "214px",
-  };
-  const textTopStyle = {
-    fontWeight: "400",
-    fontSize: "12px",
-    lineHeight: "14.32px",
-    color: "#888A99",
-  };
-  const textBottomStyle = {
-    fontWeight: "400",
-    fontSize: "16px",
-    lineHeight: "19.09px",
-    color: "#0D1118",
-  };
-  const greyContainerStyle = {
-    bgcolor: "#F6F6F6",
-    display: "flex",
-    gap: 1,
-    py: 1,
-    px: "20px",
-    alignItems: "center",
-  };
-  const iconContainerStyle = {
-    width: 48,
-    height: 48,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "100px",
-    border: "1px solid #EEEFF2",
-    bgcolor: "#ffffff",
-  };
-  useEffect(() => {
-    fetchLoggedInUserInfo();
-  }, []);
+  // useEffect(() => {
+  //   fetchLoggedInUserInfo();
+  // }, []);
+
   useEffect(() => {
     // fetchLoggedInUserInfo();
   }, [userProfile]);
+
   return (
     <>
       {showConfirmation && (
-        <Stack alignItems={"center"} spacing={2} sx={{ mt: "50px" }}>
+        <Stack
+          alignItems={"center"}
+          spacing={2}
+          sx={{
+            position: "relative",
+            top: "120px",
+            left: "10px",
+            backgroundColor: "white",
+            zIndex: "1",
+          }}
+        >
           <Box
             sx={{
               boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
@@ -213,6 +199,7 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
           width: "432px",
           mx: "auto",
           flexDirection: "column",
+          scale: "90%",
         }}
       >
         <Stack>
@@ -410,59 +397,61 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
                   <EditIcon sx={{ width: 24, height: 24, color: green[500] }} />
                 </Button>
               </Stack>
-              <Stack
-                direction={"column"}
-                alignItems={"flex-start"}
-                sx={{
-                  px: "20px",
-                }}
-              >
-                <Button
-                  startIcon={
-                    <Stack
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      sx={{
-                        backgroundColor: "white",
-                        border: "1px solid #eeeff2",
-                        borderRadius: "50%",
-                        width: "50px",
-                        height: "50px",
-                      }}
-                    >
-                      <HistoryIcon
-                        sx={{ width: "30px", height: "30px", color: "black" }}
-                      />
-                    </Stack>
-                  }
-                  sx={{ color: "black" }}
+              {disableModal && (
+                <Stack
+                  direction={"column"}
+                  alignItems={"flex-start"}
+                  sx={{
+                    px: "20px",
+                  }}
                 >
-                  Захиалгын түүх
-                </Button>
-                <Button
-                  onClick={handleModalToggle}
-                  startIcon={
-                    <Stack
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      sx={{
-                        backgroundColor: "white",
-                        border: "1px solid #eeeff2",
-                        borderRadius: "50%",
-                        width: "50px",
-                        height: "50px",
-                      }}
-                    >
-                      <LogoutIcon
-                        sx={{ width: "30px", height: "30px", color: "black" }}
-                      />
-                    </Stack>
-                  }
-                  sx={{ color: "black" }}
-                >
-                  Гарах
-                </Button>
-              </Stack>
+                  <Button
+                    startIcon={
+                      <Stack
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        sx={{
+                          backgroundColor: "white",
+                          border: "1px solid #eeeff2",
+                          borderRadius: "50%",
+                          width: "50px",
+                          height: "50px",
+                        }}
+                      >
+                        <HistoryIcon
+                          sx={{ width: "30px", height: "30px", color: "black" }}
+                        />
+                      </Stack>
+                    }
+                    sx={{ color: "black" }}
+                  >
+                    Захиалгын түүх
+                  </Button>
+                  <Button
+                    onClick={handleModalToggle}
+                    startIcon={
+                      <Stack
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        sx={{
+                          backgroundColor: "white",
+                          border: "1px solid #eeeff2",
+                          borderRadius: "50%",
+                          width: "50px",
+                          height: "50px",
+                        }}
+                      >
+                        <LogoutIcon
+                          sx={{ width: "30px", height: "30px", color: "black" }}
+                        />
+                      </Stack>
+                    }
+                    sx={{ color: "black" }}
+                  >
+                    Гарах
+                  </Button>
+                </Stack>
+              )}
             </Stack>
 
             <Button

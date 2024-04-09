@@ -73,4 +73,3 @@ export const deleteFood = async (req, res) => {
     res.status(500).send({ error: err });
   }
 };
-
