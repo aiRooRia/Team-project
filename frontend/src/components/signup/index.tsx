@@ -8,53 +8,140 @@ import {
   InputAdornment,
   IconButton,
   Checkbox,
+  Box,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { FormikProvider, useFormik } from "formik";
 import { signUpSchema, FromValues } from "@/components/signup/validationSchema";
-import { useEffect } from "react";
+import CheckIcon from "@mui/icons-material/Check";
+import {
+  useEffect,
+  useState,
+  ChangeEvent,
+  MouseEvent,
+  FC,
+  useContext,
+} from "react";
 import * as React from "react";
 import { useRouter } from "next/router";
+import { UserContext } from "../utils/context/userContext";
 
-export const Signup: React.FC = () => {
+export const Signup: FC = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-  const [isChecked, setIsChecked] = React.useState(false);
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [isChecked, setIsChecked] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const { setSignUpUserInfo } = useContext(UserContext);
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
   };
-  const router = useRouter();
-  const handlePush = (route: string) => {
-    router.push(route);
-  };
+  const { push } = useRouter();
+
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
   const formikSignUp = useFormik<FromValues>({
     initialValues: {
-      name: null,
-      location: null,
-      password: null,
-      email: null,
-      rePassword: null,
+      name: "",
+      location: "",
+      password: "",
+      email: "",
+      rePassword: "",
     },
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
-      console.log(values);
-      handlePush("/user/login");
+      setWarningMessage("");
+
+      try {
+        const data = await fetch(`${ENDPOINT_URL}/user`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+        const response = await data.json();
+        if (response.message) {
+          setWarningMessage(response.message);
+        } else if (response.success) {
+          console.log(response.success, "amjilltai");
+
+          setShowConfirmation(true);
+          setTimeout(() => {
+            setShowConfirmation(false);
+            setSignUpUserInfo({
+              name: "",
+              email: "",
+              password: "",
+              location: "",
+            });
+
+            push("/user/login");
+          }, 2000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {}, [warningMessage]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+  const handleButtonEnable = () =>
+    !formikSignUp.values.name ||
+    !formikSignUp.values.email ||
+    !formikSignUp.values.location ||
+    !formikSignUp.values.password ||
+    !formikSignUp.values.rePassword ||
+    !isChecked;
+  const handleButtonEnableBGChange = () =>
+    !formikSignUp.values.name ||
+    !formikSignUp.values.email ||
+    !formikSignUp.values.location ||
+    !formikSignUp.values.password ||
+    !formikSignUp.values.rePassword ||
+    !isChecked
+      ? "#EEEFF2"
+      : "#18BA51";
 
   return (
     <>
+      {showConfirmation && (
+        <Stack alignItems={"center"} spacing={2} sx={{ mt: "50px" }}>
+          <Box
+            sx={{
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+              borderRadius: "20px",
+              overflow: "hidden",
+              borderColor: "#18BA51",
+              borderStyle: "solid",
+              borderWidth: "1px",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.05)",
+              },
+            }}
+          >
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                px: "24px",
+                py: "10px",
+                borderRadius: "20px",
+              }}
+            >
+              <CheckIcon sx={{ color: "#18BA51" }} />
+              <Typography>Амжилттай бүртгэгдлээ.</Typography>
+            </Stack>
+          </Box>{" "}
+        </Stack>
+      )}
       <Stack
         justifyContent={"center"}
         width={"40%"}
@@ -105,6 +192,11 @@ export const Signup: React.FC = () => {
                     {formikSignUp.errors.email}
                   </Typography>
                 ) : null}
+                {warningMessage && (
+                  <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+                    {warningMessage}
+                  </Typography>
+                )}
               </Stack>
               <Stack width={"100%"} spacing={"4px"}>
                 <Typography>Хаяг</Typography>
@@ -199,27 +291,12 @@ export const Signup: React.FC = () => {
             <Button
               type="submit"
               variant="text"
-              disabled={
-                !formikSignUp.values.name ||
-                !formikSignUp.values.email ||
-                !formikSignUp.values.location ||
-                !formikSignUp.values.password ||
-                !formikSignUp.values.rePassword ||
-                !isChecked
-              }
+              disabled={handleButtonEnable()}
               sx={{
                 width: "100%",
                 height: 48,
-                background:
-                  !formikSignUp.values.name ||
-                  !formikSignUp.values.email ||
-                  !formikSignUp.values.location ||
-                  !formikSignUp.values.password ||
-                  !formikSignUp.values.rePassword ||
-                  !isChecked
-                    ? " #EEEFF2"
-                    : "#18BA51",
-                color: "black",
+                color: "white",
+                background: handleButtonEnableBGChange(),
               }}
             >
               Бүртгүүлэх

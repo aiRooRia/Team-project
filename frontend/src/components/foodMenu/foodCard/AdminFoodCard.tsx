@@ -9,19 +9,32 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { EditFood } from "@/components/admin/EditFood";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import { DeleteFood } from "@/components/admin/DeleteFood";
 
-export const AdminFoodCard = () => {
+type TAdminFoodCardProps = {
+  foodName: string;
+  foodPrice: number;
+  foodImage : string;
+  id: string;
+  foodCategory: string;
+  foodIngredients: string;
+  discountRate: number;
+}
+export const AdminFoodCard = ({foodName, foodPrice,foodImage, id, foodCategory, foodIngredients,discountRate } : TAdminFoodCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [openEditFood, setOpenEditFood] = React.useState(false);
-
+  const [openEditFood, setOpenEditFood] = useState(false);
+  const [openDeleteFood, setOpenDeleteFood] = useState(false);
+  const foodInfo = [
+    {
+      imgUrl: "/goyhool2.png",
+      foodName: "Өглөөний хоол",
+      foodPrice: "4800",
+      foodIngredients: "Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр ",
+      quantity: "",
+      discount: 0,
+    },
+  ];
   const handleMouseEnter = () => {
     setIsHovered(true);
     setTimeout(() => {
@@ -39,8 +52,15 @@ export const AdminFoodCard = () => {
   const handleClickOpenEditFood = () => {
     setOpenEditFood(true);
   };
+  const handleCloseDeleteFood: () => void = () => {
+    setOpenDeleteFood(false);
+  };
+  const handleClickOpenDeleteFood = () => {
+    setOpenDeleteFood(true);
+  };
   return (
     <Card
+    key={id}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -62,7 +82,8 @@ export const AdminFoodCard = () => {
         <CardMedia
           component="img"
           alt="Өглөөний хоол"
-          src="https://i.ibb.co/M5kGkcy/unsplash-fdl-ZBWIP0a-M.png"
+          // ref=""
+          src={foodImage==="image" || !foodImage ? foodInfo[0].imgUrl : foodImage}
           loading="lazy"
           sx={{
             width: "100%",
@@ -76,11 +97,12 @@ export const AdminFoodCard = () => {
         />
         {isVisible && (
           <>
+          <Box>
             <Box
               onClick={handleClickOpenEditFood}
               sx={{
                 position: "absolute",
-                top: "50%",
+                top: "37%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
                 width: "50%",
@@ -118,8 +140,64 @@ export const AdminFoodCard = () => {
             <EditFood
               handleClose={handleCloseEditFood}
               open={openEditFood}
+              foodName={foodName}
+              foodCategory={foodCategory}
+              foodPrice={foodPrice}
+              foodImage={foodImage}
+              _id={id}
+              foodIngredients={foodIngredients}
+              discountRate={discountRate}
             ></EditFood>
-          </>
+          </Box>
+          <Box>
+            <Box
+              onClick={handleClickOpenDeleteFood}
+              sx={{
+                position: "absolute",
+                top: "63%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "50%",
+                height: "30px",
+                borderRadius: "20px",
+                transition: "background-color 0.5s, opacity 0.3s",
+
+                opacity: "80%",
+                border: "none",
+                cursor: "pointer",
+                zIndex: 1,
+                color: "black",
+                backgroundColor: "white",
+                ":hover": {
+                  cursor: "pointer",
+                },
+                ":active": {
+                  cursor: "grabbing",
+                  scale: ".99",
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  color: "red",
+                }}
+              >
+                Delete
+              </Typography>
+            </Box>
+            <DeleteFood
+              handleClose={handleCloseDeleteFood}
+              open={openDeleteFood}
+              id={id}
+              foodName={foodName}
+            ></DeleteFood>
+          </Box>
+        </>
         )}
       </Box>
       <CardContent
@@ -129,8 +207,8 @@ export const AdminFoodCard = () => {
           backgroundColor: null,
         }}
       >
-        <Typography variant="h6">Өглөөний хоол</Typography>
-        <Typography sx={{ color: "#18BA51" }}>4,800₮</Typography>
+        <Typography variant="h6">{foodName}</Typography>
+        <Typography sx={{ color: "#18BA51" }}>{foodPrice}₮</Typography>
       </CardContent>
     </Card>
   );

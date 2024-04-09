@@ -1,44 +1,63 @@
 import { Stack, Typography, TextField, Button } from "@mui/material";
-import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { AdminContext } from "../utils/context/adminContext";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { BootstrapDialog } from "../utils/styles";
 
-
-interface CreateFoodProps {
+type TEditCategoryNameProps = {
   handleClose: () => void;
   open: boolean;
+  _id: string;
+  handleEditCategoryButton: any;
 }
+type TNewCategoryInfo = {
+  _id: string;
+  name: string;
+};
 
-export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
-  const { newCategoryInfo, setNewCategoryInfo } =
-    React.useContext(AdminContext);
+export const EditCategoryName = ({ handleClose, open, _id, handleEditCategoryButton}: TEditCategoryNameProps) => {
+  const { editedCategoryInfo, setEditedCategoryInfo } =useContext(AdminContext);
   const [isClearCategoryName, setIsClearCategoryName] =
     useState<boolean>(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(isClearCategoryName);
-
     if (isClearCategoryName) {
       event.target.value == "";
     }
-    setNewCategoryInfo({ name: event.target.value });
+    setEditedCategoryInfo({_id: _id, name: event.target.value});
+
+    console.log(editedCategoryInfo, "editedCategoryInfo");
+    
   };
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
+  // const handleEditCategoryButton=async()=>{
+  //   try{const data = await fetch(`${ENDPOINT_URL}/category`, {
+  //     method: "PUT",
+  //     headers: {
+  //       Accept: "application/json, text/plain, */*",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(editedCategoryInfo),
+  //   });
+  //   handleClose();
+  // }catch(err){
+  //     console.log(err);
+      
+  //   }
+  // }
   const handleClear = () => {
-    setNewCategoryInfo({ name: "" }); // Clear the input field by setting the name to an empty string
+    setEditedCategoryInfo({
+      _id: "",
+      name: "",
+    });
     setIsClearCategoryName(true);
   };
-  const label = { inputProps: { "aria-label": "Switch demo" } };
-  console.log(newCategoryInfo);
-
+  console.log(editedCategoryInfo, "editedCategoryInfo");
   return (
     <BootstrapDialog
       onClose={handleClose}
@@ -76,7 +95,7 @@ export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
           <TextField
             onChange={handleInputChange}
             placeholder="Food name"
-            value={newCategoryInfo.name}
+            // value={newCategoryInfo}
           />
         </Stack>
       </DialogContent>
@@ -102,8 +121,8 @@ export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
           <Typography variant="subtitle1">Clear</Typography>
         </Stack>
         <Button
-          onClick={handleClose}
-          disabled={newCategoryInfo.name === ""}
+          onClick={handleEditCategoryButton}
+          disabled={editedCategoryInfo.name === ""}
           sx={{
             ":hover": {
               cursor: "pointer",

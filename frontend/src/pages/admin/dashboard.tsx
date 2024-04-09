@@ -13,6 +13,9 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import { Search } from "@mui/icons-material";
+import { getAdminLayout } from "@/components/layout/AdminLayout";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 function createData(
   name: string,
@@ -31,7 +34,16 @@ const rows = [
   createData("Cupcake", 305, 3.7, 67, 4.3),
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
-export default function BasicPagination() {
+
+const AdminDashboard = () => {
+    const router = useRouter();
+    const {push} = router;
+  useEffect(() => { 
+    const role = localStorage.getItem('role');
+    if (role !== "admin") {
+      push('/');
+    } 
+ }, []);
   return (
     <Stack
       alignItems="center"
@@ -108,3 +120,8 @@ export default function BasicPagination() {
     </Stack>
   );
 }
+
+
+AdminDashboard.getLayout = getAdminLayout;
+
+export default AdminDashboard;

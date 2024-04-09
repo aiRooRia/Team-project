@@ -11,8 +11,9 @@ import { Icon1, Icon2, Icon3, Icon4 } from "@/components/mainIndex/IndexIcons";
 import { IndexCard } from "@/components/mainIndex/IndexCard";
 import { Image1, Image2 } from "@/components/mainIndex/Images";
 import { IndexAllMenu } from "@/components/mainIndex/IndexAllMenu";
+import { getUserLayout } from "@/components/layout/UserLayout";
 
-export default function Home() {
+const Home = () => {
   const cardInfo = [
     {
       icon: Icon1,
@@ -69,7 +70,7 @@ export default function Home() {
                 Horem ipsum dolor sit amet, consectetur adipiscing elit.
               </Typography>
             </Stack>
-            <Stack sx={{ position: "relative", width: "100%", height: "59vh" }}>
+            <Stack sx={{ position: "relative", width: "100%", height: "58vh" }}>
               <Stack
                 sx={{
                   position: "absolute",
@@ -138,11 +139,12 @@ export default function Home() {
             </Stack>
           </Stack>
           <IndexAllMenu></IndexAllMenu>
-          {/* <MainFoodCard></MainFoodCard>
-          <DiscountFoodCard></DiscountFoodCard> */}
         </Stack>
       </Stack>
-      <Footer />
     </>
   );
-}
+};
+
+Home.getLayout = getUserLayout;
+
+export default Home;

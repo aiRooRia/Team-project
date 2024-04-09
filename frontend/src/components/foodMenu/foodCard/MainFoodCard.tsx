@@ -15,11 +15,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { BootstrapDialog } from "@/components/utils/styles";
+import { FoodModal } from "./ModalFood";
 
+type TDiscountFoodCardProps = {
+  foodName: string;
+  foodPrice: number;
+  foodImage : string;
+  discountRate: number;
+  id: string;
+  foodCategory: string;
+  foodIngredients: string;
+}
 
-
-export const MainFoodCard = () => {
-  const [open, setOpen] = React.useState(false);
+export const MainFoodCard = ({foodName, foodPrice, foodImage, discountRate, id, foodCategory, foodIngredients}:TDiscountFoodCardProps) => {
+  const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState(0);
 
   const handleClickOpen = () => {
@@ -28,12 +37,12 @@ export const MainFoodCard = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
+ let discountedPrice = 0;
   const foodInfo = [
     {
       imgUrl: "/goyhoolpizza.png",
       foodName: "Өглөөний хоол",
-      foodPrice: "4,800",
+      foodPrice: 4800,
       foodIngredients: "Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр ",
       quantity: "",
     },
@@ -68,7 +77,7 @@ export const MainFoodCard = () => {
           <CardMedia
             component="img"
             alt="Өглөөний хоол"
-            src={foodInfo[0].imgUrl}
+            src={foodImage ? foodImage : foodInfo[0].imgUrl}
             loading="lazy"
             sx={{
               width: "100%",
@@ -91,155 +100,7 @@ export const MainFoodCard = () => {
           </Typography>
         </CardContent>
       </Card>
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent
-          dividers
-          sx={{
-            display: "flex",
-            direction: "row",
-            height: "100%",
-            alignItems: "center",
-          }}
-        >
-          <Stack
-            justifyContent={"center"}
-            alignItems={"center"}
-            width="70%"
-            height="100%"
-          >
-            <Box
-              component={"img"}
-              sx={{
-                width: "100%",
-                height: "100%",
-                borderRadius: "10px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
-              }}
-              src={foodInfo[0].imgUrl}
-              alt=""
-            ></Box>
-          </Stack>
-          <Stack sx={{ m: 0, p: 2 }} spacing={2}>
-            <Stack sx={{ m: 0, p: 1 }} spacing={2}>
-              <Stack>
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: "bold" }}
-                  id="customized-dialog-title"
-                >
-                  {foodInfo[0].foodName}
-                </Typography>
-                <Typography color={"#18BA51"} gutterBottom>
-                  {foodInfo[0].foodPrice}₮
-                </Typography>
-              </Stack>
-
-              <Stack>
-                <Typography sx={{ fontWeight: "bold" }} variant="body1">
-                  Орц
-                </Typography>
-                <Box
-                  sx={{
-                    backgroundColor: "#F6F6F6",
-                    color: "#767676",
-                    padding: 1,
-                    borderRadius: "8px",
-                  }}
-                >
-                  <Typography variant="body2">
-                    {foodInfo[0].foodIngredients}
-                  </Typography>
-                </Box>
-              </Stack>
-              <Stack>
-                <Typography sx={{ fontWeight: "bold" }} variant="body1">
-                  Тоо
-                </Typography>
-                <Stack
-                  direction={"row"}
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                >
-                  <Stack
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    onClick={() =>
-                      quantity !== 0
-                        ? setQuantity(quantity - 1)
-                        : setQuantity(0)
-                    }
-                    sx={{
-                      backgroundColor: "#18BA51",
-                      color: "white",
-                      width: "35px",
-                      height: "35px",
-                      borderRadius: "10px",
-                      ":active": {
-                        scale: "97%",
-                      },
-                    }}
-                  >
-                    <RemoveIcon fontSize="small"></RemoveIcon>
-                  </Stack>
-                  <Typography>{quantity}</Typography>
-                  <Stack
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    onClick={() => setQuantity(quantity + 1)}
-                    sx={{
-                      backgroundColor: "#18BA51",
-                      color: "white",
-                      width: "35px",
-                      height: "35px",
-                      borderRadius: "10px",
-                      ":active": {
-                        scale: "97%",
-                      },
-                    }}
-                  >
-                    <AddIcon fontSize="small"></AddIcon>
-                  </Stack>
-                </Stack>
-              </Stack>
-            </Stack>
-            <DialogActions
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Button
-                sx={{
-                  width: "100%",
-                  backgroundColor: "#18BA51",
-                  color: "white",
-                  textTransform: "capitalize",
-                  // padding: 0!,
-                }}
-                onClick={handleClose}
-              >
-                Сагслах
-              </Button>
-            </DialogActions>
-          </Stack>
-        </DialogContent>
-      </BootstrapDialog>
+      <FoodModal foodId={id} handleClose={handleClose} open={open} foodName={foodName} discountedPrice={foodPrice} foodPrice={discountedPrice} imgUrl={foodImage} foodIngredients={foodIngredients}></FoodModal>
     </>
   );
 };

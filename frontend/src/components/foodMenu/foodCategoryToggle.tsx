@@ -1,11 +1,19 @@
 import React, { useState } from "react";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography, Stack } from "@mui/material";
+import { Dispatch, SetStateAction, FC } from "react";
 
-export const FoodCategoryToggle = (): JSX.Element => {
-  const [selected, setSelected] = useState("");
-
+type TFoodCategoryToggleProps = {
+  selectedCategory: string;
+  setSelectedCategory: Dispatch<SetStateAction<string>>;
+  allCategory: any;
+};
+export const FoodCategoryToggle: FC<TFoodCategoryToggleProps> = ({
+  selectedCategory,
+  setSelectedCategory,
+  allCategory,
+}) => {
   const buttonStyle = {
-    width: "280.5px",
+    width: "260px",
     border: "1px solid",
     borderRadius: 1,
     px: 1,
@@ -13,8 +21,11 @@ export const FoodCategoryToggle = (): JSX.Element => {
     borderColor: "#D6D8DB",
     color: "#000000",
     transition: "background-color 0.3s, color 0.3s",
+    marginTop: 1,
   };
-
+ const handleClickCategory = (name: string) => {
+  setSelectedCategory(name)
+ }
   return (
     <Box
       sx={{
@@ -22,76 +33,40 @@ export const FoodCategoryToggle = (): JSX.Element => {
         display: "flex",
         alignContent: "center",
         gap: 2,
-        height: "5vh",
+        minHeight: "5vh",
         mt: 1,
       }}
     >
-      <Box sx={{ width: "1200px", display: "flex", gap: "26px" }}>
-        <Button
-          onClick={() => setSelected("Breakfast")}
-          sx={{
-            ...buttonStyle,
-            bgcolor: selected === "Breakfast" ? "#18ba51" : "#ffffff",
-            color: selected === "Breakfast" ? "#FFFFFF" : "#000000",
-            "&:hover": {
-              bgcolor: selected === "Breakfast" ? "#18ba51" : "#f0f0f0",
-              color: selected === "Breakfast" ? "#FFFFFF" : "#000000",
-            },
-            textTransform: "capitalize",
-            fontWeight: 500,
-          }}
-        >
-          Breakfast
-        </Button>
-
-        <Button
-          onClick={() => setSelected("Soup")}
-          sx={{
-            ...buttonStyle,
-            bgcolor: selected === "Soup" ? "#18ba51" : "#ffffff",
-            color: selected === "Soup" ? "#FFFFFF" : "#000000",
-            "&:hover": {
-              bgcolor: selected === "Soup" ? "#18ba51" : "#f0f0f0",
-              color: selected === "Soup" ? "#FFFFFF" : "#000000",
-            },
-            textTransform: "capitalize",
-            fontWeight: 500,
-          }}
-        >
-          Soup
-        </Button>
-        <Button
-          onClick={() => setSelected("MainCourse")}
-          sx={{
-            ...buttonStyle,
-            bgcolor: selected === "MainCourse" ? "#18ba51" : "#ffffff",
-            color: selected === "MainCourse" ? "#FFFFFF" : "#000000",
-            "&:hover": {
-              bgcolor: selected === "MainCourse" ? "#18ba51" : "#f0f0f0",
-              color: selected === "MainCourse" ? "#FFFFFF" : "#000000",
-            },
-            textTransform: "capitalize",
-            fontWeight: 500,
-          }}
-        >
-          Main Course
-        </Button>
-        <Button
-          onClick={() => setSelected("Dessert")}
-          sx={{
-            ...buttonStyle,
-            bgcolor: selected === "Dessert" ? "#18ba51" : "#ffffff",
-            color: selected === "Dessert" ? "#FFFFFF" : "#000000",
-            "&:hover": {
-              bgcolor: selected === "Dessert" ? "#18ba51" : "#f0f0f0",
-              color: selected === "Dessert" ? "#FFFFFF" : "#000000",
-            },
-            textTransform: "capitalize",
-            fontWeight: 500,
-          }}
-        >
-          Dessert
-        </Button>
+      <Box
+        sx={{
+          width: "1200px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}
+      >
+        {allCategory.map((el: any, i: number) => (
+          <Stack
+            key={el._id}
+            onClick={() => handleClickCategory(el.name)}
+            alignItems={"center"}
+            justifyContent={"center"}
+            sx={{
+              ...buttonStyle,
+              bgcolor: selectedCategory === el.name ? "#18ba51" : "#ffffff",
+              color: selectedCategory === el.name ? "#FFFFFF" : "#000000",
+              "&:hover": {
+                bgcolor: selectedCategory === el.name ? "#18ba51" : "#f0f0f0",
+                color: selectedCategory === el.name ? "#FFFFFF" : "#000000",
+              },
+              textTransform: "capitalize",
+              fontWeight: 500,
+              height: 6,
+            }}
+          >
+            <Typography>{el.name}</Typography>
+          </Stack>
+        ))}
       </Box>
     </Box>
   );

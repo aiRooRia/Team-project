@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -28,6 +29,7 @@ const Login = () => {
   const handlePush = (route: string) => {
     router.push(route);
   };
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
   const formikLogin = useFormik<FromValues>({
     initialValues: {
       email: "",
@@ -36,8 +38,32 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       console.log(values);
-      console.log(values);
-      handlePush("/");
+      try {
+        const data = await fetch(`${ENDPOINT_URL}/user/login`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+        const response = await data.json();
+
+        if (response.message) {
+          setWarningMessage(response.message);
+        } else if (response.success) {
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("role", response.role);
+          console.log(response, "response");
+
+          console.log(response.role, "role");
+
+          response?.role === "user" ? handlePush("/") : handlePush("/admin");
+          setWarningMessage("");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
@@ -113,6 +139,11 @@ const Login = () => {
                       {formikLogin.errors.password}
                     </Typography>
                   ) : null}
+                  {warningMessage && (
+                    <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+                      {warningMessage}
+                    </Typography>
+                  )}
                 </FormControl>
                 <Button
                   onClick={() => {

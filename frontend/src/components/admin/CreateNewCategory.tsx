@@ -1,43 +1,76 @@
 import { Stack, Typography, TextField, Button } from "@mui/material";
-import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { AdminContext } from "../utils/context/adminContext";
 import { useState } from "react";
 import { BootstrapDialog } from "../utils/styles";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-
-interface CreateFoodProps {
+type TCreateCategoryProps = {
   handleClose: () => void;
+  capitalizeFirstLetter: Function;
   open: boolean;
-}
-
-export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
-  const { newCategoryInfo, setNewCategoryInfo } =
-    React.useContext(AdminContext);
+  newCategoryInfo: TNewCategoryInfo;
+  setNewCategoryInfo: Dispatch<SetStateAction<TNewCategoryInfo>>;
+};
+type TNewCategoryInfo = {
+  _id: string;
+  name: string;
+};
+export const CreateCategory = ({
+  handleClose,
+  capitalizeFirstLetter,
+  open,
+  setNewCategoryInfo,
+}: TCreateCategoryProps) => {
+  const [inputValue, setInputValue] = useState<string>("");
+  const [warningMessage, setWarningMessage] = useState<string>("");
   const [isClearCategoryName, setIsClearCategoryName] =
     useState<boolean>(false);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(isClearCategoryName);
-
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsClearCategoryName(false);
     if (isClearCategoryName) {
-      event.target.value == "";
+      event.target.value = "";
+    } else {
+      setInputValue(event.target.value);
     }
-    setNewCategoryInfo({ name: event.target.value });
   };
   const handleClear = () => {
-    setNewCategoryInfo({ name: "" }); // Clear the input field by setting the name to an empty string
+    setInputValue("");
+    setWarningMessage("");
     setIsClearCategoryName(true);
   };
-  const label = { inputProps: { "aria-label": "Switch demo" } };
-  console.log(newCategoryInfo);
+
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setNewCategoryInfo({_id: "", name: inputValue});
+    try {
+      const data = await fetch(`${ENDPOINT_URL}/category`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: capitalizeFirstLetter(inputValue) }),
+      });
+      const response = await data.json();
+      if (response.message) {
+        setWarningMessage(response.message);
+      } else if (response.success) {
+        handleClose();
+        setInputValue("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <BootstrapDialog
@@ -76,8 +109,13 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
           <TextField
             onChange={handleInputChange}
             placeholder="Food name"
-            value={newCategoryInfo.name}
+            value={inputValue}
           />
+          {warningMessage && (
+            <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+              {warningMessage}
+            </Typography>
+          )}
         </Stack>
       </DialogContent>
       <DialogActions>
@@ -102,12 +140,14 @@ export const CreateCategory = ({ handleClose, open }: CreateFoodProps) => {
           <Typography variant="subtitle1">Clear</Typography>
         </Stack>
         <Button
-          onClick={handleClose}
-          disabled={newCategoryInfo.name === ""}
+          onClick={handleSubmit}
+          disabled={inputValue.length === 0}
+          href=""
           sx={{
             ":hover": {
               cursor: "pointer",
             },
+            cursor: "pointer",
             ":active": {
               transform: "scale(0.97)",
             },

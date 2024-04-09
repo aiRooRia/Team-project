@@ -2,7 +2,13 @@ import { Stack, Typography } from "@mui/material";
 
 export const EmptyMenu = () => {
   return (
-    <Stack direction="column" alignItems="center">
+    <Stack
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      width={"100%"}
+      height={"200px"}
+    >
       <svg
         width="80"
         height="80"
@@ -28,7 +34,7 @@ export const EmptyMenu = () => {
         </g>
       </svg>
       <Typography variant="body1" sx={{ marginTop: "40px" }} color="gray">
-        Уучлаарай, Таны меню хоосон байна.
+        Уучлаарай, Меню хоосон байна.
       </Typography>
     </Stack>
   );
