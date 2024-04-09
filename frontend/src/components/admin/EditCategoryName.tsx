@@ -6,17 +6,22 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { AdminContext } from "../utils/context/adminContext";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { BootstrapDialog } from "../utils/styles";
 
-interface CreateFoodProps {
+type TEditCategoryNameProps = {
   handleClose: () => void;
   open: boolean;
+  _id: string;
+  handleEditCategoryButton: any;
 }
+type TNewCategoryInfo = {
+  _id: string;
+  name: string;
+};
 
-export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
-  const { newCategoryInfo, setNewCategoryInfo } =
-    React.useContext(AdminContext);
+export const EditCategoryName = ({ handleClose, open, _id, handleEditCategoryButton}: TEditCategoryNameProps) => {
+  const { editedCategoryInfo, setEditedCategoryInfo } =useContext(AdminContext);
   const [isClearCategoryName, setIsClearCategoryName] =
     useState<boolean>(false);
 
@@ -24,13 +29,35 @@ export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
     if (isClearCategoryName) {
       event.target.value == "";
     }
-    setNewCategoryInfo(event.target.value);
+    setEditedCategoryInfo({_id: _id, name: event.target.value});
+
+    console.log(editedCategoryInfo, "editedCategoryInfo");
+    
   };
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
+  // const handleEditCategoryButton=async()=>{
+  //   try{const data = await fetch(`${ENDPOINT_URL}/category`, {
+  //     method: "PUT",
+  //     headers: {
+  //       Accept: "application/json, text/plain, */*",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(editedCategoryInfo),
+  //   });
+  //   handleClose();
+  // }catch(err){
+  //     console.log(err);
+      
+  //   }
+  // }
   const handleClear = () => {
-    setNewCategoryInfo("");
+    setEditedCategoryInfo({
+      _id: "",
+      name: "",
+    });
     setIsClearCategoryName(true);
   };
-
+  console.log(editedCategoryInfo, "editedCategoryInfo");
   return (
     <BootstrapDialog
       onClose={handleClose}
@@ -68,7 +95,7 @@ export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
           <TextField
             onChange={handleInputChange}
             placeholder="Food name"
-            value={newCategoryInfo}
+            // value={newCategoryInfo}
           />
         </Stack>
       </DialogContent>
@@ -94,8 +121,8 @@ export const EditCategoryName = ({ handleClose, open }: CreateFoodProps) => {
           <Typography variant="subtitle1">Clear</Typography>
         </Stack>
         <Button
-          onClick={handleClose}
-          disabled={newCategoryInfo === ""}
+          onClick={handleEditCategoryButton}
+          disabled={editedCategoryInfo.name === ""}
           sx={{
             ":hover": {
               cursor: "pointer",

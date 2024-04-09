@@ -10,10 +10,15 @@ type TNewFoodInfo = {
   discountRate: number;
   image: string;
 };
-
+type TNewCategoryInfo = {
+  _id: string;
+  name: string;
+};
 type TContextProps = {
-  newCategoryInfo: string;
-  setNewCategoryInfo: Dispatch<SetStateAction<string>>;
+  newCategoryInfo: TNewCategoryInfo;
+  setNewCategoryInfo: Dispatch<SetStateAction<TNewCategoryInfo>>;
+  editedCategoryInfo: TNewCategoryInfo;
+  setEditedCategoryInfo: Dispatch<SetStateAction<TNewCategoryInfo>>;
   newFoodInfo: TNewFoodInfo;
   setNewFoodInfo: Dispatch<SetStateAction<TNewFoodInfo>>;
   deletedFoodId: string;
@@ -23,8 +28,14 @@ type TContextProps = {
 };
 
 const initialContextState: TContextProps = {
-  newCategoryInfo: "",
+  newCategoryInfo: {
+    _id: "",
+    name: "",},
   setNewCategoryInfo: () => {},
+  editedCategoryInfo: {
+    _id: "",
+    name: "",},
+  setEditedCategoryInfo: () => {},
   newFoodInfo: {
     _id: "",
     name: "",
@@ -54,7 +65,12 @@ export const AdminContext = createContext<TContextProps>(initialContextState);
 export const AdminContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [newCategoryInfo, setNewCategoryInfo] = useState<string>("");
+  const [newCategoryInfo, setNewCategoryInfo] = useState<TNewCategoryInfo>({
+    _id: "",
+    name: "",},);
+  const [editedCategoryInfo, setEditedCategoryInfo] = useState<TNewCategoryInfo>({
+    _id: "",
+    name: "",},);
   const [deletedFoodId, setDeletedFoodId] = useState<string>("");
   const [newFoodInfo, setNewFoodInfo] = useState<TNewFoodInfo>({
     _id: "",
@@ -78,6 +94,8 @@ export const AdminContextProvider: FC<{ children: ReactNode }> = ({
   const contextValue: TContextProps = {
     newCategoryInfo,
     setNewCategoryInfo,
+    editedCategoryInfo,
+    setEditedCategoryInfo,
     newFoodInfo,
     setNewFoodInfo,
     deletedFoodId,

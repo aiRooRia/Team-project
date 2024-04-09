@@ -13,10 +13,13 @@ type TCreateCategoryProps = {
   handleClose: () => void;
   capitalizeFirstLetter: Function;
   open: boolean;
-  newCategoryInfo: string;
-  setNewCategoryInfo: Dispatch<SetStateAction<string>>;
+  newCategoryInfo: TNewCategoryInfo;
+  setNewCategoryInfo: Dispatch<SetStateAction<TNewCategoryInfo>>;
 };
-
+type TNewCategoryInfo = {
+  _id: string;
+  name: string;
+};
 export const CreateCategory = ({
   handleClose,
   capitalizeFirstLetter,
@@ -47,7 +50,7 @@ export const CreateCategory = ({
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
     e.preventDefault();
-    setNewCategoryInfo(inputValue);
+    setNewCategoryInfo({_id: "", name: inputValue});
     try {
       const data = await fetch(`${ENDPOINT_URL}/category`, {
         method: "POST",

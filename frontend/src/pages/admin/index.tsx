@@ -21,7 +21,12 @@ import { getAdminLayout } from "@/components/layout/AdminLayout";
 import { AdminDiscountFoodCard } from "@/components/foodMenu/foodCard/AdminDiscountFoodCart";
 import { useRouter } from "next/router";
 
-type TCategotyData = {
+type TCategoryData = {
+  _id: string;
+  name: string;
+};
+type TNewCategoryInfo = {
+  _id: string;
   name: string;
 };
 type TFoodItem = {
@@ -55,9 +60,11 @@ useEffect(() => {
     setDeletedFoodId,
     editedFoodInfo,
     setEditedFoodInfo,
+    editedCategoryInfo,
+    setEditedCategoryInfo,
   } = useContext(AdminContext);
   const [categoryTitle, setCategoryTitle] = useState("All food");
-  const [allCategory, setAllCategory] = useState<TCategotyData[]>([]);
+  const [allCategory, setAllCategory] = useState<TCategoryData[]>([]);
   const [allFood, setAllFood] = useState<TFoodItem[]>([]);
   const [filteredFood, setFilteredFood] = useState<TFoodItem[]>([]);
 
@@ -109,7 +116,30 @@ useEffect(() => {
       console.log(error);
     }
   };
-
+  const handleEditCategoryButton=async()=>{
+    try{const data = await fetch(`${ENDPOINT_URL}/category`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editedCategoryInfo),
+    });
+    if (data.ok) {
+      setAllCategory(
+        allCategory.map((el) =>
+          el.name === editedCategoryInfo.name ? { ...el, ...editedCategoryInfo } : el
+        )
+      );
+    } else {
+      console.error("Failed to delete category");
+    }
+    handleCloseEditCategoryName();
+  }catch(err){
+      console.log(err);
+      
+    }
+  }
   const handleDeleteCategory = async (menuItem: string) => {
     try {
       const data = await fetch(`${ENDPOINT_URL}/category`, {
@@ -121,7 +151,6 @@ useEffect(() => {
         body: JSON.stringify({ name: menuItem }),
       }).then((data) => data.json());
       if (data.ok) {
-        // Assuming the deletion was successful, update the state
         setAllCategory((prevCategories) => prevCategories.filter(category => category.name !== menuItem));
       } else {
         console.error("Failed to delete category");
@@ -140,12 +169,14 @@ useEffect(() => {
     return inputText.charAt(0).toUpperCase() + inputText.slice(1).toLowerCase();
   }
 
-  const pushNewCategoryToAllCategory = (newCategory: string) => {
-    setAllCategory((prevCategories: TCategotyData[]) => [
+  const pushNewCategoryToAllCategory = (newCategory: TNewCategoryInfo) => {
+    setAllCategory((prevCategories: TCategoryData[]) => [
       ...prevCategories,
-      { name: capitalizeFirstLetter(newCategory) },
+      { _id:"", name: capitalizeFirstLetter(newCategory.name) },
     ]);
-    setNewCategoryInfo("");
+    setNewCategoryInfo({
+      _id: "",
+      name: "",},);
   };
   const pushNewFoodToAllFood = (newFood: TFoodItem) => {
     setFilteredFood((prev: TFoodItem[]) => [
@@ -180,6 +211,19 @@ useEffect(() => {
       category: "",
     });
   };
+  const updateCategoryFromAllCategory = (editedCategoryInfo: TCategoryData) => {
+    // setAllCategory(
+    //   allCategory.map((el) =>
+    //     el.name === editedCategoryInfo.name ? { ...el, ...editedCategoryInfo } : el
+    //   )
+    // );
+    setAllCategory(
+      allCategory.map((category) =>
+        category._id === editedCategoryInfo._id ? { ...category, ...editedCategoryInfo } : category
+      )
+   );
+  };
+
   const handleCategory = (categoryName: string) => {
     setSelectedCategory(categoryName);
     setCategoryTitle(categoryName);
@@ -198,20 +242,26 @@ useEffect(() => {
       setDeletedFoodId("");
     }
   }, [allCategory]);
-
+  
   useEffect(() => {
-    if (editedFoodInfo._id !== "") {
-      updateFoodFromAllFood(editedFoodInfo);
+  }, [allCategory]);
+  useEffect(() => {
+    if (editedCategoryInfo.name !== "") {
+      updateCategoryFromAllCategory(editedCategoryInfo);
     }
-  }, [editedFoodInfo]);
+  
+ 
+    console.log(" useeffect ajillaaa");
+  }, [editedCategoryInfo]);
   useEffect(() => {
     if (
-      newCategoryInfo !== "" &&
+      newCategoryInfo.name !== "" &&
       !allCategory.some(
-        (category) => category.name === capitalizeFirstLetter(newCategoryInfo)
+        (category) => category.name === capitalizeFirstLetter(newCategoryInfo.name)
       )
     ) {
       pushNewCategoryToAllCategory(newCategoryInfo);
+     
     }
   }, [newCategoryInfo]);
   useEffect(() => {
@@ -345,7 +395,9 @@ useEffect(() => {
                       </MenuItem>
                       <EditCategoryName
                         handleClose={handleCloseEditCategoryName}
+                        handleEditCategoryButton={handleEditCategoryButton}
                         open={openEditCategoryName}
+                        _id={el._id}
                       ></EditCategoryName>
                       <MenuItem
                         sx={{ display: "flex", gap: 1 }}

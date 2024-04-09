@@ -13,7 +13,7 @@ export const getCategory = async (req, res) => {
 export const getAllCategories = async (req, res) => {
   try {
     const data = await CategoryModel.find().populate("foodId");
-    console.log(data);
+    // console.log(data);
     res.send(data);
   } catch (err) {
     console.log(err);
@@ -61,3 +61,24 @@ export const deleteCategory = async(req,res) => {
     console.log(err);
   }
 }
+
+export const editCategory = async (req, res) => {
+  const { _id, name} =
+    req.body;
+console.log(req.body, "++++++++++++++");
+  try {
+    const editedCategory = await CategoryModel.findOneAndUpdate(
+      { _id: _id },
+      {
+        name: name,        
+      },
+      { new: true }
+    );
+    console.log(editedCategory, "--------------------");  
+    res.status(200).send({success: true});
+    
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: err });
+  }
+};
