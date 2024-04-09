@@ -24,7 +24,7 @@ type TFoodItem = {
 
 export const FoodMenu = () => {
   const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
-  const {selectedCategory, setSelectedcategory} = useContext(OrderContext);
+  const {selectedCategory, setSelectedCategory} = useContext(OrderContext);
   const [allCategory, setAllCategory] = useState<TCategotyData[]>([]);
 
   const [allFood, setAllFood] = useState<TFoodItem[]>([]);
@@ -85,7 +85,7 @@ export const FoodMenu = () => {
       >
          <FoodCategoryToggle
         selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedcategory}
+        setSelectedCategory={setSelectedCategory}
         allCategory={allCategory}
       ></FoodCategoryToggle>
         <Grid container gridColumn={4} columnGap={"60px"}  sx={{ marginY: 5 }}>

@@ -4,6 +4,6 @@ import { getFood, getAllFoods, createFood, deleteFood, editFood } from "../contr
 const food = Router();
 food.route("/").post(createFood).delete(deleteFood).put(editFood);
 food.route("/all-foods").get(getAllFoods);
-food.route("/getFood").post(getFood)
+food.route("/get-food").post(getFood)
 
 export { food };

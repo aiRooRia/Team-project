@@ -1,4 +1,10 @@
-import { useState, KeyboardEvent, MouseEvent, Fragment, useEffect } from "react";
+import {
+  useState,
+  KeyboardEvent,
+  MouseEvent,
+  Fragment,
+  useEffect,
+} from "react";
 import {
   Card,
   CardHeader,
@@ -18,30 +24,61 @@ type TBasketFoodCardProps = {
   foodId: string;
   quantity: number;
 };
-export const BasketFoodCard = ({foodId, quantity}:TBasketFoodCardProps) => {
+type TNewFoodInfo = {
+  _id: string;
+  name: string;
+  category: string;
+  ingredients: string;
+  price: number;
+  discountRate: number;
+  image: string;
+};
+export const BasketFoodCard = ({ foodId, quantity }: TBasketFoodCardProps) => {
   const [basketQuantity, setBasketQuantity] = useState(quantity);
-  const [foodInfo, setFoodInfo] = useState({_id:"", name: "", image:"", ingredients: "", price: 0, discountRate: 0, category: ""});
-  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
- const fetchFoodById = async() => {
-try{
-  const data = await fetch(`${ENDPOINT_URL}/food`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(foodId),
+  const [foodInfo, setFoodInfo] = useState<TNewFoodInfo>({
+    _id: "",
+    name: "",
+    image: "",
+    ingredients: "",
+    price: 0,
+    discountRate: 0,
+    category: "",
   });
-  const response = await data.json();
-  setFoodInfo(response);
-}catch(err){
-  console.log(err);
-  
-}
- }
- useEffect(()=>{
-  fetchFoodById();
- },[])
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
+
+  const fetchFoodById = async () => {
+    try {
+      const data = await fetch(`${ENDPOINT_URL}/food/get-food`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: foodId }),
+      });
+      const response = await data.json();
+      setFoodInfo((prev: TNewFoodInfo) => ({
+        ...prev,
+        _id: response?._id,
+        name: response?.name,
+        category: response?.category,
+        image: response?.image,
+        ingredients: response?.ingredients,
+        price: response?.price,
+        discountRate: response?.discountRate,
+      }));
+      console.log(response, "response======");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  let discountedPrice = new Intl.NumberFormat('en-US').format( ((100 - foodInfo.discountRate) / 100) * (foodInfo.price))
+    
+  console.log(foodInfo, "foodinfo =========");
+  useEffect(() => {
+    fetchFoodById();
+    console.log("useeffect ajillaa");
+  }, []);
   return (
     <Box
       sx={{
@@ -53,18 +90,26 @@ try{
         alignItems: "center",
         boxShadow: "none",
         borderBottom: "1px solid #D6D8DB",
-        // margin: 0,
         paddingY: "10px",
-        // scale: "80%"
       }}
     >
       <>
-        <CardMedia
-          sx={{ width: "150px", height: "150px", scale: "90%" }}
-          component="img"
-          image={foodInfo?.image !== "" ? foodInfo.image :"https://www.realsimple.com/thmb/fMh6cWLYxsddO3BuSJXanCk1gpI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/easy-dinner-recipes-f768402675e04452b1531360736da8b5.jpg" }
-          alt="lunch"
-        />
+        <Box
+          sx={{
+            width: "150px",
+            height: "150px",
+            scale: "90%",
+            // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
+            backgroundImage: `url(${
+              foodInfo?.image !== ""
+                ? foodInfo.image
+                : "https://www.realsimple.com/thmb/fMh6cWLYxsddO3BuSJXanCk1gpI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/easy-dinner-recipes-f768402675e04452b1531360736da8b5.jpg"
+            })`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        ></Box>
         <CardContent
           sx={{
             width: "100%",
@@ -86,7 +131,7 @@ try{
             }}
           >
             <Stack direction={"row"} justifyContent={"space-between"}>
-              <Typography variant="h6">{foodInfo.name}</Typography>
+              <Typography variant="h6">{foodInfo?.name}</Typography>
               <IconButton
                 aria-label="settings"
                 sx={{ display: "flex", alignItems: "start" }}
@@ -95,7 +140,7 @@ try{
               </IconButton>
             </Stack>
             <Typography sx={{ color: "#18BA51", marginTop: "-5px" }}>
-              {foodInfo.price}₮
+              {discountedPrice}₮
             </Typography>
           </Box>
           <Typography
@@ -105,8 +150,9 @@ try{
               padding: "8px",
               backgroundColor: "#F6F6F6",
               color: "#767676",
+              borderRadius: "10px",
             }}
-          >
+          > 
             {foodInfo.ingredients}
           </Typography>
           <Box
@@ -128,7 +174,9 @@ try{
                 alignItems={"center"}
                 justifyContent={"center"}
                 onClick={() =>
-                  basketQuantity !== 0 ? setBasketQuantity(basketQuantity - 1) : setBasketQuantity(0)
+                  basketQuantity !== 0
+                    ? setBasketQuantity(basketQuantity - 1)
+                    : setBasketQuantity(0)
                 }
                 sx={{
                   backgroundColor: "#18BA51",

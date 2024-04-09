@@ -97,8 +97,9 @@ export const Header = () => {
   }, [role, badgeContent]);
 
   useEffect(() => {
+    setBadgeContent(newOrderInfo.foods.length)
     console.log(newOrderInfo, "newOrderInfo updated in header");
-  }, [newOrderInfo]);
+  }, [newOrderInfo, badgeContent]);
 
   return (
     <>

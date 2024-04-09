@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Box, Typography, Stack} from "@mui/material";
+import { Button, Box, Typography, Stack } from "@mui/material";
 import { Dispatch, SetStateAction, FC } from "react";
 
 type TFoodCategoryToggleProps = {
@@ -23,7 +23,9 @@ export const FoodCategoryToggle: FC<TFoodCategoryToggleProps> = ({
     transition: "background-color 0.3s, color 0.3s",
     marginTop: 1,
   };
-
+ const handleClickCategory = (name: string) => {
+  setSelectedCategory(name)
+ }
   return (
     <Box
       sx={{
@@ -46,8 +48,9 @@ export const FoodCategoryToggle: FC<TFoodCategoryToggleProps> = ({
         {allCategory.map((el: any, i: number) => (
           <Stack
             key={el._id}
-            onClick={() => setSelectedCategory(el.name)}
-            alignItems={"center"} justifyContent={"center"}
+            onClick={() => handleClickCategory(el.name)}
+            alignItems={"center"}
+            justifyContent={"center"}
             sx={{
               ...buttonStyle,
               bgcolor: selectedCategory === el.name ? "#18ba51" : "#ffffff",

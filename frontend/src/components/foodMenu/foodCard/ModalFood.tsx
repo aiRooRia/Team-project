@@ -47,26 +47,17 @@ export const FoodModal = ({
 
   const handleBasket = async () => {
     let somethinng;
-    await setNewOrderInfo((prev) => ({
+    setNewOrderInfo((prev) => ({
       ...prev,
       foods: (somethinng = [
         ...prev.foods,
         { foodId: foodId, quantity: quantity },
       ]),
-      totalPrice: prev.totalPrice + quantity * foodPrice,
+      totalPrice: prev.totalPrice + quantity * discountedPrice,
     }));
-
-    console.log(somethinng, "is somethingg");
-
-    console.log(newOrderInfo, "neworderinfoo+++");
-
     handleClose();
 
-    console.log("badgeContent old = ", badgeContent);
-
     setBadgeContent(newOrderInfo.foods.length);
-
-    await console.log("badgeContent new =", badgeContent);
   };
 
   return (

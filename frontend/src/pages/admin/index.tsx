@@ -40,14 +40,14 @@ type TFoodItem = {
 };
 const AdminHome = () => {
   const router = useRouter();
-  const {push} = router;
-useEffect(() => { 
-  const role = localStorage.getItem('role');
-  if (role !== "admin") {
-    push('/');
-  } 
-}, []);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const { push } = router;
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "admin") {
+      push("/");
+    }
+  }, []);
+  const [selectedCategoryy, setSelectedCategoryy] = useState("");
   const [openCreateFood, setOpenCreateFood] = useState(false);
   const [openCreateCategory, setOpenCreateCategory] = useState(false);
   const [openEditCategoryName, setOpenEditCategoryName] = useState(false);
@@ -116,30 +116,32 @@ useEffect(() => {
       console.log(error);
     }
   };
-  const handleEditCategoryButton=async()=>{
-    try{const data = await fetch(`${ENDPOINT_URL}/category`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(editedCategoryInfo),
-    });
-    if (data.ok) {
-      setAllCategory(
-        allCategory.map((el) =>
-          el.name === editedCategoryInfo.name ? { ...el, ...editedCategoryInfo } : el
-        )
-      );
-    } else {
-      console.error("Failed to delete category");
-    }
-    handleCloseEditCategoryName();
-  }catch(err){
+  const handleEditCategoryButton = async () => {
+    try {
+      const data = await fetch(`${ENDPOINT_URL}/category`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editedCategoryInfo),
+      });
+      if (data.ok) {
+        setAllCategory(
+          allCategory.map((el) =>
+            el.name === editedCategoryInfo.name
+              ? { ...el, ...editedCategoryInfo }
+              : el
+          )
+        );
+      } else {
+        console.error("Failed to delete category");
+      }
+      handleCloseEditCategoryName();
+    } catch (err) {
       console.log(err);
-      
     }
-  }
+  };
   const handleDeleteCategory = async (menuItem: string) => {
     try {
       const data = await fetch(`${ENDPOINT_URL}/category`, {
@@ -151,7 +153,9 @@ useEffect(() => {
         body: JSON.stringify({ name: menuItem }),
       }).then((data) => data.json());
       if (data.ok) {
-        setAllCategory((prevCategories) => prevCategories.filter(category => category.name !== menuItem));
+        setAllCategory((prevCategories) =>
+          prevCategories.filter((category) => category.name !== menuItem)
+        );
       } else {
         console.error("Failed to delete category");
       }
@@ -172,11 +176,12 @@ useEffect(() => {
   const pushNewCategoryToAllCategory = (newCategory: TNewCategoryInfo) => {
     setAllCategory((prevCategories: TCategoryData[]) => [
       ...prevCategories,
-      { _id:"", name: capitalizeFirstLetter(newCategory.name) },
+      { _id: "", name: capitalizeFirstLetter(newCategory.name) },
     ]);
     setNewCategoryInfo({
       _id: "",
-      name: "",},);
+      name: "",
+    });
   };
   const pushNewFoodToAllFood = (newFood: TFoodItem) => {
     setFilteredFood((prev: TFoodItem[]) => [
@@ -219,13 +224,15 @@ useEffect(() => {
     // );
     setAllCategory(
       allCategory.map((category) =>
-        category._id === editedCategoryInfo._id ? { ...category, ...editedCategoryInfo } : category
+        category._id === editedCategoryInfo._id
+          ? { ...category, ...editedCategoryInfo }
+          : category
       )
-   );
+    );
   };
 
   const handleCategory = (categoryName: string) => {
-    setSelectedCategory(categoryName);
+    setSelectedCategoryy(categoryName);
     setCategoryTitle(categoryName);
     const filteredFoods = allFood.filter((el) => el.category === categoryName);
     setFilteredFood(filteredFoods);
@@ -242,26 +249,24 @@ useEffect(() => {
       setDeletedFoodId("");
     }
   }, [allCategory]);
-  
-  useEffect(() => {
-  }, [allCategory]);
+
+  useEffect(() => {}, [allCategory]);
   useEffect(() => {
     if (editedCategoryInfo.name !== "") {
       updateCategoryFromAllCategory(editedCategoryInfo);
     }
-  
- 
+
     console.log(" useeffect ajillaaa");
   }, [editedCategoryInfo]);
   useEffect(() => {
     if (
       newCategoryInfo.name !== "" &&
       !allCategory.some(
-        (category) => category.name === capitalizeFirstLetter(newCategoryInfo.name)
+        (category) =>
+          category.name === capitalizeFirstLetter(newCategoryInfo.name)
       )
     ) {
       pushNewCategoryToAllCategory(newCategoryInfo);
-     
     }
   }, [newCategoryInfo]);
   useEffect(() => {
@@ -358,8 +363,8 @@ useEffect(() => {
                     paddingX: 1,
                     paddingY: 0.75,
                     backgroundColor:
-                      selectedCategory === el.name ? "#18BA51" : "white",
-                    color: selectedCategory === el.name ? "white" : "black",
+                      selectedCategoryy === el.name ? "#18BA51" : "white",
+                    color: selectedCategoryy === el.name ? "white" : "black",
                   }}
                 >
                   <Typography variant="subtitle1">{el.name}</Typography>
@@ -369,9 +374,9 @@ useEffect(() => {
                         display: "flex",
                         alignItems: "center",
                         backgroundColor:
-                          selectedCategory === el.name ? "#18BA51" : "white",
+                          selectedCategoryy === el.name ? "#18BA51" : "white",
                         borderColor:
-                          selectedCategory === el.name ? "#18BA51" : "white",
+                          selectedCategoryy === el.name ? "#18BA51" : "white",
                         height: "22px",
                         ":active": {
                           cursor: "grabbing",
@@ -381,7 +386,7 @@ useEffect(() => {
                       <MoreVertIcon
                         sx={{
                           color:
-                            selectedCategory === el.name ? "white" : "black",
+                            selectedCategoryy === el.name ? "white" : "black",
                         }}
                       ></MoreVertIcon>
                     </MenuButton>

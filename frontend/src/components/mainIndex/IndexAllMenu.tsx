@@ -3,7 +3,7 @@ import { StarIcon } from "./Images";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { DiscountFoodCard } from "../foodMenu/foodCard/DiscountFoodCard";
 import { MainFoodCard } from "../foodMenu/foodCard/MainFoodCard";
-import { useEffect, useState, useContext} from "react";
+import { useEffect, useState, useContext } from "react";
 import { Grid } from "@mui/material";
 import { OrderContext } from "../utils/context/orderContext";
 import { useRouter } from "next/router";
@@ -25,7 +25,7 @@ type TFoodItem = {
 
 export const IndexAllMenu = () => {
   const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
-  const {selectedCategory, setSelectedcategory} = useContext(OrderContext);
+  const { selectedCategory, setSelectedCategory } = useContext(OrderContext);
   const [allCategory, setAllCategory] = useState<TCategotyData[]>([]);
 
   const [allFood, setAllFood] = useState<TFoodItem[]>([]);
@@ -147,12 +147,10 @@ export const IndexAllMenu = () => {
                     </Typography>
                   </Stack>
                   <Button
-                    onClick={() =>{
-                      setSelectedcategory(category.name);
+                    onClick={() => {
+                      setSelectedCategory(category.name);
                       handlePush("/layout/menu");
-                    }
-                      
-                    }
+                    }}
                     sx={{ textTransform: "capitalize", color: "#18BA51" }}
                   >
                     <Typography>Бүгдийг харах </Typography>
