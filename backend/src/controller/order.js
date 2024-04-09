@@ -37,7 +37,7 @@ const orderNumber = generateOrderNumber();
     res.send(newOrder)
   }
   catch(err){
-    console.log(err);
+    res.status(500).send({ error: err.message });
   }
 }
 

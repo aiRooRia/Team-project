@@ -1,6 +1,18 @@
 import { model, Schema } from "mongoose";
 import { COLLECTIONS } from "../constant/index.js";
 
+const FoodItemSchema = new Schema({
+  foodId: {
+     type: Schema.Types.ObjectId,
+     required: true,
+     ref: COLLECTIONS.FOOD,
+  },
+  quantity: {
+     type: Number,
+     required: true,
+  },
+ });
+
 export const OrderSchema = new Schema({
   userId: {
     type: String,
@@ -11,12 +23,7 @@ export const OrderSchema = new Schema({
     type: Number,
     required: true,
   },
-  foods: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: COLLECTIONS.FOOD,
-    },
-  ],
+ foods: [FoodItemSchema],
   totalPrice: {
     type: Number,
     required: true,

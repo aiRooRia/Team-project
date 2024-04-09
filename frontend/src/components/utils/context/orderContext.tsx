@@ -1,91 +1,56 @@
-import React, { createContext, useState, ReactNode } from "react";
+import React, { createContext, useState, ReactNode, useEffect } from "react";
 import { Dispatch, SetStateAction, FC } from "react";
 
-type TNewFoodInfo = {
-  _id: string;
-  name: string;
-  category: string;
-  ingredients: string;
-  price: number;
-  discountRate: number;
-  image: string;
+type TFoodArrayInfo = {
+  foodId: string;
+  quantity: number;
+};
+type TNewOrderInfo = {
+  userId: string;
+  foods: TFoodArrayInfo[];
+  totalPrice: number;
 };
 
-type TContextProps = {
-    selectedCategory: string;
-  setSelectedcategory: Dispatch<SetStateAction<string>>;
-  newFoodInfo: TNewFoodInfo;
-  setNewFoodInfo: Dispatch<SetStateAction<TNewFoodInfo>>;
-  deletedFoodId: string;
-  setDeletedFoodId: Dispatch<SetStateAction<string>>;
-  editedFoodInfo: TNewFoodInfo;
-  setEditedFoodInfo: Dispatch<SetStateAction<TNewFoodInfo>>;
+type TOrderContextProps = {
+  badgeContent: number;
+  setBadgeContent: Dispatch<SetStateAction<number>>;
+  newOrderInfo: TNewOrderInfo;
+  setNewOrderInfo: Dispatch<SetStateAction<TNewOrderInfo>>;
+  selectedCategory: string;
+  setSelectedCategory: Dispatch<SetStateAction<string>>;
+};
+const initialOrderInfo: TNewOrderInfo = {
+  userId: "",
+  foods: [],
+  totalPrice: 0,
+};
+const initialContextState: TOrderContextProps = {
+  badgeContent: 0,
+  setBadgeContent: () => {},
+  selectedCategory: "",
+  setSelectedCategory: () => {},
+  newOrderInfo: initialOrderInfo,
+  setNewOrderInfo: () => {},
 };
 
-const initialContextState: TContextProps = {
-    selectedCategory: "",
-  setSelectedcategory: () => {},
-  newFoodInfo: {
-    _id: "",
-    name: "",
-    image: "",
-    ingredients: "",
-    price: 0,
-    discountRate: 0,
-    category: "",
-  },
-  setNewFoodInfo: () => {},
-  deletedFoodId: "",
-  setDeletedFoodId: () => {},
-  editedFoodInfo: {
-    _id: "",
-    name: "",
-    image: "",
-    ingredients: "",
-    price: 0,
-    discountRate: 0,
-    category: "",
-  },
-  setEditedFoodInfo: () => {},
-};
-
-export const OrderContext = createContext<TContextProps>(initialContextState);
+export const OrderContext = createContext<TOrderContextProps>(initialContextState);
 
 export const OrderContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [selectedCategory, setSelectedcategory] = useState<string>("");
-  const [deletedFoodId, setDeletedFoodId] = useState<string>("");
-  const [newFoodInfo, setNewFoodInfo] = useState<TNewFoodInfo>({
-    _id: "",
-    name: "",
-    image: "",
-    ingredients: "",
-    price: 0,
-    discountRate: 0,
-    category: "",
-  });
-  const [editedFoodInfo, setEditedFoodInfo] = useState<TNewFoodInfo>({
-    _id: "",
-    name: "",
-    image: "",
-    ingredients: "",
-    price: 0,
-    discountRate: 0,
-    category: "",
-  });
-
-  const contextValue: TContextProps = {
+  const [badgeContent, setBadgeContent] = useState<number>(0);
+  const [selectedCategory, setSelectedCategory] =useState<string>("");
+  const [newOrderInfo, setNewOrderInfo] =
+    useState<TNewOrderInfo>(initialOrderInfo);
+  const contextValue: TOrderContextProps = {
+    badgeContent,
+    setBadgeContent,
+    newOrderInfo,
+    setNewOrderInfo,
     selectedCategory,
-    setSelectedcategory,
-    newFoodInfo,
-    setNewFoodInfo,
-    deletedFoodId,
-    setDeletedFoodId,
-    editedFoodInfo,
-    setEditedFoodInfo,
+    setSelectedCategory,
   };
-
+  console.log(newOrderInfo, "context");
   return (
     <OrderContext.Provider value={contextValue}>
       {children}
