@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { BootstrapDialog } from "@/components/utils/styles";
+import { OrderContext } from "@/components/utils/context/orderContext";
 
 type TFoodModalProps = {
   handleClose: () => void;
@@ -24,9 +25,11 @@ type TFoodModalProps = {
   foodPrice: number;
   imgUrl: string;
   foodIngredients: string;
+  foodId: string;
 };
 export const FoodModal = ({
   handleClose,
+  foodId,
   open,
   foodName,
   discountedPrice,
@@ -35,6 +38,36 @@ export const FoodModal = ({
   foodIngredients,
 }: TFoodModalProps) => {
   const [quantity, setQuantity] = useState(0);
+  const { newOrderInfo, setNewOrderInfo, badgeContent, setBadgeContent } =
+    useContext(OrderContext);
+  const [test, setTest] = useState({
+    food: { foodId: "", quantity: 0 },
+    total: 0,
+  });
+
+  const handleBasket = async () => {
+    let somethinng;
+    await setNewOrderInfo((prev) => ({
+      ...prev,
+      foods: (somethinng = [
+        ...prev.foods,
+        { foodId: foodId, quantity: quantity },
+      ]),
+      totalPrice: prev.totalPrice + quantity * foodPrice,
+    }));
+
+    console.log(somethinng, "is somethingg");
+
+    console.log(newOrderInfo, "neworderinfoo+++");
+
+    handleClose();
+
+    console.log("badgeContent old = ", badgeContent);
+
+    setBadgeContent(newOrderInfo.foods.length);
+
+    await console.log("badgeContent new =", badgeContent);
+  };
 
   return (
     <BootstrapDialog
@@ -186,10 +219,9 @@ export const FoodModal = ({
                 backgroundColor: "#18BA51",
                 color: "white",
                 textTransform: "capitalize",
-                // padding: 0!,
               }}
               disabled={quantity == 0}
-              onClick={handleClose}
+              onClick={handleBasket}
             >
               Сагслах
             </Button>
@@ -199,3 +231,13 @@ export const FoodModal = ({
     </BootstrapDialog>
   );
 };
+function useEffect(
+  arg0: () => void,
+  arg1: {
+    userId: string;
+    foods: { foodId: string; quantity: number }[];
+    totalPrice: number;
+  }[]
+) {
+  throw new Error("Function not implemented.");
+}

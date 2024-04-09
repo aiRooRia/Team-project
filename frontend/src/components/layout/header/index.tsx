@@ -4,19 +4,26 @@ import { useRouter } from "next/router";
 import { Button, Box, TextField, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { PersonOutline } from "@mui/icons-material";
-import ShoppingBasketOutlinedIcon from "@mui/icons-material/ShoppingBasketOutlined";
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useContext } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { usePathname } from "next/navigation";
+import Badge from "@mui/material/Badge";
+import { Basket } from "./basket/Basket";
+// import Basket from "./basket/Basket";
+import { OrderContext } from "@/components/utils/context/orderContext";
 
 export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [navbarColor, setNavbarColor] = useState("black");
   const [activeRoute, setActiveRoute] = useState<string>("");
+  const { badgeContent, setBadgeContent, newOrderInfo, setNewOrderInfo } =
+    useContext(OrderContext);
   const [loginOrUserOrAdmin, setLoginOrUserOrAdmin] =
     useState<string>("Нэвтрэх");
+  console.log(newOrderInfo, "newOrderInfo header");
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -54,7 +61,9 @@ export const Header = () => {
     router.push(route);
     setActiveRoute(route);
   };
-
+  function push(arg0: string) {
+    throw new Error("Function not implemented.");
+  }
   const linkStyles = {
     py: 1,
     px: 2,
@@ -74,6 +83,7 @@ export const Header = () => {
     role = localStorage.getItem("role");
     console.log(role, "role");
   }
+  console.log(badgeContent, "badgecontent");
 
   useEffect(() => {
     if (role == "admin") {
@@ -83,7 +93,12 @@ export const Header = () => {
     } else if (!role) {
       setLoginOrUserOrAdmin("Нэвтрэх");
     }
-  }, [role]);
+    console.log(badgeContent, "badgecontent");
+  }, [role, badgeContent]);
+
+  useEffect(() => {
+    console.log(newOrderInfo, "newOrderInfo updated in header");
+  }, [newOrderInfo]);
 
   return (
     <>
@@ -118,8 +133,12 @@ export const Header = () => {
           >
             <Box sx={{ gap: 1, display: "flex", alignItems: "center" }}>
               <Box
-             onClick={() => handlePush("/")}
-             sx={{":hover": {cursor: "pointer"}, ":active":{scale: "95%"}}}>
+                onClick={() => handlePush("/")}
+                sx={{
+                  ":hover": { cursor: "pointer" },
+                  ":active": { scale: "95%" },
+                }}
+              >
                 <Image
                   alt="Header logo"
                   src={HeaderLogo}
@@ -145,7 +164,7 @@ export const Header = () => {
                     sx={{
                       ...linkStyles,
                       color:
-                      pathname === "/layout/menu" ? "green" : navbarColor,
+                        pathname === "/layout/menu" ? "green" : navbarColor,
                     }}
                   >
                     ХООЛНЫ ЦЭС
@@ -157,7 +176,7 @@ export const Header = () => {
                     sx={{
                       ...linkStyles,
                       color:
-                      pathname === "/layout/delivery-zone"
+                        pathname === "/layout/delivery-zone"
                           ? "green"
                           : navbarColor,
                     }}
@@ -211,10 +230,12 @@ export const Header = () => {
                       textTransform: "capitalize",
                     }}
                   >
-                    <ShoppingBasketOutlinedIcon
-                      sx={{ width: 24, height: 24 }}
-                    />
-                    Сагс
+                    <Badge badgeContent={badgeContent} sx={{ color: "black" }}>
+                      <Basket
+                      // newOrderInfo={newOrderInfo}
+                      // setNewOrderInfo={setNewOrderInfo}
+                      />
+                    </Badge>
                   </Button>
                   <Button
                     id="basic-button"
@@ -230,7 +251,9 @@ export const Header = () => {
                     }}
                   >
                     <PersonOutline sx={{ width: 24, height: 24 }} />
-                    {loginOrUserOrAdmin}
+                    <Typography sx={{ fontWeight: "bold" }}>
+                      {loginOrUserOrAdmin}
+                    </Typography>
                   </Button>
                   {loginOrUserOrAdmin == "Админ" && (
                     <Menu

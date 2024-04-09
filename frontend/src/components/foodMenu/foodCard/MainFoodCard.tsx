@@ -42,7 +42,7 @@ export const MainFoodCard = ({foodName, foodPrice, foodImage, discountRate, id, 
     {
       imgUrl: "/goyhoolpizza.png",
       foodName: "Өглөөний хоол",
-      foodPrice: "4,800",
+      foodPrice: 4800,
       foodIngredients: "Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр ",
       quantity: "",
     },
@@ -100,7 +100,7 @@ export const MainFoodCard = ({foodName, foodPrice, foodImage, discountRate, id, 
           </Typography>
         </CardContent>
       </Card>
-      <FoodModal handleClose={handleClose} open={open} foodName={foodName} discountedPrice={foodPrice} foodPrice={discountedPrice} imgUrl={foodImage} foodIngredients={foodIngredients}></FoodModal>
+      <FoodModal foodId={id} handleClose={handleClose} open={open} foodName={foodName} discountedPrice={foodPrice} foodPrice={discountedPrice} imgUrl={foodImage} foodIngredients={foodIngredients}></FoodModal>
     </>
   );
 };

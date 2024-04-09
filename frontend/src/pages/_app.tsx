@@ -16,12 +16,18 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
+    <OrderContextProvider>
     <AdminContextProvider>
-      <OrderContextProvider>
+      
       <UserContextProvider>
+        {/* <OrderContextProvider> */}
       <Component {...pageProps} />
+      {/* </OrderContextProvider> */}
       </UserContextProvider>
-      </OrderContextProvider>
+      
     </AdminContextProvider>
+    </OrderContextProvider>
+    
+
   );
 }
