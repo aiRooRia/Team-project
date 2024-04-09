@@ -29,7 +29,7 @@ const Login = () => {
   const handlePush = (route: string) => {
     router.push(route);
   };
-  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
   const formikLogin = useFormik<FromValues>({
     initialValues: {
       email: "",
@@ -48,17 +48,17 @@ const Login = () => {
           body: JSON.stringify(values),
         });
         const response = await data.json();
-              
+
         if (response.message) {
           setWarningMessage(response.message);
         } else if (response.success) {
           localStorage.setItem("token", response.token);
           localStorage.setItem("role", response.role);
           console.log(response, "response");
-          
+
           console.log(response.role, "role");
-          
-          response?.role === "user" ? handlePush("/") : handlePush("/admin")
+
+          response?.role === "user" ? handlePush("/") : handlePush("/admin");
           setWarningMessage("");
         }
       } catch (error) {
@@ -140,10 +140,10 @@ const Login = () => {
                     </Typography>
                   ) : null}
                   {warningMessage && (
-                  <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
-                    {warningMessage}
-                  </Typography>
-                )}
+                    <Typography color={"#EF4444"} sx={{ fontSize: "12px" }}>
+                      {warningMessage}
+                    </Typography>
+                  )}
                 </FormControl>
                 <Button
                   onClick={() => {

@@ -2,13 +2,13 @@ import { UserModel } from "../model/user.model.js";
 import bcryct from "bcrypt";
 
 export const getUserByField = async (req, res) => {
-  //Login-d shiglana 
+  //Login-d shiglana
   const { email, password } = req.body;
   try {
-    const data = await UserModel.find({ email: toUpperCaseLetter(email)});
-    if(data.length ==0){
-      res.send({message: "Бүртгэлгүй хэрэглэгч байна"});
-    } else{
+    const data = await UserModel.find({ email: toUpperCaseLetter(email) });
+    if (data.length == 0) {
+      res.send({ message: "Бүртгэлгүй хэрэглэгч байна" });
+    } else {
       const isValid = await bcryct.compare(password, data[0].password);
       if (isValid) {
         console.log(data, "data");
@@ -16,7 +16,6 @@ export const getUserByField = async (req, res) => {
           token: data[0]._id,
           role: data[0].role,
           success: true,
-          
         });
       } else {
         res.send({
@@ -24,7 +23,6 @@ export const getUserByField = async (req, res) => {
         });
       }
     }
-    
   } catch (err) {
     console.log(err);
   }
@@ -33,10 +31,14 @@ export const getUserById = async (req, res) => {
   const { id } = req.body;
   try {
     const data = await UserModel.findById(id);
-
-    res.send(data);
+    if (!data) {
+      return res.status(404).json({ message: "Хэрэглэгч олдсонгүй" });
+    }
+    console.log(data);
+    res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 export const getAllUsers = async (req, res) => {
@@ -54,7 +56,9 @@ export const createUser = async (req, res) => {
   const salt = bcryct.genSaltSync(1);
   const hashedPassword = await bcryct.hash(password, salt);
   try {
-    const existingUser = await UserModel.findOne({ email: toUpperCaseLetter(email) });
+    const existingUser = await UserModel.findOne({
+      email: toUpperCaseLetter(email),
+    });
     if (existingUser) {
       return res.send({ message: "И-мэйл бүртгэлтэй байна" });
     } else {
@@ -114,17 +118,26 @@ function toUpperCaseLetter(inputText) {
 //   }
 // };
 export const updateUser = async (req, res) => {
-  //edit profile-d ashiglana
+  // edit profile-d ashiglana
   const { id, name, email, phoneNumber } = req.body;
+  console.log(req.body);
   try {
-    const updatedUserData = await UserModel.updateOne(
-      { _id: id },
-      { name: name, email: email, phoneNumber: phoneNumber }
-    );
-    res.send(updatedUserData);
-  } catch (err) {
-    console.log(err);
-  }
+    const checkUser = await UserModel.findOne({ email: email });
+    if (checkUser.length > 0 && checkUser._id !== id) {
+      return res.send({ message: "Бүртгэлтэй и-мэйл байна" });
+    } else {
+      try {
+        const updatedUserData = await UserModel.findOneAndUpdate(
+          { _id: id },
+          { name: name, email: email, phoneNumber: phoneNumber }
+        );
+        res.send({ success: true });
+        res.send(updatedUserData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  } catch (error) {}
 };
 
 export const getUserEmail = async (req, res) => {

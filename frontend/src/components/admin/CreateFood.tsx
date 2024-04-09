@@ -94,7 +94,7 @@ export const CreateFood = ({
           body: JSON.stringify(values),
         });
         const response = await data.json();
-        
+
         setNewFoodInfo((prev: TNewFoodInfo) => ({
           ...prev,
           _id: response?._id,
@@ -105,7 +105,6 @@ export const CreateFood = ({
           price: response?.price,
           discountRate: response?.discountRate,
         }));
-        
       } catch (err) {
         console.log(err);
       }
