@@ -5,6 +5,7 @@ import {
   Dispatch,
   SetStateAction,
   FC,
+  useEffect,
 } from "react";
 
 type TSignUpUserInfo = {
@@ -21,9 +22,9 @@ type TPasswordRecoveryUsers = {
 };
 
 type TUserProfile = {
-  name: string;
-  phone: string;
-  email: string;
+  name: string | null;
+  phone: string | null;
+  email: string | null;
 };
 
 export type TContextProps = {
@@ -38,9 +39,9 @@ export type TContextProps = {
 };
 
 const initialUserProfile: TUserProfile = {
-  name: "Ariguun",
-  phone: "88818657",
-  email: "ariguun10@gmail.com",
+  name: "",
+  phone: "",
+  email: "",
 };
 
 const initialUserInfo: TSignUpUserInfo = {
@@ -63,7 +64,7 @@ const initialContextState: TContextProps = {
   setPasswordRecoveryUser: () => {},
   userProfile: initialUserProfile,
   setUserProfile: () => {},
-  loginOrUserOrAdmin : "Нэвтрэх",
+  loginOrUserOrAdmin: "Нэвтрэх",
   setLoginOrUserOrAdmin: () => {},
 };
 
@@ -72,8 +73,15 @@ export const UserContext = createContext<TContextProps>(initialContextState);
 export const UserContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [loginOrUserOrAdmin, setLoginOrUserOrAdmin] = useState<string>("Нэвтрэх");
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
+  const loggedInUserId =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+  const [loginOrUserOrAdmin, setLoginOrUserOrAdmin] =
+    useState<string>("Нэвтрэх");
   const [signUpUserInfo, setSignUpUserInfo] =
+    useState<TSignUpUserInfo>(initialUserInfo);
+  const [loggedInUserInfo, setLoggedInUserInfo] =
     useState<TSignUpUserInfo>(initialUserInfo);
   const [passwordRecoveryUser, setPasswordRecoveryUser] =
     useState<TPasswordRecoveryUsers>(initialPasswordRecoveryUser);

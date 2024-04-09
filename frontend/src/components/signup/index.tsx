@@ -39,7 +39,7 @@ export const Signup: FC = () => {
   };
   const { push } = useRouter();
 
-  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
   const formikSignUp = useFormik<FromValues>({
     initialValues: {
       name: "",

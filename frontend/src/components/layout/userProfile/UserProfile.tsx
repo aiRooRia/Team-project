@@ -9,7 +9,7 @@ import {
 import { useRouter } from "next/router";
 import EditIcon from "@mui/icons-material/Edit";
 import { green } from "@mui/material/colors";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HistoryIcon from "@mui/icons-material/History";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { UserContext } from "@/components/utils/context/userContext";
@@ -53,6 +53,37 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
       padding: 0,
     },
   };
+  const ENDPOINT_URL = process.env.NEXT_PUBLIC_ENDPOINT;
+  const loggedInUserId =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+  const fetchLoggedInUserInfo = async () => {
+    if (loggedInUserId) {
+      try {
+        const data = await fetch(`${ENDPOINT_URL}/user/logged-in-user`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: loggedInUserId }),
+        });
+        const response = await data.json();
+        setUserProfile({
+          name: response.name,
+          phone: response.phoneNumber ? response.phoneNumber : "",
+          email: response.email,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("loggedInUserId bhguiii");
+    }
+  };
+
+  console.log(userProfile, "userpro");
+
   const formikUserProfile = useFormik<FromValues>({
     initialValues: {
       name: userProfile.name,
@@ -78,11 +109,18 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
           console.log(response.success, "amjilltai");
           setShowConfirmation(true);
         }
+        setUserProfile({
+          name: values.name,
+          phone: values.phoneNumber,
+          email: values.email,
+        });
       } catch (error) {
         console.log(error);
       }
     },
   });
+  console.log(userProfile, "userprofile");
+
   const exitButtonStyle = {
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
@@ -129,7 +167,12 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
     border: "1px solid #EEEFF2",
     bgcolor: "#ffffff",
   };
-
+  useEffect(() => {
+    fetchLoggedInUserInfo();
+  }, []);
+  useEffect(() => {
+    // fetchLoggedInUserInfo();
+  }, [userProfile]);
   return (
     <>
       {showConfirmation && (
@@ -367,43 +410,58 @@ export const UserProfile = ({ setCurrentStep, currentStep }: StepOneProps) => {
                   <EditIcon sx={{ width: 24, height: 24, color: green[500] }} />
                 </Button>
               </Stack>
-              <Stack sx={{ display: !saveButton ? "block" : "none" }}>
-                <Box sx={{ ...greyContainerStyle, bgcolor: "#ffffff" }}>
-                  <Box sx={iconContainerStyle}>
-                    <HistoryIcon
+              <Stack
+                direction={"column"}
+                alignItems={"flex-start"}
+                sx={{
+                  px: "20px",
+                }}
+              >
+                <Button
+                  startIcon={
+                    <Stack
+                      justifyContent={"center"}
+                      alignItems={"center"}
                       sx={{
-                        width: 24,
-                        height: 24,
+                        backgroundColor: "white",
+                        border: "1px solid #eeeff2",
+                        borderRadius: "50%",
+                        width: "50px",
+                        height: "50px",
                       }}
-                    />
-                  </Box>
-                  <Button onClick={() => handlePush("")}>
-                    <Typography
-                      sx={{ ...textBottomStyle, textTransform: "none" }}
                     >
-                      Захиалгын түүх
-                    </Typography>
-                  </Button>
-                </Box>
-                <Box sx={{ ...greyContainerStyle, bgcolor: "#ffffff" }}>
-                  <Box sx={iconContainerStyle}>
-                    <Button
-                      onClick={handleModalToggle}
-                      sx={{ width: "24px", height: "24px" }}
+                      <HistoryIcon
+                        sx={{ width: "30px", height: "30px", color: "black" }}
+                      />
+                    </Stack>
+                  }
+                  sx={{ color: "black" }}
+                >
+                  Захиалгын түүх
+                </Button>
+                <Button
+                  onClick={handleModalToggle}
+                  startIcon={
+                    <Stack
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      sx={{
+                        backgroundColor: "white",
+                        border: "1px solid #eeeff2",
+                        borderRadius: "50%",
+                        width: "50px",
+                        height: "50px",
+                      }}
                     >
                       <LogoutIcon
-                        sx={{
-                          width: 24,
-                          height: 24,
-                          color: "#000000",
-                        }}
+                        sx={{ width: "30px", height: "30px", color: "black" }}
                       />
-                    </Button>
-                  </Box>
-                  <Box sx={nameContainerStyle}>
-                    <Typography sx={textBottomStyle}>Гарах</Typography>
-                  </Box>
-                </Box>
+                    </Stack>
+                  }
+                  sx={{ color: "black" }}
+                >
+                  Гарах
+                </Button>
               </Stack>
             </Stack>
 

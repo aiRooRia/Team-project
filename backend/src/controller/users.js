@@ -2,13 +2,13 @@ import { UserModel } from "../model/user.model.js";
 import bcryct from "bcrypt";
 
 export const getUserByField = async (req, res) => {
-  //Login-d shiglana 
+  //Login-d shiglana
   const { email, password } = req.body;
   try {
-    const data = await UserModel.find({ email: toUpperCaseLetter(email)});
-    if(data.length ==0){
-      res.send({message: "Бүртгэлгүй хэрэглэгч байна"});
-    } else{
+    const data = await UserModel.find({ email: toUpperCaseLetter(email) });
+    if (data.length == 0) {
+      res.send({ message: "Бүртгэлгүй хэрэглэгч байна" });
+    } else {
       const isValid = await bcryct.compare(password, data[0].password);
       if (isValid) {
         console.log(data, "data");
@@ -16,7 +16,6 @@ export const getUserByField = async (req, res) => {
           token: data[0]._id,
           role: data[0].role,
           success: true,
-          
         });
       } else {
         res.send({
@@ -24,7 +23,6 @@ export const getUserByField = async (req, res) => {
         });
       }
     }
-    
   } catch (err) {
     console.log(err);
   }
@@ -54,7 +52,9 @@ export const createUser = async (req, res) => {
   const salt = bcryct.genSaltSync(1);
   const hashedPassword = await bcryct.hash(password, salt);
   try {
-    const existingUser = await UserModel.findOne({ email: toUpperCaseLetter(email) });
+    const existingUser = await UserModel.findOne({
+      email: toUpperCaseLetter(email),
+    });
     if (existingUser) {
       return res.send({ message: "И-мэйл бүртгэлтэй байна" });
     } else {
@@ -119,12 +119,11 @@ export const updateUser = async (req, res) => {
   console.log(req.body);
   try {
     const checkUser = await UserModel.findOne({ email: email });
-    if (checkUser && checkUser._id.toString() !== id) {
-      // If email is found and belongs to a different user
+    if (checkUser.length > 0 && checkUser._id !== id) {
       return res.send({ message: "Бүртгэлтэй и-мэйл байна" });
     } else {
       try {
-        const updatedUserData = await UserModel.updateOne(
+        const updatedUserData = await UserModel.findOneAndUpdate(
           { _id: id },
           { name: name, email: email, phoneNumber: phoneNumber }
         );
